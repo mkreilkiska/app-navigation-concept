@@ -1379,9 +1379,14 @@ svg{display:block}
 .catrow{display:flex;justify-content:space-between;gap:6px;padding:2px 0 4px}
 .catq{flex:1 1 0;max-width:46px;height:44px;border-radius:12px;background:var(--a-pill);display:inline-flex;align-items:center;justify-content:center;color:var(--c);position:relative}
 .catq svg{width:22px;height:22px}
-/* more than seven categories (the Office has thirteen): two rows, every category still visible at once (round 8) */
-.catrow.two{display:grid;grid-template-columns:repeat(var(--n),minmax(0,1fr));gap:12px 6px;justify-items:center}
-.catrow.two .catq{width:100%;max-width:46px}
+/* the category groups with their word under the icon, at most seven in one row (round 10); the project's categories of a group on a second line */
+.catrow.lab .catq{flex-direction:column;gap:4px;height:56px;max-width:60px;border-radius:14px}
+.catrow.lab .catq .cl{font-size:10px;font-weight:600;line-height:1;color:var(--a-fg50);white-space:nowrap}
+.catrow.lab .catq.on .cl{color:#1C1610}
+.catrow.lab .catq.on::after{bottom:-7px}
+.tpill .fsub{margin:12px 0 0;gap:6px}
+.tpill .fsub .pl{height:32px;padding:0 12px;font-size:13px;gap:5px}
+.tpill .fsub .pl.on .n{color:inherit;opacity:.6}
 .catq.on{background:var(--c);color:#1C1610}
 .catq.on::after{content:"";position:absolute;left:50%;bottom:-6px;width:4px;height:4px;border-radius:2px;background:var(--a-fg);transform:translateX(-50%)}
 /* the Target's header is the kit's neutral variant, slim: the page's own surface, the wordmark, and the place with its connection on the right (tap: change place) */
@@ -1592,24 +1597,40 @@ function statusBar(cls=''){ return `<div class="st ${cls}"><span>6:38</span><spa
 function wordmark(){ return I('wordmark'); }
 
 /* ---------- example data ---------- */
-/* categories: the House uses the kit's seven; the Office brings Loxone's default categories (in English), the project's colour where it set one (Presence) */
+/* categories: the House uses the kit's seven; the Office brings Loxone's default categories (in English), the project's colour where it set one (Presence).
+   Their order follows the Target's groups below, so a group lists its functions in the same order */
 const CATS = [
   {id:'lighting', name:'Lighting', color:'var(--cat-lighting)', icon:'bulb2'},
   {id:'shading', name:'Shading', color:'var(--cat-shading)', icon:'blind'},
-  {id:'windows', name:'Windows', color:'var(--cat-windows)', icon:'window'},
   {id:'climate', name:'Climate', color:'var(--cat-climate)', icon:'thermometer'},
+  {id:'windows', name:'Windows', color:'var(--cat-windows)', icon:'window'},
   {id:'ventilation', name:'Ventilation', color:'var(--cat-ventilation)', icon:'fan'},
-  {id:'presence', name:'Presence', color:'var(--cat-presence)', icon:'presence'},
   {id:'audio', name:'Audio', color:'var(--cat-audio)', icon:'note'},
   {id:'multimedia', name:'Multimedia', color:'var(--cat-multimedia)', icon:'tablet'},
   {id:'security', name:'Security', color:'var(--cat-security)', icon:'alarm'},
-  {id:'energy', name:'Energy', color:'var(--cat-energy)', icon:'energy'},
   {id:'access', name:'Access', color:'var(--cat-access)', icon:'door'},
+  {id:'presence', name:'Presence', color:'var(--cat-presence)', icon:'presence'},
+  {id:'energy', name:'Energy', color:'var(--cat-energy)', icon:'energy'},
   {id:'controls', name:'Controls', color:'var(--cat-controls)', icon:'sliders'},
   {id:'info', name:'Info', color:'var(--cat-info)', icon:'info'},
   {id:'unassigned', name:'Unassigned', color:'var(--cat-unassigned)', icon:'nav-categories'},
 ];
 const CAT = Object.fromEntries(CATS.map(c=>[c.id,c]));
+/* the Target's category groups (round 10): at most six, in a fixed order and with their word, plus Other; a Miniserver shows the ones it has.
+   The project's own categories stay one tap deeper (the sheet's second line), so a small apartment and a large office read the same */
+const FAMS = [
+  {id:'f:lighting', name:'Lighting', color:'var(--cat-lighting)', icon:'bulb2', members:['lighting']},
+  {id:'f:shading', name:'Shading', color:'var(--cat-shading)', icon:'blind', members:['shading']},
+  {id:'f:climate', name:'Climate', color:'var(--cat-climate)', icon:'thermometer', members:['climate','windows','ventilation']},
+  {id:'f:audio', name:'Audio', color:'var(--cat-audio)', icon:'note', members:['audio','multimedia']},
+  {id:'f:security', name:'Security', color:'var(--cat-security)', icon:'alarm', members:['security','access','presence']},
+  {id:'f:energy', name:'Energy', color:'var(--cat-energy)', icon:'energy', members:['energy']},
+  {id:'f:other', name:'Other', color:'var(--cat-info)', icon:'dots', members:['controls','info','unassigned']},
+];
+FAMS.forEach(f=>{ f.fam=true; CAT[f.id]=f; });
+const famOf = (catId) => (FAMS.find(f=>f.id===catId || f.members.includes(catId)) || {}).id;
+/* a selection is a group, a project category, or all */
+const matchCat = (catId, cat) => catId==='all' || cat===catId || (CAT[catId] && CAT[catId].fam && CAT[catId].members.includes(cat));
 const ROOMS = [
   {id:'central', name:'Central', floor:'Whole building', icon:'nav-central'},
   {id:'hcentral', name:'Hotel services', floor:'Whole building', icon:'nav-central', place:'hotel'},
@@ -1870,7 +1891,10 @@ OPMODES.forEach(m=>{ if(!m.place) m.place='home'; });
 /* priority per schedule: the first mode wins when two apply the same day, the base value stays last */
 const ORD = {};
 OPMODES.forEach(m=>m.on.forEach(sid=>{ (ORD[sid]=ORD[sid]||[]).push(m.id); }));
-function modesHere(){ const g = placeGroup(); return OPMODES.filter(m=>m.place===g); }
+/* the Planner shows and handles date-specific operating modes applied to at least one schedule (round 10; a new one stays listed until its first date) */
+function modesHere(){ const g = placeGroup(); return OPMODES.filter(m=>m.place===g && m.on.length && (m.dates.length || m.fresh)); }
+/* the Entries page offers every dated mode of the Miniserver, so a holiday no schedule uses yet can be applied to one there */
+function datedModesHere(){ const g = placeGroup(); return OPMODES.filter(m=>m.place===g && (m.dates.length || m.fresh)); }
 function schedulesHere(){ const g = placeGroup(); return SCHEDULES.filter(s=>CTRL[s.id] && ROOM[CTRL[s.id].room].place===g); }
 
 /* every setting of today's app (document 03, section 3, and the two menu screenshots) and its one home in v2 */
@@ -1964,6 +1988,8 @@ function applyScenario(){
 
 /* ---------- derived state ---------- */
 function roomState(roomId, catId){
+  /* a group speaks with its most telling member: a warning first, then what is on, then the first */
+  if(CAT[catId] && CAT[catId].fam){ const ss = CAT[catId].members.map(m=>roomState(roomId, m)).filter(Boolean); return ss.find(s=>s.warn) || ss.find(s=>s.active) || ss[0] || null; }
   const cs = CONTROLS.filter(c=>c.room===roomId && c.cat===catId);
   if(!cs.length) return null;
   const c = cs.find(x=>!/^central|^windows$/.test(x.type)) || cs[0];   /* a room's own function first; a central one speaks for the whole Miniserver */
@@ -2000,7 +2026,10 @@ const watts = (w) => w>=1000 ? `${(w/1000).toFixed(1)} kW` : `${w} W`;
 function scopeOf(c, type){ const own = C().filter(x=>x.type===type && x.room===c.room); return own.length? own : C().filter(x=>x.type===type); }
 function shadeAvg(list){ const avg = Math.round(list.reduce((a,x)=>a+x.pos,0)/Math.max(1,list.length)); return avg===0?'Open': avg===100?'Closed': `${avg} % closed`; }
 function catsInRoom(roomId){ return CATS.filter(c=>CONTROLS.some(x=>x.room===roomId && x.cat===c.id)); }
-function roomsWithCat(catId){ return R().filter(r=> catId==='all' || CONTROLS.some(x=>x.room===r.id && x.cat===catId)); }
+function roomsWithCat(catId){ return R().filter(r=> catId==='all' || CONTROLS.some(x=>x.room===r.id && matchCat(catId, x.cat))); }
+const roomHasCat = (roomId, catId) => catId==='all' || CONTROLS.some(x=>x.room===roomId && matchCat(catId, x.cat));
+/* the Target shows a room's groups, the First release (today's app) its categories */
+function squaresInRoom(roomId){ return S.release==='target' ? FAMS.filter(f=>roomHasCat(roomId, f.id)) : catsInRoom(roomId); }
 function roomSummary(roomId){
   const parts=[]; const l=roomState(roomId,'lighting'); if(l && l.active) parts.push(l.label.replace(' of ',' / ')+' lights');
   const cl=roomState(roomId,'climate'); if(cl && !isCentral(ROOM[roomId]) && /°$/.test(cl.label)) parts.push(cl.label);
@@ -2010,7 +2039,7 @@ function roomSummary(roomId){
   return parts.join(' · ') || 'All quiet';
 }
 function controlsFor(roomId, catId){
-  return C().filter(c => (!roomId || c.room===roomId) && (catId==='all' || c.cat===catId) && (!S.q || c.name.toLowerCase().includes(S.q.toLowerCase())));
+  return C().filter(c => (!roomId || c.room===roomId) && matchCat(catId, c.cat) && (!S.q || c.name.toLowerCase().includes(S.q.toLowerCase())));
 }
 function groupedByCat(list){ return CATS.map(c=>({cat:c, items:list.filter(x=>x.cat===c.id)})).filter(g=>g.items.length); }
 function orderedByCat(list){ return groupedByCat(list).flatMap(g=>g.items); }
@@ -2081,7 +2110,7 @@ function holdBtn(id, label, big=false){
 }
 /* category squares inside a room row: each one is a direct entry into Room × Category */
 function catSquares(roomId){
-  return `<span class="cqs">${catsInRoom(roomId).map(c=>{ const s=roomState(roomId,c.id); return `<button class="cq ${s&&s.active?'on':''} ${s&&s.warn?'warn':''}" style="--c:${c.color}" data-act="roomcat" data-v="${roomId}|${c.id}" aria-label="${ROOM[roomId].name} · ${c.name}: ${s?s.label:''}" title="${c.name}: ${s?s.label:''}">${I(c.icon)}</button>`; }).join('')}</span>`;
+  return `<span class="cqs">${squaresInRoom(roomId).map(c=>{ const s=roomState(roomId,c.id); return `<button class="cq ${s&&s.active?'on':''} ${s&&s.warn?'warn':''}" style="--c:${c.color}" data-act="roomcat" data-v="${roomId}|${c.id}" aria-label="${ROOM[roomId].name} · ${c.name}: ${s?s.label:''}" title="${c.name}: ${s?s.label:''}">${I(c.icon)}</button>`; }).join('')}</span>`;
 }
 function roomRow(r, catId, selected){
   let tr='';
@@ -2528,9 +2557,10 @@ function menuSpy(sc, force){
    Planner, the third verb: when things happen in the house.
    Ported from the design team's Planner prototype (planner.html?v=default "Widget", version 13.10 of 16.10.2026) onto
    the V17 app UI and the house of this prototype. Words: Schedules (one per function), Operating modes, Entries.
-   Behaviour follows the prototype; where this app already has a convention (the Full_Header on a root page, the floating
-   back button, the detail header) the convention wins. Everything the Planner draws is built from one reading of the day
-   (plFull / plChanges / plDayState), so a card can never disagree with the widget.
+   Round 10: only the Entries page (part4c_entries.js) is approved as final. The root is a simple way into it (today's
+   schedules, the operating modes with dates that are applied to a schedule, every schedule); the Widget prototype's day
+   widget, cards, filters and instant run are gone for now, while the Planner's design is evaluated. Everything is read from
+   one engine (plSegs / plFull), so the root and the Entries page can never disagree.
    ================================================================================================ */
 
 /* ---------- dates: d counts from 1 April 2026 (TODAY_D = 14); any month can be walked ---------- */
@@ -2541,7 +2571,6 @@ const PLWD2=['SU','MO','TU','WE','TH','FR','SA'], PLWDS=['S','M','T','W','T','F'
 const plDT=d=>new Date(PL_D0+(d-1)*86400000), plDow=d=>plDT(d).getUTCDay(), plDnum=d=>plDT(d).getUTCDate(), plDmon=d=>plDT(d).getUTCMonth(), plDyear=d=>plDT(d).getUTCFullYear();
 const plDshort=d=>`${PLWD[plDow(d)]} ${plDnum(d)} ${PLM3[plDmon(d)]}`;
 const plDlong=d=>`${PLWDL[plDow(d)]}, ${plDnum(d)} ${PLM[plDmon(d)]}`;
-const plDnm=d=>`${plDnum(d)} ${PLM3[plDmon(d)]}`;
 const plMonFirst=d=>d-plDnum(d)+1;
 const plMonLen=d=>new Date(Date.UTC(plDyear(d),plDmon(d)+1,0)).getUTCDate();
 function plMonStep(d,n){ const x=plDT(d), day=x.getUTCDate(); const t=new Date(Date.UTC(x.getUTCFullYear(),x.getUTCMonth()+n,1)); const len=new Date(Date.UTC(t.getUTCFullYear(),t.getUTCMonth()+1,0)).getUTCDate(); t.setUTCDate(Math.min(day,len)); return Math.round((t.getTime()-PL_D0)/86400000)+1; }
@@ -2549,7 +2578,6 @@ const plLO=-90, plHI=640;   /* the walkable range: January 2026 to December 2027
 const plClamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 /* one word for one minute: nothing may say "24:00", which is not a time a person reads (prototype rule) */
 const plHm=m=>m>=1440?'midnight':fmtMin(m);
-const plHs=m=>m>=1440?'24':(m%60?fmtMin(m):String(Math.floor(m/60)).padStart(2,'0'));
 const plEsc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const PLSUN={sunrise:377,sunset:1196};   /* 06:17 · 19:56, Salzburg, 14 April */
 const plSunLabel=k=>k==='sunrise'?'Sunrise':'Sunset';
@@ -2587,14 +2615,12 @@ const plShort=s=>{ const c=CTRL[s.id]; return isCentral(ROOM[c.room]) ? c.name :
 const plIcon=s=>I(plCat(s).icon);
 const plColor=s=>plCat(s).color;
 const plMode=id=>OPMODES.find(m=>m.id===id);
-const plMName=m=>`<span class="mnm"><i></i>${plEsc(m.name)}</span>`;
 const plOnDay=(e,d)=>(e.from==null||d>=e.from)&&(e.until==null||d<=e.until)&&(e.dy.length?e.dy.indexOf(plDow(d))>=0:true)&&!(e.skip&&e.skip.indexOf(d)>=0);
 const plAreaWord=m=>m.on.length===1? plEsc(plName(plS(m.on[0]))) : `${m.on.length} schedules`;
 
 /* ---------- the engine: windows, segments, a full day, what is in force ---------- */
 function plMOn(id,d){ const m=plMode(id); if(!m) return null; for(const o of m.dates){ if(d>=o.d && d<=(o.to||o.d)) return o; } return null; }
 const plHalted=(m,d)=>m.halt&&m.halt.d===d?m.halt.min:null;
-function plMLive(m){ const h=plHalted(m,TODAY_D); if(h!=null&&NOW_MIN>=h) return 0; if(m.inst) return NOW_MIN<m.inst.u?1:0; const o=plMOn(m.id,TODAY_D); if(!o) return 0; return NOW_MIN>=(o.all?0:o.f)&&NOW_MIN<(o.all?1440:o.u)?1:0; }
 const plMval=(m,sid)=>(m.vals&&m.vals[sid])||plS(sid).vals[0][0];
 function plMNext(m){ const a=m.dates.filter(x=>(x.to||x.d)>=TODAY_D).map(x=>x.d); return a.length?Math.min(...a):9e9; }
 /* the window in force over a schedule on a day. A hand run outranks the calendar (it is the one thing the reader just
@@ -2614,90 +2640,19 @@ function plSegs(sid,d){
 function plFull(sid,d){ const s=plS(sid), ss=plSegs(sid,d), o=[]; let c=0; ss.forEach(x=>{ if(x.f>c) o.push({f:c,u:x.f,v:plBase(s),k:'base',base:1}); o.push(x); c=x.u; }); if(c<1440) o.push({f:c,u:1440,v:plBase(s),k:'base',base:1}); return o; }
 function plStNow(sid){ return plFull(sid,TODAY_D).find(x=>NOW_MIN>=x.f&&NOW_MIN<x.u); }
 const plIsLive=sid=>{ const x=plStNow(sid); return !!(x&&x.k!=='base'); };
-/* every change on a day, read from the one engine, so the widget can never disagree with a card */
-function plChanges(d){
-  const o=[];
-  schedulesHere().forEach(s=>plFull(s.id,d).forEach(y=>{ if(y.k==='mode') return; if(y.k==='base'&&y.f===0) return; o.push({t:y.f,u:y.u,who:plName(s),room:plRoom(s),sid:s.id,what:plEsc(plVWhat(s,y))+(y.k==='base'?'':'')}); }));
-  modesHere().forEach(m=>{ const w=plMOn(m.id,d); if(!w) return; const a=w.all?0:w.f, z=w.all?1440:w.u; o.push({t:a,u:z,who:m.name,mid:m.id,md:1,what:m.on.length?`applied to ${plAreaWord(m)}, until ${plHm(z)}`:`runs until ${plHm(z)}`}); if(z<1440) o.push({t:z,who:m.name,mid:m.id,md:1,what:m.on.length?'ends, the schedules run as usual':'ends'}); });
-  return o.sort((x,y)=>x.t-y.t||(x.md?-1:1));
-}
-/* one reading of the day, used by the pill, by NOW and by the section headers. Several things can be in charge at once. */
-function plDayState(d){
-  const SS=schedulesHere(), MM=modesHere();
-  const live=MM.filter(m=>m.inst||plMLive(m)), hand=live.filter(m=>m.inst), runs=SS.filter(s=>plIsLive(s.id));
-  if(S.pl.rng){ let n=0; for(let i=0;i<7;i++) if(MM.some(m=>plMOn(m.id,S.pl.rng.a+i))) n++; return {k:'week',n,live:[],runs:[]}; }
-  if(d<TODAY_D){ const ran=SS.filter(s=>plSegs(s.id,d).length).length; return {k:ran?'ran':'nothing-ran',n:ran,live:[],runs:[]}; }
-  if(d>TODAY_D){ const md=MM.filter(m=>plMOn(m.id,d)); const sc=SS.filter(s=>plSegs(s.id,d).length).length; return {k:md.length?'ahead-mode':sc?'ahead':'nothing',n:sc,live:md,runs:[]}; }
-  if(live.length) return {k:(hand.length&&live.length===1)?'hand':'mode',n:live.length,live,runs,hand};
-  if(!plChanges(d).length) return {k:'nothing',n:0,live:[],runs:[]};
-  return {k:'onsched',n:runs.length,live:[],runs};
-}
-function plNextChangeFor(m){ const ts=[]; m.on.forEach(sid=>plFull(sid,TODAY_D).forEach(y=>{ if(y.f>NOW_MIN) ts.push(y.f); })); return ts.length?Math.min(...ts):1440; }
-/* the Favorites pill and the hub row read the same engine */
-function plStatePill(){ const st=plDayState(TODAY_D); return st.live&&st.live.length? st.live[0].name : st.k==='onsched'?'On schedule':'Nothing scheduled'; }
+/* the control's hub row reads the same engine */
 function schedSummary(c){ const s=SCH[c.id]; if(!s) return ''; const main=plSegs(c.id,TODAY_D).filter(x=>x.k!=='base'); if(!main.length) return `${plBase(s)} all day`; return main.slice(0,2).map(x=>`${x.v} ${plHm(x.f)} – ${plHm(x.u)}`).join(' · ')+(main.length>2?` · +${main.length-2}`:'')+` · ${plBase(s)} otherwise`; }
 
 /* ---------- state helpers ---------- */
-const plOpen=k=>S.pl.open['x'+k]===true;
 const plRngOn=()=>!!S.pl.rng;
 const plRngA=()=>S.pl.sel-((plDow(S.pl.sel)+6)%7);
-const plDense=k=>!!S.pl.dense[k];
-const plFtOn=()=>!!(S.pl.ft.kind.length||S.pl.ft.room.length);
-const plMftOn=()=>!!(S.pl.mft&&S.pl.mft.length);
-function plFmatch(s){ const f=S.pl.ft; if(f.kind.length&&f.kind.indexOf(s.kind)<0) return 0; if(f.room.length&&f.room.indexOf(CTRL[s.id].room)<0) return 0; return 1; }
-const plRF=()=>schedulesHere().filter(plFmatch);
-function plFtFace(){ const f=S.pl.ft, n=plRF().length, all=f.kind.map(k=>SKIND[k].name).concat(f.room.map(r=>ROOM[r].name)); return (all.length<3?all.join(', '):`${all.length} filters`)+` · ${n} schedule${n===1?'':'s'}`; }
-function plMWhen(m){ if(m.inst||plMLive(m)) return 'live'; if(!m.dates.length||plMNext(m)>=9e9) return 'nodates'; const o=plMOn(m.id,TODAY_D); if(o&&NOW_MIN<(o.all?1440:o.f)) return 'today'; return 'soon'; }
-const PLMWH={live:'Running now',today:'Later today',soon:'Scheduled',nodates:'No dates'};
-const PLMWORDER=['live','today','soon','nodates'];
-const plMF=()=>modesHere().filter(m=>!plMftOn()||S.pl.mft.indexOf(plMWhen(m))>=0);
-function plRRank(sid,d){ if(d===TODAY_D){ const x=plStNow(sid); if(x&&x.k==='run') return 0; if(x&&x.k==='mode') return 1; } return plSegs(sid,d).length?2:3; }
-function plMRank(m,d){ if(d===TODAY_D&&(m.inst||plMLive(m))) return 0; if(plMOn(m.id,d)) return 1; if(!m.dates.length||plMNext(m)>=9e9) return 3; return 2; }
 /* the scale the device is drawn at (the page fits the frame by transform), so pointer maths stay in device pixels */
 function plScale(){ const dev=document.getElementById('device'); const t=dev&&dev.style.transform.match(/scale\(([\d.]+)\)/); return t?+t[1]:1; }
 
 /* ---------- small pieces ---------- */
-const plStt=(cls,txt)=>`<span class="sttp ${cls}"><i></i>${txt}</span>`;
-const plAx=()=>'<div class="ax"><span>00</span><span>06</span><span>12</span><span>18</span><span>24</span></div>';
-function plDisc(k,what){ const op=plOpen(k); return `<button class="dis ${op?'on':''}" onclick="event.stopPropagation();PL.tgX('${k}')" aria-label="${op?'Less about this '+what:'More about this '+what}" aria-expanded="${op}">${I('chevdown')}</button>`; }
-function plCmeta(parts){ return '<div class="cmeta">'+parts.filter(Boolean).map((p,i)=>(i?'<span class="d"></span>':'')+`<span class="t">${p}</span>`).join('')+'</div>'; }
-const plChip=s=>`<span class="chp" style="--c:${plColor(s)}">${plIcon(s)}<span>${plEsc(plShort(s))}</span></span>`;
 /* the card timeline: the schedule's own stretches in tint, the part that has run stronger, a mode's window in ink, the pin where the day stands */
-function plCardBar(ss,day){
-  const pc=m=>(m/1440*100).toFixed(3); let b=`<div class="hebar">`;
-  ss.filter(y=>y.k==='mode').forEach(y=>{ b+=`<i class="mod" style="left:${pc(y.f)}%;width:${pc(y.u-y.f)}%"></i>`; });
-  ss.filter(y=>y.k!=='mode').forEach(y=>{ const cut=day===TODAY_D?Math.min(Math.max(y.f,NOW_MIN),y.u):y.f; if(cut>y.f) b+=`<i class="done" style="left:${pc(y.f)}%;width:${pc(cut-y.f)}%"></i>`; if(y.u>cut) b+=`<i style="left:${pc(cut)}%;width:${pc(y.u-cut)}%"></i>`; });
-  if(day===TODAY_D) b+=`<u style="left:${pc(NOW_MIN)}%"></u>`;
-  return b+`</div>`;
-}
-const plMiniBar=(sid,d)=>plCardBar(plSegs(sid,d).map(y=>({f:y.f,u:y.u,k:y.k==='mode'?'mode':'run'})),d);
-function plMiniBarM(m,d){
-  const o=d!=null?plMOn(m.id,d):(m.dates.filter(x=>(x.to||x.d)>=TODAY_D)[0]||m.dates[0]);
-  if(!o&&!m.inst) return '';
-  let f,u,day=d;
-  if(m.inst&&(d==null||d===TODAY_D)){ f=NOW_MIN; u=m.inst.u; day=TODAY_D; } else { f=o.all?0:o.f; u=o.all?1440:o.u; if(day==null) day=o.d; }
-  const ss=[{f,u,k:'mode'}];
-  if(m.on.length){ const s=plS(m.on[0]); s.entries.filter(e=>plOnDay(e,day)).forEach(e=>ss.push({f:e.f,u:e.u,k:'run'})); }
-  return plCardBar(ss,day);
-}
 
 /* ---------- a schedule, as a card and as a row ---------- */
-function plRStatus(sid,d){
-  if(d===TODAY_D){ const x=plStNow(sid); if(x&&x.k==='mode'){ return `<span class="sttp taken"><i></i>${plEsc((plMode(x.by)||{name:'Operating mode'}).name)}</span>`; } if(x&&x.k==='run') return plStt('on','Running'); }
-  const sg=plSegs(sid,d); if(!sg.length) return plStt('off','Nothing scheduled');
-  const wm=sg.find(y=>y.k==='mode'); return wm?`<span class="sttp taken"><i></i>Scheduled</span>`:plStt('off','Scheduled');
-}
-function plRowStatus(sid,d){ if(d===TODAY_D){ const x=plStNow(sid); if(x&&x.k==='mode') return `<span class="sttp taken"><i></i></span>`; if(x&&x.k==='run') return `<span class="sttp on dot"><i></i></span>`; } return plRStatus(sid,d); }
-function plActorLine(sid,d){ const s=plS(sid);
-  if(d===TODAY_D){ const x=plStNow(sid);
-    if(x&&x.k==='mode') return `${plMName(x.by)} · ${plEsc(plVWhat(s,x))} until ${plHm(x.u)}`;
-    if(x&&x.k==='run'){ const af=plFull(sid,d).find(y=>y.f>=x.u&&y.k==='mode'); return `<span class="vv">${plEsc(plVWhat(s,x))}</span> until ${plHm(x.u)}`+(af?`, then ${plMName(af.by)}`:''); }
-    const nx=plSegs(sid,d).find(y=>y.f>NOW_MIN); return `<span class="vv">${plEsc(plVWhat(s,{v:plBase(s)}))}</span>`+(nx?` · ${plEsc(plVWhat(s,nx))} at ${plHm(nx.f)}`:' · nothing today'); }
-  const sg=plSegs(sid,d), wm=sg.find(y=>y.k==='mode');
-  if(wm) return `${plMName(wm.by)} · ${plEsc(plVWhat(s,wm))}`;
-  if(sg.length) return `<span class="vv">${[...new Set(sg.map(y=>y.v))].map(plEsc).join(', ')}</span>`;
-  return `<span class="vv">${plEsc(plBase(s))}</span> all day`;
-}
 function plRowLine(sid,d){ const s=plS(sid), dd=d==null?TODAY_D:d;
   if(dd===TODAY_D){ const x=plStNow(sid); if(x) return `<span class="vv">${plEsc(plVWhat(s,x))}</span> until ${plHm(x.u)}`; }
   const sg=plSegs(sid,dd), wm=sg.find(y=>y.k==='mode');
@@ -2706,147 +2661,15 @@ function plRowLine(sid,d){ const s=plS(sid), dd=d==null?TODAY_D:d;
   return `<span class="vv">${plEsc(plBase(s))}</span> all day`;
 }
 /* the day's rows inside an open card: free stretches open the editor in that gap, entries open their own */
-function plDayRows(sid,d){ const s=plS(sid); let h='<div class="part">';
-  plFull(sid,d).forEach(y=>{
-    if(y.k==='base') h+=`<div class="pr base" onclick="event.stopPropagation();PL.slot('${sid}',${y.f},${y.u},${d})"><span class="grw"><span class="bd">${plEsc(plVWhat(s,y))}</span></span><span class="tm">${plHm(y.f)}–${plHm(y.u)}</span><span class="add">${I('plus')}</span></div>`;
-    else h+=`<div class="pr" onclick="event.stopPropagation();${y.k==='run'?`PL.editEntry('${sid}','${y.id}',${d})`:`PL.openMode('${y.by.id}')`}">${y.k==='mode'?'<span class="mk"></span>':''}<span class="grw"><span class="bd">${plEsc(plVWhat(s,y))}</span>${y.k==='mode'?` <span class="q">${plEsc(y.by.name)}</span>`:''}</span>${y.k==='run'&&y.e&&y.e.dy.length<7?`<span class="rp">${PLI.repeat}</span>`:''}<span class="tm">${plHm(y.f)}–${plHm(y.u)}</span><span class="ch">${I('chevron')}</span></div>`;
-  });
-  return h+'</div>';
-}
-function plRCard(sid,d){ const s=plS(sid), k='r'+sid+'_'+(d||0), op=plOpen(k);
-  return `<div class="plc" style="--c:${plColor(s)}"><div class="chd" onclick="PL.openSched('${sid}')">`+
-    `<div class="row"><span class="sq">${plIcon(s)}</span><span class="grw"><div class="nm"><span>${plEsc(plName(s))}</span><i class="lead">${I('chevron')}</i></div></span><span class="rgt">${plRStatus(sid,d)}${plDisc(k,'schedule')}</span></div>`+
-    `<div class="csub">${plActorLine(sid,d)}</div>${plMiniBar(sid,d)}${plAx()}${plCmeta([plEsc(plRoom(s)),plKind(s).name])}</div>`+
-    `<div class="exp ${op?'on':''}">${plDayRows(sid,d)}<div class="cfoot"><button class="ol" onclick="event.stopPropagation();PL.openSched('${sid}')">Entries ${I('chevron')}</button><span class="sp"></span><button class="strt" onclick="event.stopPropagation();PL.freeSlot('${sid}',${d})">+ Entry</button></div></div></div>`;
-}
-function plRRow(sid,d){ const s=plS(sid);
-  return `<button class="lrow" style="--c:${plColor(s)}" onclick="PL.openSched('${sid}')"><span class="sq">${plIcon(s)}</span><span class="grw"><div class="nm2">${plEsc(plName(s))} <span style="color:var(--a-fg50);font-weight:400">· ${plEsc(plRoom(s))}</span></div><div class="v2">${plRowLine(sid,d)}</div></span>${plRowStatus(sid,d==null?TODAY_D:d)}<span class="ch">${I('chevron')}</span></button>`;
-}
 
 /* ---------- an operating mode, as a card and as a row ---------- */
-function plMStatus(m,d){
-  if(!m.dates.length&&!m.inst) return plStt('off','No dates');   /* started by hand or by the building's logic: fine too */
-  if(m.inst||plMLive(m)) return `<span class="sttp live-m">Running now</span>`;
-  const o=plMOn(m.id,TODAY_D);
-  if(o&&(d==null||d===TODAY_D)&&NOW_MIN<(o.all?1440:o.f)) return plStt('off','Later today');
-  if(d==null){ const n=plMNext(m); if(n>=9e9) return plStt('off','No date ahead'); const k=n-TODAY_D; return plStt('off',k<=0?'Today':k===1?'Tomorrow':k<7?`In ${k} days`:plDshort(n)); }
-  return plStt('off','Scheduled');
-}
-function plMFoot(m){
-  const back = m.on.length&&m.dates.length ? `<div class="cmeta" style="margin-top:11px"><span class="t">From ${(x=>x&&!x.all?plHm(x.u):'midnight')(plMOn(m.id,TODAY_D)||m.dates[0])} the schedules run as usual.</span></div>` : '';
-  return back+`<div class="cfoot"><button class="ol" onclick="event.stopPropagation();PL.openMode('${m.id}')">Open ${plEsc(m.name)} ${I('chevron')}</button><span class="sp"></span>`+
-    `<button class="strt ${(m.inst||plMLive(m))?'off':''}" onclick="event.stopPropagation();PL.instSheet('${m.id}')">${(m.inst||plMLive(m))?'Stop':'Run now'}</button></div>`;
-}
-function plMCard(m,d){ const o=d!=null?plMOn(m.id,d):null; const nx=m.dates.filter(x=>(x.to||x.d)>=TODAY_D)[0]||m.dates[0];
-  const when=(m.inst&&NOW_MIN<m.inst.u)?`Until ${plHm(m.inst.u)}`
-    :o?(o.all?'All day':`${plHm(o.f)} to ${plHm(o.u)}`)
-    :nx?(nx.to?(nx.all?`${plDshort(nx.d)} to ${plDshort(nx.to)}`:`${plDshort(nx.d)} to ${plDshort(nx.to)} · ${plHm(nx.f)} to ${plHm(nx.u)}`):`${nx.d===TODAY_D?'':plDshort(nx.d)+' · '}${nx.all?'All day':plHm(nx.f)+' to '+plHm(nx.u)}`)
-    :'No dates';
-  const rep=m.rep?plEsc(m.rep):(m.dates.length>1?`${m.dates.length} dates`:'');
-  const k='m'+m.id+'_'+(d||0), op=plOpen(k);
-  return `<div class="plc"><div class="chd" onclick="PL.openMode('${m.id}')">`+
-    `<div class="row"><span class="mk"></span><span class="grw"><div class="nm"><span>${plEsc(m.name)}</span><i class="lead">${I('chevron')}</i></div></span><span class="rgt">${plMStatus(m,d)}${plDisc(k,'operating mode')}</span></div>`+
-    `<div class="csub"><span class="vv">${when}</span>${m.on.length?' · applied to':''}</div>`+
-    (m.on.length?`<div class="chprow">${m.on.slice(0,3).map(sid=>plChip(plS(sid))).join('')}${m.on.length>3?`<span class="chp">+${m.on.length-3}</span>`:''}</div>`:'')+
-    plMiniBarM(m,d)+plAx()+(rep?plCmeta([rep]):'')+`</div>`+
-    `<div class="exp ${op?'on':''}">`+
-    (m.on.length?`<div class="part">${m.on.map(sid=>{ const s=plS(sid); return `<div class="pr" style="--c:${plColor(s)}" onclick="event.stopPropagation();PL.openSched('${sid}')"><span class="ki">${plIcon(s)}</span><span class="bd">${plEsc(plName(s))} <span class="q">${plEsc(plRoom(s))}</span></span><span class="grw"></span><span class="q run">${plEsc(plVWhat(s,{v:plMval(m,sid)}))}</span><span class="ch">${I('chevron')}</span></div>`; }).join('')}</div>`:'')+
-    ((d==null&&m.dates.length>1)?`<div class="chprow" style="margin-top:10px">${m.dates.slice(1,3).map(x=>`<span class="chp"><span class="mk"></span><span>${x.to?`${plDnum(x.d)}–${plDnm(x.to)}`:plDshort(x.d)}</span><em>${x.all?'all day':plHs(x.f)+'–'+plHs(x.u)}</em></span>`).join('')}${m.dates.length>3?`<span class="chp">+${m.dates.length-3}</span>`:''}</div>`:'')+
-    plMFoot(m)+`</div></div>`;
-}
-function plMRow(m,d){ const o=d!=null?plMOn(m.id,d):null; const nx=m.dates.filter(x=>(x.to||x.d)>=TODAY_D)[0]||m.dates[0];
-  const when=(m.inst&&NOW_MIN<m.inst.u)?`Until ${plHm(m.inst.u)}`:o?(o.all?'All day':`${plHm(o.f)} to ${plHm(o.u)}`):nx?(nx.to?`${plDnm(nx.d)} to ${plDnm(nx.to)}`:`${plDshort(nx.d)}${nx.all?'':' · '+plHm(nx.f)}`):'No dates';
-  return `<button class="lrow" onclick="PL.openMode('${m.id}')"><span class="mk" style="margin:0 12px 0 10px"></span><span class="grw"><div class="nm2">${plEsc(m.name)}</div><div class="v2">${when}${m.on.length?` · applied to ${plAreaWord(m)}`:''}</div></span>${plMStatus(m,d)}<span class="ch">${I('chevron')}</span></button>`;
-}
 
 /* ---------- the day widget ---------- */
-function plDwRow(c,cls){ const act=c.mid?`PL.openMode('${c.mid}')`:`PL.openSched('${c.sid}')`;
-  return `<button class="dwrow ${cls||''}${c.md?' md':''}" onclick="event.stopPropagation();${act}"><i></i><span class="grw"><div class="dwn2">${plEsc(c.who)}${c.room?` <span style="font-weight:400;color:var(--a-fg50)">· ${plEsc(c.room)}</span>`:''}</div><div class="dws2">${c.what}</div></span><span class="dwt">${plHm(c.t)}</span></button>`; }
-const plDwGrp=(k,rows)=>rows?`<div class="dwg">${k?`<div class="dwk">${k}</div>`:''}${rows}</div>`:'';
-function plDwMore(n,open){ S.pl.dwMore=`<button class="dwmore ${open?'up':''}" onclick="event.stopPropagation();PL.dwAll()" aria-expanded="${!!open}">${open?'Show less':n+' more'}${I('chevdown')}</button>`; return ''; }
 /* the right column, by the day being looked at: NOW says what is in charge, NEXT the first change ahead, LATER the rest */
-function plDwRight(d){
-  const open=plOpen('dwm');
-  if(plRngOn()){ const a=S.pl.rng.a, rows=[]; for(let i=0;i<7;i++){ const dd=a+i, md=modesHere().filter(m=>plMOn(m.id,dd)); if(md.length) rows.push({dd,md}); }
-    if(!rows.length) return plDwGrp('Operating modes','<div class="dws2">No operating mode in this week.</div>');
-    const show=open?rows:rows.slice(0,3);
-    return plDwGrp('Operating modes',show.map(({dd,md})=>`<button class="dwrow md" onclick="event.stopPropagation();PL.openMode('${md[0].id}')"><i></i><span class="grw"><div class="dwn2">${md.map(m=>plEsc(m.name)).join(', ')}</div><div class="dws2">${(w=>w.all?'All day':`${plHm(w.f)} to ${plHm(w.u)}`)(plMOn(md[0].id,dd))}</div></span><span class="dwt">${plDnm(dd)}</span></button>`).join(''))+(rows.length>3?plDwMore(rows.length-3,open):''); }
-  const ch=plChanges(d);
-  if(!ch.length) return plDwGrp('','<div class="dwn2">Nothing scheduled</div><div class="dws2" style="margin-top:3px">No schedule and no operating mode on this day.</div>');
-  if(d!==TODAY_D){ const show=open?ch:ch.slice(0,3); return plDwGrp('Scheduled',show.map(c=>plDwRow(c)).join(''))+(ch.length>3?plDwMore(ch.length-3,open):''); }
-  const st=plDayState(d), ahead=ch.filter(c=>c.t>NOW_MIN);
-  const rest=ahead.filter(c=>c!==ahead[0]);
-  const show=open?rest:rest.slice(0,1);
-  let nowRows='';
-  if(st.live.length){
-    nowRows=(open?st.live:st.live.slice(0,1)).map(m=>`<button class="dwrow tint" onclick="event.stopPropagation();PL.openMode('${m.id}')"><span class="mk"></span><span class="grw"><div class="dwn2">${plEsc(m.name)}</div><div class="dws2">until ${plHm(m.inst?m.inst.u:(o=>o.all?1440:o.u)(plMOn(m.id,d)))}</div></span><span class="dwstop" onclick="event.stopPropagation();PL.stopMode('${m.id}')">Stop</span></button>`).join('');
-    if(st.live.length>1&&!open) nowRows+=`<button class="dwmore" style="padding:8px 0 0" onclick="event.stopPropagation();PL.dwAll()" aria-expanded="false">and ${st.live.length-1} more${I('chevdown')}</button>`;
-    if(st.runs.length) nowRows+=`<button class="dwmore" style="padding:10px 0 0" onclick="event.stopPropagation();PL.openList('schedules')">${st.runs.length} schedule${st.runs.length===1?'':'s'} running ${I('chevron')}</button>`;
-  } else if(st.k==='onsched'){
-    const runs=st.runs.slice().sort((a,b)=>((plStNow(b.id)||{}).f||0)-((plStNow(a.id)||{}).f||0));
-    const rr=open?runs:runs.slice(0,1), more=runs.length-rr.length;
-    nowRows=rr.map(s=>{ const x=plStNow(s.id)||{}; return `<button class="dwrow" onclick="event.stopPropagation();PL.openSched('${s.id}')"><i></i><span class="grw"><div class="dwn2">${plEsc(plName(s))} <span style="font-weight:400;color:var(--a-fg50)">· ${plEsc(plRoom(s))}</span></div><div class="dws2">${plEsc(plVWhat(s,{v:x.v||plBase(s)}))}${x.u?`, until ${plHm(x.u)}`:''}</div></span><span class="dwt">${plHm(x.f||0)}</span></button>`; }).join('');
-    if(more>0) nowRows+=`<div class="dws2" style="padding:8px 0 0">and ${more} more running</div>`;
-  } else if(st.k==='nothing') nowRows=`<div class="dwagg"><span class="dwn2">Nothing scheduled</span></div>`;
-  return plDwGrp('Now',nowRows)+(ahead.length?plDwGrp('Next',plDwRow(ahead[0])):'')+(show.length?plDwGrp('Later',show.map(c=>plDwRow(c)).join('')):'')+(rest.length>1?plDwMore(rest.length-(open?0:1),open):'');
-}
 /* the state pill: a short label that can never be cut, the specifics on the line under it */
-function plDwState(d){
-  const st=plDayState(d), L=st.live, n=schedulesHere().length;
-  let cls='',lab='',sub='';
-  const two=(a,b)=>`<b>${a}</b><span>${b}</span>`;
-  if(st.k==='onsched'){ cls='on'; lab='On schedule'; sub=two(`${st.n} of ${n}`,'on their week'); }
-  else if(st.k==='mode'||st.k==='hand'){ cls='md'; lab=L.length===1?'Running now':`${L.length} running`;
-    sub=L.length===1?two(plEsc(L[0].name),`until ${plHm(L[0].inst?L[0].inst.u:(o=>o&&!o.all?o.u:1440)(plMOn(L[0].id,d)))}`):two(`${L.length} operating modes`,'running');
-    if(st.runs.length) sub+=`<span>and ${st.runs.length} of ${n} running</span>`; }
-  else if(st.k==='ran'){ lab='Scheduled'; sub=two(`${st.n} schedules`,'that day'); }
-  else if(st.k==='nothing-ran'){ lab='Nothing scheduled'; sub=two('None','that day'); }
-  else if(st.k==='ahead-mode'){ cls='md'; lab=L.length===1?'Mode':`${L.length} modes`; sub=L.length===1?two(plEsc(L[0].name),L[0].on.length?'applied to '+plAreaWord(L[0]):'that day'):two(`${L.length} operating modes`,'that day'); }
-  else if(st.k==='ahead'){ lab='Scheduled'; sub=two(`${st.n} schedules`,'that day'); }
-  else if(st.k==='week'){ cls=st.n?'md':''; lab=st.n?'Operating modes':'On schedule'; sub=st.n?two(`${st.n} of 7 days`,'carry one'):two('Every day','follows its week'); }
-  else { lab='Nothing'; sub=two('Nothing','scheduled'); }
-  return `<div class="dwst"><span class="dwpill ${cls}"><i></i><b>${lab}</b></span><div class="dwsub">${sub}</div></div>`;
-}
 /* open: the date and the state lift into a header row, and the day is drawn across the card */
-function plDwHead(d){
-  const st=plDayState(d), L=st.live, n=schedulesHere().length;
-  let cls='',lab='',det='';
-  if(st.k==='onsched'){ cls='on'; lab='On schedule'; det=`${st.n} of ${n} on their week`; }
-  else if(st.k==='mode'||st.k==='hand'){ cls='md'; lab=L.length===1?'Running now':`${L.length} running`; det=(L.length===1?`${plEsc(L[0].name)}, until ${plHm(L[0].inst?L[0].inst.u:(o=>o&&!o.all?o.u:1440)(plMOn(L[0].id,d)))}`:L.slice(0,2).map(m=>plEsc(m.name)).join(' and ')+(L.length>2?` +${L.length-2}`:''))+(st.runs.length?` · ${st.runs.length} of ${n} schedules running`:''); }
-  else if(st.k==='ran'||st.k==='ahead'){ lab='Scheduled'; det=`${st.n} schedules that day`; }
-  else if(st.k==='ahead-mode'){ cls='md'; lab=L.length===1?'Operating mode':`${L.length} operating modes`; det=L.map(m=>plEsc(m.name)).join(', '); }
-  else if(st.k==='week'){ cls=st.n?'md':''; lab=st.n?'Operating modes':'On schedule'; det=st.n?`${st.n} of 7 days carry one`:'Every day follows its week'; }
-  else { lab='Nothing scheduled'; det=plRngOn()?'in this week':'on this day'; }
-  return `<div class="dwl"><div class="dwhd"><span class="grw"><div class="dt">${plRngOn()?`Week ${plRngLabel()} ${plRngMonth()}`:plDlong(d)}</div><div class="hl ${cls}"><i></i>${lab}</div><div class="dl">${det}</div></span><button class="dis on" onclick="event.stopPropagation();PL.dwShut()" aria-label="Close the day" aria-expanded="true">${I('chevdown')}</button></div></div>`;
-}
 /* every change on the day, in order, with now drawn across it; what has already happened folds to the last two */
-function plDwAgenda(d){
-  const ch=plChanges(d);
-  if(!ch.length) return `<div class="agd"><div class="agk">Nothing scheduled</div></div>`;
-  const today=d===TODAY_D;
-  const row=c=>{ const past=today&&c.t<=NOW_MIN; return `<button class="agr${c.md?' md':''}${past?' past':''}" onclick="event.stopPropagation();${c.mid?`PL.openMode('${c.mid}')`:`PL.openSched('${c.sid}')`}"><span class="t">${plHm(c.t)}</span><span class="m"></span><span class="grw"><span class="n">${plEsc(c.who)}${c.room?` <span style="font-weight:400;color:var(--a-fg50)">· ${plEsc(c.room)}</span>`:''}</span><span class="s">${c.what}</span></span></button>`; };
-  const before=today?ch.filter(c=>c.t<=NOW_MIN):[], after=today?ch.filter(c=>c.t>NOW_MIN):ch;
-  const ea=plOpen('agear'), show=ea?before:before.slice(-2);
-  let s=`<div class="agd">`;
-  if(before.length) s+=`<button class="agk ${ea?'on':''}" onclick="event.stopPropagation();PL.tgX('agear')" aria-expanded="${ea}">${ea?'Earlier today':`${before.length} earlier today`}${I('chevdown')}</button>`+show.map(row).join('');
-  if(today) s+=`<div class="agnow"><span class="t">${plHm(NOW_MIN)}</span><span class="ln"></span><span class="k">NOW</span></div>`;
-  if(after.length) s+=(today?'':`<div class="agk" style="cursor:default">Scheduled</div>`)+after.map(row).join('');
-  return s+`</div>`;
-}
-function plDwLeft(d){ return `<div class="dwl"><div class="dwwd">${plRngOn()?'Week':PLWDL[plDow(d)]}</div><div class="dwn${plRngOn()?' sm':''}">${plRngOn()?plRngLabel():plDnum(d)}</div><div class="dwmo">${plRngOn()?plRngMonth():PLM[plDmon(d)]}</div>${plDwState(d)}</div>`; }
 /* the day controls, in the row that does not grow with the day; the "+" creates, as the prototype's header did */
-function plDwCtl(d){
-  const cal=plOpen('dwc'), home=!plRngOn()&&d===TODAY_D;
-  return `<div class="dwc2">`+
-    `<button class="dwbt" onclick="event.stopPropagation();PL.selDay(${d-(plRngOn()?7:1)})" aria-label="${plRngOn()?'Previous week':'Previous day'}">${I('arrow-left')}</button>`+
-    `<button class="dwbt" onclick="event.stopPropagation();PL.selDay(${d+(plRngOn()?7:1)})" aria-label="${plRngOn()?'Next week':'Next day'}">${I('arrow-right')}</button>`+
-    `<button class="dwbt ${cal?'on':''}" onclick="event.stopPropagation();PL.tgX('dwc')" aria-label="Choose a day" aria-expanded="${cal}">${I('calendar')}</button>`+
-    `<button class="dwbt" onclick="event.stopPropagation();PL.createMenu(event)" aria-label="Create" aria-haspopup="menu">${I('plus')}</button>`+
-    (home?'':`<button class="dwtd" onclick="event.stopPropagation();PL.goToday()">Today</button>`)+
-    `<span class="sp"></span>`+(S.pl.dwMore||'')+`</div>`;
-}
-const plRngLabel=()=>`${plDnum(S.pl.rng.a)} to ${plDnum(S.pl.rng.b)}`;
-const plRngMonth=()=>plDmon(S.pl.rng.a)===plDmon(S.pl.rng.b)?PLM[plDmon(S.pl.rng.a)]:`${PLM3[plDmon(S.pl.rng.a)]} to ${PLM3[plDmon(S.pl.rng.b)]}`;
 /* one calendar answers "which day" everywhere: the month, with the operating-mode dots */
 function plCalCard(cur,fn,key,sid,opt){
   opt=opt||{};
@@ -2863,81 +2686,45 @@ function plCalCard(cur,fn,key,sid,opt){
   for(let i=(lead+len)%7;i&&i<7;i++) s+=`<span class="mgd o"></span>`;
   return s+'</div></div>';
 }
-function plDwCal(d){
-  return `<div class="dwcal" onclick="event.stopPropagation()"><div class="dwsegr"><div class="segm sm"><button aria-pressed="${!plRngOn()}" onclick="PL.setRange(0)">Day</button><button aria-pressed="${plRngOn()}" onclick="PL.setRange(1)">Week</button></div><button class="dwx" onclick="PL.tgX('dwc')" aria-label="Close the calendar">${I('x')}</button></div>${plCalCard(d,'PL.selDay','dw',null)}</div>`;
-}
-function plDayW(d){
-  const cal=plOpen('dwc'); S.pl.dwMore='';
-  const right=plDwRight(d);   /* fills S.pl.dwMore, so the control row can carry the reveal */
-  const op=plOpen('dwm');
-  return `<div class="dw${op?' op':''}" onclick="PL.dwAll()">${op?plDwHead(d)+plDwAgenda(d):plDwLeft(d)+`<div class="dwr">${right}</div>`}${plDwCtl(d)}${cal?plDwCal(d):''}</div>`;
-}
 
-/* ---------- the two sections and the root page ---------- */
-function plDenseBtn(k){ return `<button onclick="event.stopPropagation();PL.tgDense('${k}')" aria-label="${plDense(k)?'Show full cards':'Show as a list'}" aria-pressed="${plDense(k)}">${plDense(k)?PLI.cards:PLI.rows}</button>`; }
-function plSecHead(label,fact,ctl){ return `<div class="pl-sec"><span class="l">${label}</span><span class="fact">${fact}</span><span class="sech">${ctl}</span></div>`; }
-function plModesSection(d){
-  const MM=modesHere(), rng=plRngOn();
-  const hit=m=>(rng?[0,1,2,3,4,5,6].some(i=>plMOn(m.id,S.pl.rng.a+i)):(!!plMOn(m.id,d)||(d===TODAY_D&&!!m.inst)));
-  const pool=plMF(), on=pool.filter(hit), off=pool.filter(m=>!hit(m)), md=on.concat(off), show=md.slice(0,3);
-  const w=rng?'this week':d===TODAY_D?'today':'on '+plDnm(d);
-  const fact=plMftOn()?`${md.length} of ${MM.length}`:(on.length?`${on.length} ${w}`:`none ${w}`);
-  const mDay=m=>(!rng&&plMOn(m.id,d))?d:null;
-  let s=plSecHead(`Operating modes (${MM.length})`,fact,`<button class="${plMftOn()?'on':''}" onclick="PL.filterM()" aria-label="Filter the operating modes">${PLI.funnel}</button>${plDenseBtn('m')}`);
-  s+=`<div class="${S.pl.flash==='m'?'swap':''}">`+(show.length?(plDense('m')?`<div class="plc lst">${show.map(m=>plMRow(m,mDay(m))).join('')}</div>`:show.map(m=>plMCard(m,mDay(m))).join('')):`<div class="plempty"><div class="nm">No operating mode matches.</div><div class="sub">${(S.pl.mft||[]).map(k=>PLMWH[k]).join(', ')}.</div><span class="cta" onclick="PL.clearMft()">Clear the filter</span></div>`)+`</div>`;
-  s+=`<button class="vall" onclick="PL.openList('modes')">View all operating modes${(n=>n>0?` <em>(${n})</em>`:'')(MM.length-show.length)}${I('chevron')}</button>`;
-  return s;
-}
-function plSchedSection(d){
-  const all=schedulesHere(), rt=plRF(), show=rt.slice(0,3), rng=plRngOn();
-  const live=rt.filter(s=>d===TODAY_D&&!rng&&plIsLive(s.id)).length;
-  const fact=plFtOn()?`${rt.length} of ${all.length}`:(d===TODAY_D&&!rng?`${live} running`:'');
-  let s=plSecHead(`Schedules (${all.length})`,fact,`<button onclick="PL.openAll()" aria-label="All schedules on one day">${PLI.dayview}</button><button class="${plFtOn()?'on':''}" onclick="PL.filterS()" aria-label="Filter the schedules">${PLI.funnel}</button>${plDenseBtn('r')}`);
-  s+=`<div class="${S.pl.flash==='r'?'swap':''}">`+(plDense('r')?`<div class="plc lst">${show.map(x=>plRRow(x.id,rng?null:d)).join('')}</div>`:show.map(x=>plRCard(x.id,rng?TODAY_D:d)).join(''))+`</div>`;
-  if(!rt.length) s+=`<div class="plempty"><div class="nm">No schedule matches.</div><div class="sub">${plFtFace()}</div><span class="cta" onclick="PL.clearFt()">Clear the filter</span></div>`;
-  s+=`<button class="vall" onclick="PL.openList('schedules')">View all schedules${(n=>n>0?` <em>(${n})</em>`:'')(all.length-show.length)}${I('chevron')}</button>`;
-  return s;
-}
+/* ---------- the root page (round 10): simple and inviting, a way into the Entries view, the one part of the Planner approved as final.
+   The rest stays open while the Planner's design is evaluated: no day widget, no cards with timelines, no filters, no instant run.
+   It lists every schedule and the operating modes that have dates and are applied to a schedule (modesHere). ---------- */
+const plSorted=()=>{ const ix=Object.fromEntries(R().map((r,i)=>[r.id,i])); return schedulesHere().slice().sort((a,b)=>(ix[CTRL[a.id].room]-ix[CTRL[b.id].room])||plName(a).localeCompare(plName(b))); };
+function plWhen(m){ const o=plMOn(m.id,TODAY_D); if(o) return `Today${o.all?'':` · ${plHm(o.f)} to ${plHm(o.u)}`}`;
+  const nx=m.dates.filter(x=>(x.to||x.d)>=TODAY_D)[0]; if(!nx) return m.dates.length?'No date ahead':'No date yet';
+  return (nx.to?`${plDshort(nx.d)} to ${plDshort(nx.to)}`:plDshort(nx.d))+(nx.all?'':` · ${plHm(nx.f)} to ${plHm(nx.u)}`)+(m.rep?` · ${plEsc(m.rep)}`:''); }
+function plSchedRow(s){ return `<button class="lrow" style="--c:${plColor(s)}" onclick="PL.openSched('${s.id}')"><span class="sq">${plIcon(s)}</span><span class="grw"><div class="nm2">${plEsc(plName(s))} <span style="color:var(--a-fg50);font-weight:400">· ${plEsc(plRoom(s))}</span></div><div class="v2">${plRowLine(s.id,TODAY_D)}</div></span><span class="ch">${I('chevron')}</span></button>`; }
+function plModeRow(m){ return `<button class="lrow" onclick="PL.openMode('${m.id}')"><span class="mk" style="margin:0 12px 0 10px"></span><span class="grw"><div class="nm2">${plEsc(m.name)}</div><div class="v2">${plWhen(m)} · ${plAreaWord(m)}</div></span><span class="ch">${I('chevron')}</span></button>`; }
 function plannerBody(){
-  const d=S.pl.sel, widget=plDayW(d), m=plModesSection(d), s=plSchedSection(d);
-  if(S.device==='tablet') return `<div class="pl-root wide">${widget}<div class="pl-two"><div>${m}</div><div>${s}</div></div></div>`;
-  return `<div class="pl-root">${widget}${m}${s}</div>`;
+  const SS=plSorted(), MM=modesHere().slice().sort((a,b)=>plMNext(a)-plMNext(b)), live=SS.filter(s=>plIsLive(s.id)).length;
+  const today=`<div class="plc tap" onclick="PL.openAll()"><div class="row" style="align-items:center"><span class="sq">${PLI.columns}</span><span class="grw"><div class="bd">Today, every schedule</div><div class="mini">${plDlong(TODAY_D)} · ${SS.length} schedule${SS.length===1?'':'s'}${live?`, ${live} running now`:''}</div></span><span class="ch">${I('chevron')}</span></div></div>`;
+  const sched=`<div class="lbl" id="pl-schedules"><span>Schedules</span><span class="hint">${SS.length}</span></div>`+
+    (SS.length?`<div class="plc lst">${SS.map(plSchedRow).join('')}</div>`:`<div class="plempty"><div class="nm">No schedule yet</div><div class="sub">A schedule sets a function by the time of day, like the room climate in the morning.</div></div>`)+
+    `<button class="vall" onclick="PL.newSched()">${I('plus')} New schedule</button>`;
+  const modes=`<div class="lbl" id="pl-modes"><span>Operating modes</span>${MM.length?`<span class="hint">${MM.length}</span>`:''}</div>`+
+    (MM.length?`<div class="plc lst">${MM.map(plModeRow).join('')}</div>`:`<div class="plempty"><div class="nm">No operating mode changes a schedule yet</div><div class="sub">An operating mode gives schedules other values on chosen dates, like Holiday or Guests.</div></div>`)+
+    `<button class="vall" onclick="PL.newMode()">${I('plus')} New operating mode</button>`;
+  if(S.device==='tablet') return `<div class="pl-root wide">${today}<div class="pl-two"><div>${sched}</div><div>${modes}</div></div></div>`;
+  return `<div class="pl-root">${today}${modes}${sched}</div>`;
 }
-/* the list pages: everything of one kind, sorted by state, with the same two controls the section header has */
-function plListBody(k){
-  const md=k==='modes', d=TODAY_D, all=md?modesHere():schedulesHere();
-  const pool=md?plMF():plRF();
-  const rank=x=>md?plMRank(x,d):plRRank(x.id,d);
-  const list=pool.slice().sort((a,b)=>rank(a)-rank(b)||(md?plMNext(a)-plMNext(b):0));
-  const live=pool.filter(x=>rank(x)===0).length;
-  let s=plSecHead(md?`Operating modes (${all.length})`:`Schedules (${all.length})`,(md?plMftOn():plFtOn())?`${pool.length} of ${all.length}`:(live?`${live} running now`:''),
-    (md?'':`<button onclick="PL.openAll()" aria-label="All schedules on one day">${PLI.dayview}</button>`)+`<button class="${(md?plMftOn():plFtOn())?'on':''}" onclick="${md?'PL.filterM()':'PL.filterS()'}" aria-label="Filter">${PLI.funnel}</button>${plDenseBtn(md?'m':'r')}`);
-  if(!pool.length) return s+`<div class="plempty"><div class="nm">No ${md?'operating modes':'schedules'} match.</div>${md?'':`<div class="sub">${plFtFace()}</div>`}<span class="cta" onclick="${md?'PL.clearMft()':'PL.clearFt()'}">Clear the filter</span></div>`;
-  const one=x=>md?(plDense('m')?plMRow(x,plMOn(x.id,d)?d:null):plMCard(x,plMOn(x.id,d)?d:null)):(plDense('r')?plRRow(x.id,d):plRCard(x.id,d));
-  s+=`<div class="${S.pl.flash===(md?'m':'r')?'swap':''}">`+(plDense(md?'m':'r')?`<div class="plc lst">${list.map(one).join('')}</div>`:list.map(one).join(''))+`</div>`;
-  s+=`<button class="vall" onclick="${md?'PL.newMode()':'PL.newSched()'}">${I('plus')} ${md?'New operating mode':'New schedule'}</button>`;
-  return s;
-}
-function modesBody(){ return plListBody('modes'); }
-function schedulesBody(){ return plListBody('schedules'); }
 
 /* ---------- the operating-mode page: the schedules it is applied to, when it starts, rename, delete ---------- */
 function modePageBody(){
   const m=plMode(S.pl.mid); if(!m) return '<div class="empty">This operating mode is gone.</div>';
   let s=`<div class="lbl first"><span>Applied to</span><a href="#" onclick="event.preventDefault();PL.takes('${m.id}')">${I('filter')} Edit</a></div>`;
   if(m.on.length){ m.on.forEach(sid=>{ const sc=plS(sid), o=ORD[sid]||[]; s+=`<div class="plc tap" style="--c:${plColor(sc)}" onclick="PL.pickVal('${m.id}','${sid}')"><div class="row" style="align-items:center"><span class="sq">${plIcon(sc)}</span><span class="grw"><div class="bd">${plEsc(plName(sc))}</div><div class="mini">${plEsc(plRoom(sc))} · <span style="white-space:nowrap">priority ${o.indexOf(m.id)+1} of ${o.length+1}</span></div></span><span class="val">${plEsc(plVWhat(sc,{v:plMval(m,sid)}))}</span><span class="ch">${I('chevron')}</span></div></div>`; }); }
-  else s+=`<div class="plempty"><div class="nm">Not applied to a schedule</div><div class="sub">It runs on its dates by itself. Applied to a schedule, it gives that schedule its own value while it runs.</div><span class="cta" onclick="PL.takes('${m.id}')">Apply to schedules</span></div>`;
-  s+=`<div class="lbl"><span>Starts</span></div>`;
-  s+=`<div class="plc"><div class="row" style="align-items:center"><span class="grw"><div class="nm"><span>Scheduled</span></div><div class="mini">${m.dates.length?'Runs on these dates':'No dates'}</div></span><button class="pl2" onclick="PL.addDate('${m.id}')">${I('plus')} Date</button></div>`;
+  else s+=`<div class="plempty"><div class="nm">Not applied to a schedule</div><div class="sub">The Planner shows operating modes that give at least one schedule another value on their dates.</div><span class="cta" onclick="PL.takes('${m.id}')">Apply to schedules</span></div>`;
+  s+=`<div class="lbl"><span>Dates</span></div>`;
+  s+=`<div class="plc"><div class="row" style="align-items:center"><span class="grw"><div class="nm"><span>Runs on</span></div><div class="mini">${m.dates.length?(m.dates.length===1?'1 date':`${m.dates.length} dates`):'No date yet: add the first one'}</div></span><button class="pl2" onclick="PL.addDate('${m.id}')">${I('plus')} Date</button></div>`;
   if(m.dates.length) s+=`<div class="subcard">${m.dates.map((o,i)=>`<div class="pr" onclick="PL.editDate('${m.id}',${i})"><span class="mk"></span><span class="grw"><span class="bd">${o.to?`${plDshort(o.d)} to ${plDshort(o.to)}`:plDlong(o.d)}</span>${(i===0&&m.rep)?`<div class="mini">Repeats ${plEsc(m.rep)}</div>`:''}</span><span class="q">${o.all?'all day':plHm(o.f)+' – '+plHm(o.u)}</span><span class="ch">${I('chevron')}</span></div>`).join('')}</div>`;
   s+=`</div>`;
-  s+=`<div class="plc"><div class="row" style="align-items:center"><span class="grw"><div class="nm"><span>Instant</span></div><div class="mini">${m.inst?`On until ${plHm(m.inst.u)}`:'Runs now, ends by itself'}</div></span><button class="pl2 ${(m.inst||plMLive(m))?'on':''}" onclick="PL.instSheet('${m.id}')">${(m.inst||plMLive(m))?'Stop':'Run now'}</button></div></div>`;
   s+=`<div class="plnote">Priority lives on each schedule, not on the operating mode: open a schedule's entries and its operating modes to rank them.</div>`;
   s+=`<div class="plc tap" style="margin-top:4px" onclick="PL.rename('m','${m.id}')"><div class="row" style="align-items:center"><span class="grw"><div class="bd">Rename</div></span><span class="ch">${I('chevron')}</span></div></div>`;
   s+=`<div class="plc tap" onclick="PL.delMode('${m.id}')"><div class="pldel">Delete ${plEsc(m.name)}</div></div>`;
   return s;
 }
-function plModeSub(m){ const n=plMNext(m); return `Operating mode · ${m.on.length?`applied to ${m.on.length} schedule${m.on.length===1?'':'s'}`:'not applied to a schedule'} · ${m.inst?`running until ${plHm(m.inst.u)}`:(n>=9e9?'no dates':n===TODAY_D?'today':n===TODAY_D+1?'tomorrow':plDshort(n))}`; }
+function plModeSub(m){ return `Operating mode · ${m.on.length?`applied to ${m.on.length} schedule${m.on.length===1?'':'s'}`:'not applied to a schedule'} · ${plWhen(m).toLowerCase()}`; }
 
 /* ---------- search: schedules and operating modes among the results ---------- */
 function plSearchRows(q){
@@ -2947,7 +2734,7 @@ function plSearchRows(q){
   const mm=modesHere().filter(m=>hit(m.name)||hit('operating mode '+m.name));
   let h='';
   if(ss.length) h+=`<div class="lbl sm"><span>Schedules</span></div><div class="list">${ss.slice(0,6).map(s=>`<button class="lc s" style="--c:${plColor(s)}" onclick="PL.openSched('${s.id}')"><span class="ic cq on">${plIcon(s)}</span><span class="tx"><b>${plEsc(plName(s))}</b><small>${plEsc(plRoom(s))} · ${plEsc(plRowLine(s.id,TODAY_D).replace(/<[^>]+>/g,''))}</small></span><span class="ch">${I('chevron')}</span></button>`).join('')}</div>`;
-  if(mm.length) h+=`<div class="lbl sm"><span>Operating modes</span></div><div class="list">${mm.map(m=>`<button class="lc s" onclick="PL.openMode('${m.id}')"><span class="ic">${PLI.cogclock}</span><span class="tx"><b>${plEsc(m.name)}</b><small>${plMStatus(m,null).replace(/<[^>]+>/g,'')}${m.on.length?` · applied to ${plAreaWord(m)}`:''}</small></span><span class="ch">${I('chevron')}</span></button>`).join('')}</div>`;
+  if(mm.length) h+=`<div class="lbl sm"><span>Operating modes</span></div><div class="list">${mm.map(m=>`<button class="lc s" onclick="PL.openMode('${m.id}')"><span class="ic">${PLI.cogclock}</span><span class="tx"><b>${plEsc(m.name)}</b><small>${plWhen(m)} · applied to ${plAreaWord(m)}</small></span><span class="ch">${I('chevron')}</span></button>`).join('')}</div>`;
   return h;
 }
 
@@ -2989,22 +2776,8 @@ function plDayCal(k,ctx){ const d=S.pl.draft, ev=ctx==='evt';
 }
 
 /* filter the operating modes by the words their cards already wear */
-PL_SHEETS.mfilter=()=>{ const MM=modesHere();
-  const row=k=>{ const n=MM.filter(m=>plMWhen(m)===k).length, sel=(S.pl.mft||[]).indexOf(k)>=0; return plSrw(PLMWH[k],null,n?`PL.tgMft('${k}')`:null,{q:n,ck:sel,ckspace:!sel,na:!n,d:n?'':'None right now'}); };
-  const body=`<div class="sech2"><span class="l">Show</span><span>${plMftOn()?S.pl.mft.length+' picked':'all'}</span></div><div class="fgrp">${PLMWORDER.map(row).join('')}</div><div class="sent">${plMftOn()?`${plMF().length} of ${MM.length} operating modes.`:`All ${MM.length} operating modes.`}</div>`+(plMftOn()?`<div class="fgrp"><button class="srw" onclick="PL.clearMft()"><span class="k dl">Clear the filter</span></button></div>`:'');
-  return {title:'Filter',body,right:plSaveBtn('PL.closeSheet()','Done')}; };
 /* filter the schedules: by function block, by room */
-PL_SHEETS.sfilter=()=>{ const SS=schedulesHere(), kinds=[...new Set(SS.map(s=>s.kind))], rooms=[...new Set(SS.map(s=>CTRL[s.id].room))];
-  const row=(sel,label,n,on)=>plSrw(label,null,on,{q:n,ck:sel,ckspace:!sel});
-  const body=`<div class="sech2"><span class="l">Function block</span><span>${S.pl.ft.kind.length?S.pl.ft.kind.length+' picked':'any'}</span></div><div class="fgrp">${kinds.map(k=>row(S.pl.ft.kind.indexOf(k)>=0,SKIND[k].name,SS.filter(s=>s.kind===k).length,`PL.tgFt('kind','${k}')`)).join('')}</div>`+
-    `<div class="sech2"><span class="l">Room</span><span>${S.pl.ft.room.length?S.pl.ft.room.length+' picked':'anywhere'}</span></div><div class="fgrp">${rooms.map(r=>row(S.pl.ft.room.indexOf(r)>=0,plEsc(ROOM[r].name),SS.filter(s=>CTRL[s.id].room===r).length,`PL.tgFt('room','${r}')`)).join('')}</div>`+
-    `<div class="sent">${plFtOn()?plFtFace():`All ${SS.length} schedules.`}</div>`+(plFtOn()?`<div class="fgrp"><button class="srw" onclick="PL.clearFt()"><span class="k dl">Clear the filter</span></button></div>`:'');
-  return {title:'Filter',body,right:plSaveBtn('PL.closeSheet()','Done')}; };
 /* Run now: how long, each option says when it ends; a manual run always ends by itself */
-PL_SHEETS.runnow=sh=>{ const m=plMode(sh.id); const nx=plNextChangeFor(m), ev=NOW_MIN<1080?1080:1440;
-  const opt=[['For 1 hour',Math.min(1440,NOW_MIN+60)],['Until this evening',ev],['Until the next scheduled change',nx],['Rest of the day',1440]];
-  const body=`<div class="fgrp">${opt.map(([k,u])=>plSrw(k,null,`PL.setInst('${m.id}',${u})`,{d:`ends at ${plHm(u)}`,chev:1})).join('')}</div><div class="pnote">A manual run always ends by itself.</div>`;
-  return {title:`Run ${plEsc(m.name)} now`,body}; };
 /* the value a schedule gets while the mode runs: presets, and a number of its own where the kind takes one */
 PL_SHEETS.value=sh=>{ const m=plMode(sh.mid), s=plS(sh.sid); const cur=plMval(m,sh.sid);
   const body=`<div class="fgrp">${s.vals.map(([v,dt])=>plSrw(plEsc(v),null,`PL.setVal('${m.id}','${s.id}','${v}')`,{d:dt,ck:cur===v,ckspace:cur!==v})).join('')}</div><div class="fgrp"><button class="srw" onclick="PL.tgTake('${m.id}','${s.id}');PL.closeSheet()"><span class="k dl">Remove from ${plEsc(m.name)}</span></button></div>`;
@@ -3028,8 +2801,8 @@ PL_SHEETS.rename=()=>{ const d=S.pl.draft; S.pl.focus='plrn';
 PL_SHEETS.newmode=()=>{ const d=S.pl.draft; if(!d.n) S.pl.focus='plmn';
   const ns=d.on.map(sid=>plShort(plS(sid)));
   const body=`<div class="fgrp"><div class="srw"><span class="k">Name</span><input id="plmn" value="${plEsc(d.n)}" placeholder="e.g. Home office" oninput="S.pl.draft.n=this.value;PL.liveM()"></div></div>`+
-    `<div class="sech2"><span class="l">Applied to</span><span>${d.on.length||''}</span></div><div class="fgrp">${schedulesHere().map(s=>plSrw(`${plEsc(plName(s))} <span style="color:var(--a-fg50)">· ${plEsc(plRoom(s))}</span>`,null,`PL.tgNewOn('${s.id}')`,{lead:`<span class="sq" style="--c:${plColor(s)}">${plIcon(s)}</span>`,d:d.on.includes(s.id)?`follows ${plEsc(plVWhat(s,{v:s.vals[0][0]}))}`:plKind(s).name,tg:d.on.includes(s.id)?1:0})).join('')}</div>`+
-    `<div class="sent" id="plsent">${d.n?`<b>${plEsc(d.n)}</b> · ${ns.length?`applied to ${ns.map(plEsc).join(', ')}`:'not applied to a schedule'} · no dates yet`:'Name it to see what you are making.'}</div>`;
+    `<div class="sech2"><span class="l">Applied to</span><span>${d.on.length||''}</span></div><div class="fgrp">${schedulesHere().map(s=>plSrw(`${plEsc(plName(s))} <span style="color:var(--a-fg50)">· ${plEsc(plRoom(s))}</span>`,null,`PL.tgNewOn('${s.id}')`,{lead:`<span class="sq" style="--c:${plColor(s)}">${plIcon(s)}</span>`,d:d.on.includes(s.id)?`${plEsc(plVWhat(s,{v:s.vals[0][0]}))} while it runs`:plKind(s).name,tg:d.on.includes(s.id)?1:0})).join('')}</div>`+
+    `<div class="sent" id="plsent">${d.n?`<b>${plEsc(d.n)}</b> · ${ns.length?`applied to ${ns.map(plEsc).join(', ')}`:'pick at least one schedule'} · the first date comes next`:'Name it, pick its schedules, then its first date.'}</div>`;
   return {title:'New operating mode',body,right:plSaveBtn('PL.createMode()','Create'),tall:1}; };
 /* a new schedule: a function of the house that has none yet */
 PL_SHEETS.newsched=()=>{ const free=C().filter(c=>!SCH[c.id]&&['light','shade','irc','audio','alarm','wallbox'].includes(c.type));
@@ -3046,8 +2819,7 @@ PL_SHEETS.calpick=sh=>({title:'Choose a day',body:`<div class="fgrp" style="padd
 function plMenuHtml(){ const mn=S.pl.menu; if(!mn) return '';
   const item=(icon,k,sub,fn)=>`<button class="mi" onclick="PL.closeMenu();${fn}"><span class="grw"><div class="k">${k}</div>${sub?`<div class="mini">${sub}</div>`:''}</span>${icon}</button>`;
   let items='';
-  if(mn.k==='create') items=item(PLI.dayview,'New schedule','For a function that has none yet','PL.newSched()')+item(PLI.cogclock,'New operating mode','Runs on chosen dates, applied to schedules or not','PL.newMode()');
-  else if(mn.k==='ent') items=plEntMenuItems();
+  if(mn.k==='ent') items=plEntMenuItems();
   return `<div class="pl-menuw"><div class="popbg" onclick="PL.closeMenu()"></div><div class="pl-menu${S.pl.menuIn?' in':''}" role="menu" style="top:${mn.top}px;right:${mn.right}px">${items}</div></div>`;
 }
 /* a menu hangs under the control that opened it, right-aligned to it, and never leaves the screen */
@@ -3071,19 +2843,8 @@ function plAfterRender(){
 /* ---------- actions ---------- */
 function plUndoable(msg,undo){ plToast(msg,undo); }
 const PL = {
-  tgX(k){ S.pl.open['x'+k]=!plOpen(k); render(); },
-  dwAll(){ const on=!plOpen('dwm'); S.pl.open.xdwm=on; if(!on) S.pl.open.xdwc=false; render(); },
-  dwShut(){ PL.dwAll(); },
   selDay(d){ S.pl.sel=plClamp(d,plLO,plHI); if(S.pl.rng){ const a=plRngA(); S.pl.rng={a,b:a+6}; } render(); },
   goToday(){ S.pl.sel=TODAY_D; S.pl.rng=null; render(); },
-  setRange(on){ if(on){ const a=plRngA(); S.pl.rng={a,b:a+6}; } else S.pl.rng=null; render(); },
-  tgDense(k){ S.pl.dense[k]=!S.pl.dense[k]; S.pl.flash=k; render(); },
-  filterM(){ PL.sheet({k:'mfilter'}); },
-  filterS(){ PL.sheet({k:'sfilter'}); },
-  tgMft(k){ S.pl.mft=S.pl.mft||[]; const i=S.pl.mft.indexOf(k); if(i>=0) S.pl.mft.splice(i,1); else S.pl.mft.push(k); render(); },
-  clearMft(){ S.pl.mft=[]; S.pl.sheet=null; render(); },
-  tgFt(k,v){ const a=S.pl.ft[k], i=a.indexOf(v); if(i<0) a.push(v); else a.splice(i,1); render(); },
-  clearFt(){ S.pl.ft={kind:[],room:[]}; S.pl.sheet=null; render(); },
   sheet(sh){ S.pl.sheet=sh; S.pl.sheetIn=1; S.pl.menu=null; render(); },
   closeSheet(){ S.pl.sheet=null; S.pl.draft=null; S.pl.sub=null; if(S.pl.pend){ S.pl.pend(); S.pl.pend=null; } render(); },
   closeMenu(){ S.pl.menu=null; render(); },
@@ -3094,12 +2855,8 @@ const PL = {
   openAll(){ push(); const ids=schedulesHere().map(s=>s.id); S.control=ids[0]; S.screen='schedule'; S.menu=false; S.pl.multi=ids; S.pl.range='Day'; S.pl.esel=S.pl.rng?TODAY_D:S.pl.sel; S.pl.ed=0; S.pl.picker=0; S.pl.gtop=251; S.pl.gleft=0; render(); },
   focus(sid){ S.control=sid; S.room=CTRL[sid].room; S.pl.multi=null; S.pl.ed=0; S.pl.fx='pop'; render(); },
   openMode(id){ push(); S.pl.mid=id; S.screen='mode'; S.menu=false; S.pl.sheet=null; render(); },
-  openList(k){ push(); S.screen=k==='modes'?'modes':'schedules'; S.menu=false; render(); },
-  createMenu(ev){ S.pl.menu=plMenuAt(ev,'create',8); S.pl.menuIn=1; render(); },
+  openList(k){ S.tab='planner'; S.screen='home'; S.menu=false; H=[]; render(); const e=document.getElementById(k==='modes'?'pl-modes':'pl-schedules'); if(e) e.scrollIntoView({block:'start'}); },
   /* operating modes: run now, stop, values, the schedules they are applied to, dates, rename, delete, create */
-  instSheet(id){ const m=plMode(id); if(m.inst||plMLive(m)){ PL.stopMode(id); return; } PL.sheet({k:'runnow',id}); },
-  setInst(id,u){ const m=plMode(id); m.halt=null; m.inst={f:NOW_MIN,u}; S.pl.sheet=null; plUndoable(`${m.name} is on until ${plHm(u)}.`,()=>{ m.inst=null; }); render(); },
-  stopMode(id){ const m=plMode(id); if(m.inst){ const was=m.inst; m.inst=null; plUndoable(`${m.name} switched off.`,()=>{ m.inst=was; }); render(); return; } m.halt={d:TODAY_D,min:NOW_MIN}; plUndoable(`${m.name} stopped. The calendar keeps its dates.`,()=>{ m.halt=null; }); render(); },
   pickVal(mid,sid){ PL.sheet({k:'value',mid,sid}); },
   setVal(mid,sid,v){ const m=plMode(mid); m.vals=m.vals||{}; m.vals[sid]=v; S.pl.sheet=null; plToast(`${plName(plS(sid))} follows ${v} while ${m.name} runs.`); render(); },
   takes(mid){ PL.sheet({k:'takes',mid}); },
@@ -3114,7 +2871,7 @@ const PL = {
     if(editing) m.dates[d.at]=rec; else m.dates.push(rec); m.dates.sort((a,z)=>a.d-z.d); S.pl.sheet=null; S.pl.draft=null;
     const span=to?`${plDlong(d.d)} to ${plDlong(to)}`:plDlong(d.d);
     plUndoable(`${m.name} ${editing?'moved to':'added,'} ${span}.`,()=>{ if(editing){ const j=m.dates.indexOf(rec); if(j>=0) m.dates[j]=was; } else { const j=m.dates.indexOf(rec); if(j>=0) m.dates.splice(j,1); } m.dates.sort((a,z)=>a.d-z.d); }); render(); },
-  rmDate(mid,i){ const m=plMode(mid), o=m.dates[i]; m.dates.splice(i,1); S.pl.sheet=null; S.pl.draft=null; plUndoable(`Date removed from ${m.name}.`,()=>{ m.dates.splice(i,0,o); }); render(); },
+  rmDate(mid,i){ const m=plMode(mid), o=m.dates[i]; m.dates.splice(i,1); if(!m.dates.length) m.fresh=1; S.pl.sheet=null; S.pl.draft=null; plUndoable(`Date removed from ${m.name}.`,()=>{ m.dates.splice(i,0,o); }); render(); },
   rename(kind,id){ const m=plMode(id); S.pl.draft={rn:id,n:m.name}; PL.sheet({k:'rename'}); },
   saveRename(){ const d=S.pl.draft, m=plMode(d.rn), old=m.name; m.name=d.n||old; S.pl.sheet=null; S.pl.draft=null; plUndoable(`Renamed to ${m.name}.`,()=>{ m.name=old; }); render(); },
   delMode(id){ const m=plMode(id); S.pl.alert={title:`Delete ${plEsc(m.name)}?`,text:`Its ${m.dates.length} date${m.dates.length===1?'':'s'} are removed and it is no longer applied to its schedules. The schedules keep their entries.`,ok:'Delete',fn:`PL.doDelMode('${id}')`}; render(); },
@@ -3122,9 +2879,9 @@ const PL = {
   newMode(){ S.pl.draft={nm:1,n:'',on:[]}; PL.sheet({k:'newmode'}); },
   tgNewOn(sid){ const d=S.pl.draft; d.on=d.on.includes(sid)?d.on.filter(x=>x!==sid):d.on.concat(sid); render(); },
   liveM(){ const d=S.pl.draft, e=document.getElementById('plsent'); if(!e) return; const ns=d.on.map(sid=>plShort(plS(sid))); e.innerHTML=d.n?`<b>${plEsc(d.n)}</b> · ${ns.length?`applied to ${ns.map(plEsc).join(', ')}`:'not applied to a schedule'} · no dates yet`:'Name it to see what you are making.'; },
-  createMode(){ const d=S.pl.draft; if(!d.n){ S.pl.focus='plmn'; render(); return; } const id='m'+Date.now().toString(36); const vals={}; d.on.forEach(sid=>{ vals[sid]=plS(sid).vals[0][0]; });
-    const m={id,name:d.n,on:d.on.slice(),vals,dates:[],rep:'',place:placeGroup()}; OPMODES.push(m); d.on.forEach(sid=>{ ORD[sid]=(ORD[sid]||[]).concat(id); });
-    S.pl.sheet=null; S.pl.draft=null; S.pl.mid=id; S.screen='mode'; plUndoable(`${m.name} created. Add a date to make it run.`,()=>{ const i=OPMODES.indexOf(m); if(i>=0) OPMODES.splice(i,1); Object.keys(ORD).forEach(k=>ORD[k]=ORD[k].filter(x=>x!==id)); if(S.screen==='mode'&&S.pl.mid===id) back(); }); render(); },
+  createMode(){ const d=S.pl.draft; if(!d.n){ S.pl.focus='plmn'; render(); return; } if(!d.on.length){ plToast('Pick at least one schedule for it.',null,1); render(); return; } const id='m'+Date.now().toString(36); const vals={}; d.on.forEach(sid=>{ vals[sid]=plS(sid).vals[0][0]; });
+    const m={id,name:d.n,on:d.on.slice(),vals,dates:[],rep:'',place:placeGroup(),fresh:1}; OPMODES.push(m); d.on.forEach(sid=>{ ORD[sid]=(ORD[sid]||[]).concat(id); });
+    S.pl.sheet=null; S.pl.draft=null; push(); S.pl.mid=id; S.screen='mode'; PL.addDate(id); plUndoable(`${m.name} created. Now its first date.`,()=>{ const i=OPMODES.indexOf(m); if(i>=0) OPMODES.splice(i,1); Object.keys(ORD).forEach(k=>ORD[k]=ORD[k].filter(x=>x!==id)); if(S.screen==='mode'&&S.pl.mid===id) back(); }); render(); },
   newSched(){ PL.sheet({k:'newsched'}); },
   createSched(cid){ const c=CTRL[cid]; const kind=SKIND[c.type]?c.type:'light'; const vals=kind==='irc'?[['Comfort','21 °C','comfort'],['Eco','19 °C','eco'],['Building protection','10 °C','prot'],['Fixed setpoint','20 °C','fixed']]:kind==='shade'?[['Open','','comfort'],['Shade','50 %','fixed'],['Closed','','eco']]:kind==='alarm'?[['Armed','Away','prot'],['Armed home','Night','prot'],['Disarmed','','eco']]:kind==='audio'?[['Alarm clock','Radio FM4','comfort'],['Off','','eco']]:kind==='wallbox'?[['Charge','Night tariff','comfort'],['PV surplus','Only from solar','fixed'],['Off','','eco']]:[['Bright','Mood','comfort'],['Evening','Mood','comfort'],['Off','','eco']];
     const s={id:cid,kind,vals,entries:[]}; SCHEDULES.push(s); SCH[cid]=s; S.pl.sheet=null; plUndoable(`${c.name} has a schedule now. It has no entries yet.`,()=>{ const i=SCHEDULES.indexOf(s); if(i>=0) SCHEDULES.splice(i,1); delete SCH[cid]; if(S.screen==='schedule'&&S.control===cid) back(); }); PL.openSched(cid); },
@@ -3382,9 +3139,9 @@ function plDrawModeList(){ const sid=S.control, DR=S.pl.dr; let h='';
   const used=(id,i)=>{ const m=plMode(id); return `<div class="mlrow used" role="button" aria-label="Remove ${plEsc(m.name)}" onclick="PL.unassign('${id}')"><span class="rmb" aria-hidden="true"><i></i></span><span class="cg">${PLI.cogclock}</span><span class="nm">${plEsc(m.name)}</span><span class="val">Priority ${i+1}</span>${plInfoBtn(id)}<span class="reo" role="button" aria-label="Reorder ${plEsc(m.name)}" onclick="event.stopPropagation()" onpointerdown="PL.prStart(event,${i})"><i></i><i></i><i></i></span></div>`; };
   const avail=m=>`<div class="mlrow" role="button" aria-label="Add ${plEsc(m.name)}" onclick="PL.assign('${m.id}')"><span class="cg">${PLI.cogclock}</span><span class="nm">${plEsc(m.name)}</span>${plInfoBtn(m.id)}<span class="addr" aria-hidden="true">${I('plus')}</span></div>`;
   if(DR.length) h+=`<div class="sech2"><span class="l">Used operating modes</span></div>`+DR.map(used).join('');
-  const av=modesHere().filter(m=>DR.indexOf(m.id)<0);
+  const av=datedModesHere().filter(m=>DR.indexOf(m.id)<0);   /* every dated mode can be applied here, also one no schedule uses yet */
   if(av.length) h+=(DR.length?'<span style="display:block;flex:0 0 16px"></span>':'')+`<div class="sech2"><span class="l">Further operating modes</span></div>`+av.map(avail).join('');
-  if(!DR.length&&!av.length) h+=`<div class="pnote">No operating modes yet. Create one from the Planner's +.</div>`;
+  if(!DR.length&&!av.length) h+=`<div class="pnote">No operating modes with dates yet. Create one in the Planner: New operating mode.</div>`;
   return {title:'Operating modes',body:`<div class="mlist" id="plmlist">${h}</div><div class="pnote">Drag to set the priority: the top one wins when two apply the same day. ${plEsc(plBase(plS(sid)))} stays last.</div>`,right:plSaveBtn('PL.saveModes()','Done'),tall:1,cls:'fix'}; }
 const plInfoBtn=id=>`<button class="inf" aria-label="What ${plEsc(plMode(id).name)} does" onclick="event.stopPropagation();PL.modeInfo('${id}')">${I('info')}</button>`;
 function plColW6(n){ if(n<=1) return 286; const fit=Math.floor((286-8*(n-1))/n); return Math.max(fit,139); }
@@ -3501,7 +3258,7 @@ function back(){ S.menu=false; S.nfc=false; S.pop=null; S.pl.sheet=null; S.pl.me
 /* pages reached from the menu (App, Loxone) and from Access; the tab underneath stays as it was */
 const PAGES = {
   notifications:['Notifications','Menu › App'], appearance:['Appearance & start','Menu › App · mode, start view, language, Ambient'], integrations:['Integrations','Menu › App'], profile:['Profile & Security','Menu › App'],
-  loxone:['Help & about','Menu › Loxone'], accesspage:['Access','Menu › App · keys, stays, doors, sharing'], activity:['Activity','What happened · notifications and system messages'], modes:['Operating modes','Planner · every operating mode of the place'], schedules:['Schedules','Planner · every schedule of the place'], keys:['All keys','Access'], shared:['Shared by me','Access'], places:['Miniservers','Menu › Edit · connection, Trust, order'], reader:['Access',''], stay:['Your stay','Hotel Lagoon · Room 189'], search:['Search','Rooms · functions · settings'],
+  loxone:['Help & about','Menu › Loxone'], accesspage:['Access','Menu › App · keys, stays, doors, sharing'], activity:['Activity','What happened · notifications and system messages'], keys:['All keys','Access'], shared:['Shared by me','Access'], places:['Miniservers','Menu › Edit · connection, Trust, order'], reader:['Access',''], stay:['Your stay','Hotel Lagoon · Room 189'], search:['Search','Rooms · functions · settings'],
 };
 function screenTitle(){
   if(S.screen==='room'){ const r=ROOM[S.room]; return [r.name, isCentral(r)?'Whole building':r.floor]; }
@@ -3519,8 +3276,6 @@ function screenBody(){
     case 'home': return S.tab==='favorites' ? favoritesBody() : S.tab==='building' ? buildingBody() : S.tab==='planner' ? plannerBody() : S.tab==='activity' ? activityBody() : accessHomeBody();
     case 'activity': return activityBody();
     case 'schedule': return scheduleBody();
-    case 'modes': return modesBody();
-    case 'schedules': return schedulesBody();
     case 'mode': return modePageBody();
     case 'categories': return categoriesBody();
     case 'accesspage': return accessHomeBody();
@@ -3634,7 +3389,7 @@ function tabletApp(){
   const [stitle, ssub] = screenTitle();
   if(S.screen==='search'){ title='Search'; crumb = root + `<span>Search</span>`; body = `<div class="me-tablet" style="max-width:760px;margin:0">${searchBody()}</div>`; back=true; right=''; }
   else if(S.screen==='schedule' || S.screen==='mode'){ title = stitle; crumb = root + `<span>Planner</span>${sep}<span>${stitle}</span>`; body = `<div class="pl-tabpage${S.screen==='mode'?' narrow':''}">${screenBody()}</div>`; back=true; right += screenActs(); }
-  else if(isPage){ title = stitle; crumb = root + `<span>${S.screen==='modes'||S.screen==='schedules'?'Planner':ssub.replace(' · '+ (BPAGES[S.screen]||{}).s, '')}</span>${sep}<span>${stitle}</span>`; body = `<div class="${S.screen==='modes'||S.screen==='schedules'?'pl-tabpage narrow':'me-tablet'}" style="margin:0">${screenBody()}</div>`; back=true; }
+  else if(isPage){ title = stitle; crumb = root + `<span>${ssub.replace(' · '+ (BPAGES[S.screen]||{}).s, '')}</span>${sep}<span>${stitle}</span>`; body = `<div class="${S.screen==='modes'||S.screen==='schedules'?'pl-tabpage narrow':'me-tablet'}" style="margin:0">${screenBody()}</div>`; back=true; }
   else if(S.tab==='favorites'){ title='Favorites'; crumb = root + `<span>Favorites</span>`; body = `${statusPills()}<div class="lbl"><span>Favorites</span><a href="#" data-act="toast" data-v="Edit mode: reorder, add and remove favorites">${I('filter')} Edit</a></div>${gridOf(C().filter(c=>c.fav))}`; }
   else if(S.tab==='planner'){ title='Planner'; crumb = root + `<span>Planner</span>`; body = plannerBody(); }
   else if(S.tab==='activity'){ title='Activity'; crumb = root + `<span>Activity</span>`; body = `<div class="me-tablet" style="max-width:820px;margin:0">${activityBody()}</div>`; }
@@ -3689,11 +3444,9 @@ const NOTES = {
   control:{t:'Control detail in the V17 pattern', tags:['05 Flow 6','05 Flow 7','05 Flow 9'], b:['Climate uses the IRC layout from the file; lighting uses the lighting delivery (action bar, moods, room insights). Nothing about the functions changes.','Doors and gates: press and hold 1.2 s. “…” opens the hub, identical for every control.']},
   hub:{t:'One hub for every control', tags:['05 §4.2','09 §7'], b:['Quick · This control · Automation · Insights · Notifications · Appearance · Advanced, in the same order everywhere.','Entries that need a right stay visible and say why. “Ask my partner” and “History” link into the Building menu and Activity.']},
   activity:{t:'Activity: what happened, in the menu', tags:['04 PP-18','03 §3.3','06 Pattern 2'], b:['Push history, system messages and the Messages Centre merge into one timeline with the same six categories as the notification settings. Filter pills on top, actions inline (open the door, show the window).','Activity is the first row of Menu › Building, with the count of new items; the notification itself is the usual entry point. The settings gear leads to Menu › App › Notifications.','Why not a tab, and no bell in the header: you arrive here from a notification or to check what happened, a one-tap check with no dwell. A tab would spend a quarter of the bar on it; a bell with a badge was on every root page at all times (round 4: too present). The menu row is one tap from the glyph.']},
-  planner:{t:'Planner: when things happen', tags:['Planner prototype 13.10 (Widget)','04 PP-08','05 Flow 7','05 Flow 14'], b:['The day widget answers the day: the date and its state on the left (On schedule · Running now · Operating mode), NOW · NEXT · LATER on the right. The arrows move the day, the calendar drawer picks one (Day or Week), Today comes back, “+” creates a schedule or an operating mode. A tap on the card opens the whole day as an agenda with the now line.','Operating modes: three cards for the day, then “View all”. A card names the window (“18:00 to midnight · applied to”), the schedules it is applied to (if any: a mode without schedules works on its own, and a schedule without a mode too), its timeline; open it in place for the values per schedule, “Run now” for an hour, until the evening, until the next change or the rest of the day, and “Stop”. Every change shows a toast with Undo.','Schedules: three cards, then “View all”. A card carries the state (Running · the operating mode applied to it · Scheduled), the sentence of its day (“Comfort 22 °C until 08:30, then ◆ Party”), its timeline and its room. Open it in place for the day’s stretches and “+ Entry”; its head opens the Entries page. The header buttons: the house on one day, filter by function block and room, cards or rows.']},
+  planner:{t:'Planner: simple for now, a way into the Entries', tags:['Round 10','Entries prototype C1.99 · V6','04 PP-08'], b:['Only the Entries page is approved as final; the rest of the Planner stays open while its design is evaluated, so the root is simple and inviting: “Today, every schedule” (the house on one day, part of the Entries page), then the operating modes, then every schedule with one line about its day. A tap on a schedule opens its Entries.','Operating modes: only the ones with dates that are applied to at least one schedule (a holiday no schedule uses stays out, and so does a mode started by hand or by logic). A row names its next date and its schedules; “New operating mode” asks for a name, its schedules and then its first date.','Gone for now, on purpose: the day widget (NOW · NEXT · LATER, the state pill, the calendar drawer), the cards with timelines, the filters and dense rows, the list pages and the instant run (Run now · Stop). The Widget prototype keeps them for the evaluation.']},
   schedule:{t:'Entries: one schedule, or the house on one day', tags:['Entries prototype C1.99 · V6','IB APP UI KIT V17 Schedule entry · Day chip · Mode tag'], b:['The approved Entries page as is: Day · 3 days · Week, calendar or list, Edit in place (New entry · Save), the month popover, the day carousel, the operating mode in force as a neutral chip with its rule down the day, the hour grid with the Schedule entry tints, the now indicator. Hold to add an entry, drag an edge to resize, tap to edit, swipe to change days. A day an operating mode governs is read only; the chip is the way to change it.','The house on one day: the columns button in the header (or the day-view button of the Schedules section) shows several schedules side by side, one column each, the way Week shows days. The column head is the room with the function’s icon; a tap on it opens that schedule. Several schedules are a view, one schedule edits.','“…” holds Add entry, Operating modes (priority by drag, ⓘ shows the mode’s day as columns), Schedules shown and Copy to other rooms.']},
-  modes:{t:'Operating modes: the list', tags:['Planner prototype 13.10'], b:['Every operating mode of the place, sorted by state (running first), as cards or rows, with the same filter the section has. “New operating mode” at the end: a name and, if any, the schedules it is applied to.']},
-  schedules:{t:'Schedules: the list', tags:['Planner prototype 13.10'], b:['Every schedule of the place, sorted by state, as cards or rows, with the filter by function block and room. “New schedule” for a function that has none yet.']},
-  mode:{t:'One operating mode', tags:['Planner prototype 13.10'], b:['The schedules it is applied to (none is fine), with the value each schedule gets while it runs and its priority there; when it starts: the dates (first and last day, all day or from–until) and the instant run (Run now · Stop); rename and delete. Priority lives on each schedule, so it is ranked in the schedule’s operating-modes sheet.']},
+  mode:{t:'One operating mode', tags:['Round 10'], b:['The schedules it is applied to, with the value each gets while it runs and its priority there, and its dates (first and last day, all day or from–until); rename and delete. Priority lives on each schedule, so it is ranked in the schedule’s operating-modes sheet on the Entries page.']},
   access:{t:'Access: get in. Three states, one tab', tags:['Stream B','01.11. NFC Cards','09 §6'], b:['The tab is the home of the NFC Cards feature on both sides. Receiving: keys, stays, Use access. Giving: My doors with hold-to-open, Shared by me, Share access. Places at the end.','Key only (01.11.): the keys, Use access, the issuing place, one quiet line for owners. Stay (phase two): the stay hero with the room-ready status, the key, today, reception, what the hotel sees. Owner: Now, Keys, My doors, Shared by me, Places.','Settings are never here. They are in the menu, grouped by whose they are. The tab stays a verb.']},
   keys:{t:'All keys, grouped by relationship', tags:['Stream B','08 §1'], b:['Now (stays), Always (home, memberships), Shared with you (visits). The same card, a different label; the stay card opens the stay page, the others open their details.','Past stays are not archived here. A finished stay disappears from Access and stays visible in Activity. Hotel photos are not needed: the key is the object, not the façade.']},
   shared:{t:'Shared by me: the giving side of Access Sharing', tags:['Stream B','03 §3.1'], b:['People with a key from you, pending invitations, revoke. Share access picks doors, a person and a time window; the key arrives on their phone.','Accounts, NFC cards and rights stay in Menu › Building › User Management, named as today. Sharing a key is a building right: people without it see only the keys they received.']},
@@ -3777,7 +3530,7 @@ function notesHtml(){
     ['Target: hotel stay, phase two (Favorites with the stay card)', ()=>{ toTarget(); S.scenario='stay'; document.getElementById('scen').value='stay'; applyScenario(); }],
     ['Target: owner Access from the menu (doors, sharing)', ()=>{ toTarget(); S.scenario='multi'; document.getElementById('scen').value='multi'; applyScenario(); S.tab='favorites'; S.screen='accesspage'; H=[]; }],
     ['Target: the Planner', ()=>{ toTarget(); ensurePlace(); S.tab='planner'; S.screen='home'; S.pl.sel=TODAY_D; S.pl.rng=null; S.pl.open={}; }],
-    ['Planner: pull up for the jumps, the modes and create', ()=>{ toTarget(); ensurePlace(); S.tab='planner'; S.screen='home'; S.q=''; render(); setPill(1, {force:true}); return true; }],
+    ['Planner: pull up for today and create', ()=>{ toTarget(); ensurePlace(); S.tab='planner'; S.screen='home'; S.q=''; render(); setPill(1, {force:true}); return true; }],
     ['Planner › Living Room climate entries (week)', ()=>{ toTarget(); ensurePlace('home'); S.tab='planner'; S.screen='schedule'; S.control='l3'; S.pl.multi=null; S.pl.range='Week'; S.pl.view='Calendar'; S.pl.esel=TODAY_D; H=[{tab:'planner',screen:'home',room:null,control:null,cat:'all',q:''}]; }],
     ['Planner › every schedule on one day', ()=>{ toTarget(); ensurePlace(); S.tab='planner'; S.screen='schedule'; S.pl.multi=schedulesHere().map(x=>x.id); S.control=S.pl.multi[0]; S.pl.range='Day'; S.pl.view='Calendar'; S.pl.esel=TODAY_D; H=[{tab:'planner',screen:'home',room:null,control:null,cat:'all',q:''}]; }],
     ['Planner › Party (operating mode)', ()=>{ toTarget(); ensurePlace('home'); S.tab='planner'; S.screen='mode'; S.pl.mid='party'; H=[{tab:'planner',screen:'home',room:null,control:null,cat:'all',q:''}]; }],
@@ -3922,7 +3675,6 @@ const ACT = {
   page(v){ push(); S.screen=v; S.menu=false; S.nfc=false; S.pop=null; S.trust=false; },
   planner(){ if(S.release==='first'){ toast('Planner: ships with the next big release; until then Menu › Building › Automations'); return true; } S.tab='planner'; S.screen='home'; S.menu=false; S.control=null; H=[]; },
   sched(v){ PL.openSched(v); return true; },
-  modes(){ PL.openList('modes'); return true; },
   search(){ push(); S.screen='search'; S.qFocus=true; S.menu=false; },
   setq(v){ S.q=v; S.qFocus=true; },
   setgo(v){ gotoHome(v); return true; },
@@ -4224,7 +3976,7 @@ function tabletPage(){
   let right = placeChip();
   const [stitle, ssub] = screenTitle();
   if(!place){ title = stitle; crumb = `<span>Menu</span>${sep}<span>${stitle}</span>`; body = `<div class="me-tablet" style="margin:0">${accessHomeBody()}</div>`; }
-  else if(!isRoot()){ const plp = S.screen==='schedule'||S.screen==='mode'||S.screen==='modes'||S.screen==='schedules'; title = stitle; crumb = root + `<span>${plp?'Planner':ssub.replace(' · '+ (BPAGES[S.screen]||{}).s, '')}</span>${sep}<span>${stitle}</span>`; body = plp ? `<div class="pl-tabpage${S.screen==='schedule'?'':' narrow'}">${screenBody()}</div>` : `<div class="me-tablet" style="margin:0">${screenBody()}</div>`; back=true; right += screenActs(); }
+  else if(!isRoot()){ const plp = S.screen==='schedule'||S.screen==='mode'; title = stitle; crumb = root + `<span>${plp?'Planner':ssub.replace(' · '+ (BPAGES[S.screen]||{}).s, '')}</span>${sep}<span>${stitle}</span>`; body = plp ? `<div class="pl-tabpage${S.screen==='schedule'?'':' narrow'}">${screenBody()}</div>` : `<div class="me-tablet" style="margin:0">${screenBody()}</div>`; back=true; right += screenActs(); }
   else if(S.tab==='favorites'){ title='Favorites'; crumb = root + `<span>Favorites</span>`; body = `${statusPills()}<div class="lbl"><span>Favorites</span><a href="#" data-act="toast" data-v="Edit mode: reorder, add and remove favorites">${I('filter')} Edit</a></div><div class="grid">${C().filter(c=>c.fav).map(tile).join('')}</div>`; }
   else if(S.tab==='planner'){ title='Planner'; crumb = root + `<span>Planner</span>`; body = `<div class="pl-tabpage">${plannerBody()}</div>`; }
   else {
@@ -4246,12 +3998,15 @@ function floorChips(){
 function facetsHtml(){
   const rooms = roomsWithCat(S.cat).filter(r=> S.floor==='All floors' || r.floor===S.floor || isCentral(r));
   const sel = S.cat!=='all' ? CAT[S.cat] : null;
-  /* one category at a time: the categories are one row of icons that stays on top, every category visible at once; tapping the chosen one again clears it.
-     A building with more than seven (the Office has thirteen) gets two rows, still all visible. The rooms follow right under it */
-  const cats = CATS.filter(c=>roomsWithCat(c.id).length);
-  const catRow = `<div class="catrow${cats.length>7?' two':''}" style="--n:${Math.ceil(cats.length/2)}" role="tablist" aria-label="Category">${cats.map(c=>`<button class="catq${S.cat===c.id?' on':''}" role="tab" aria-pressed="${S.cat===c.id}" aria-label="${c.name} · ${roomsWithCat(c.id).length} rooms" title="${c.name}" style="--c:${c.color}" data-act="cat" data-v="${S.cat===c.id?'all':c.id}">${I(c.icon)}</button>`).join('')}</div>`;
+  /* one group at a time (round 10): at most seven groups with their word, one row that stays on top, every group visible at once; tapping
+     the chosen one again clears it. A group that holds several of the project's categories shows them on a second line (Climate · Windows ·
+     Ventilation; tapped again, back to the whole group), so the project's own names are one tap deeper. The rooms follow right under it */
+  const fams = FAMS.filter(f=>roomsWithCat(f.id).length), cur = S.cat==='all' ? null : famOf(S.cat);
+  const catRow = `<div class="catrow lab" role="tablist" aria-label="Category">${fams.map(f=>`<button class="catq${cur===f.id?' on':''}" role="tab" aria-pressed="${cur===f.id}" aria-label="${f.name} · ${roomsWithCat(f.id).length} rooms" style="--c:${f.color}" data-act="cat" data-v="${cur===f.id?'all':f.id}">${I(f.icon)}<span class="cl">${f.name}</span></button>`).join('')}</div>`;
+  const subs = cur ? CAT[cur].members.filter(m=>C().some(c=>c.cat===m)) : [];
+  const subRow = subs.length>1 ? `<div class="pills wrapchips fsub" role="tablist" aria-label="${CAT[cur].name}">${subs.map(id=>`<button class="pl${S.cat===id?' on':''}" role="tab" aria-pressed="${S.cat===id}" data-act="cat" data-v="${S.cat===id?cur:id}">${CAT[id].name}<span class="n">${C().filter(c=>c.cat===id).length}</span></button>`).join('')}</div>` : '';
   const row = (r)=>roomRow(r, S.cat, S.room===r.id);
-  return `<div class="facets-top"><div class="flabel" style="padding-top:4px"><span>Categories</span>${sel? `<a href="#" data-act="cat" data-v="all">All ${I('x')}</a>`:''}</div>${catRow}</div>
+  return `<div class="facets-top"><div class="flabel" style="padding-top:4px"><span>Categories</span>${sel? `<a href="#" data-act="cat" data-v="all">All ${I('x')}</a>`:''}</div>${catRow}${subRow}</div>
     <div class="flabel" style="padding-top:10px"><span>Rooms${sel?` · ${sel.name}`:''}</span></div>
     ${floorChips()}
     ${rooms.some(isCentral)? `<div class="list">${rooms.filter(isCentral).map(row).join('')}</div>`:''}
@@ -4264,10 +4019,9 @@ function quickHtml(){
     case 'building': return facetsHtml();
     /* Favorites holds two actions, so its sheet is short (round 6); it grows to the full sheet when the search is in use */
     case 'favorites': return `<div class="flabel" style="padding-top:4px"><span>Favorites</span></div><div class="quick"><button class="btn" data-act="toast" data-v="Edit mode: reorder, add and remove favorites">${I('filter')} Edit favorites</button><button class="btn sec" data-act="page" data-v="appearance">${I('sliders')} Sorting</button></div>`;
-    case 'planner': { const live=modesHere().filter(m=>plMLive(m)), today=modesHere().filter(m=>!plMLive(m)&&plMOn(m.id,TODAY_D)); const chip=(m,on)=>`<button class="pl${on?' on':''}" data-act="plmode" data-v="${m.id}">${PLI.cogclock} ${plEsc(m.name)}${on?' · running':''}</button>`;
-      return `<div class="flabel" style="padding-top:4px"><span>Jump to</span></div><div class="quick"><button class="btn" data-act="pltoday">${I('calendar')} Today</button><button class="btn sec" data-act="plall">${PLI.columns} Every schedule today</button></div><div class="quick" style="margin-top:8px"><button class="btn sec" data-act="pllist" data-v="schedules">${PLI.rows} Schedules</button><button class="btn sec" data-act="pllist" data-v="modes">${PLI.cogclock} Operating modes</button></div>
-      <div class="flabel" style="padding-top:16px"><span>Operating modes</span><a href="#" data-act="pllist" data-v="modes">All ${I('chevron')}</a></div><div class="pills wrapchips">${live.map(m=>chip(m,1)).join('')}${today.map(m=>chip(m,0)).join('')}${!live.length&&!today.length?'<span class="empty" style="padding:0">None running or due today.</span>':''}</div>
-      <div class="flabel" style="padding-top:16px"><span>Create</span></div><div class="quick"><button class="btn" data-act="plnew" data-v="sched">${I('plus')} New schedule</button><button class="btn sec" data-act="plnew" data-v="mode">${I('plus')} New operating mode</button></div>`; }
+    /* the Planner's sheet (round 10): the way into the Entries view and the two things to create, nothing else */
+    case 'planner': return `<div class="flabel" style="padding-top:4px"><span>Planner</span></div><div class="quick"><button class="btn" style="grid-column:1/-1" data-act="plall">${PLI.columns} Today, every schedule</button></div>
+      <div class="quick" style="margin-top:8px"><button class="btn sec" data-act="plnew" data-v="sched">${I('plus')} New schedule</button><button class="btn sec" data-act="plnew" data-v="mode">${I('plus')} New operating mode</button></div>`;
     default: return '';
   }
 }
@@ -4410,7 +4164,7 @@ const ACT_PILL = {
   cat(v){ S.cat=v; S.control=null; S.pop=null; if(!isRoot()){ S.screen='home'; } renderPage(); renderPill(); return true; },
   lens(v){ S.tab='building'; S.screen='home'; S.room=null; S.cat=v; S.control=null; S.q=''; renderPage(); collapse(); return true; },
   clearsel(){ S.room=null; S.cat='all'; S.control=null; renderPage(); renderPill(); return true; },
-  room(v){ S.tab='building'; S.screen='home'; S.room = S.room===v && P.target>=1 ? null : v; S.control=null; S.q=''; if(S.cat!=='all' && S.room && !catsInRoom(v).some(c=>c.id===S.cat)) S.cat='all'; renderPage(); renderPill(); if(S.room) collapse(); hint(S.room? `${ROOM[v].name}${S.cat!=='all'?' · '+CAT[S.cat].name:''}` : 'Selection cleared'); return true; },
+  room(v){ S.tab='building'; S.screen='home'; S.room = S.room===v && P.target>=1 ? null : v; S.control=null; S.q=''; if(S.cat!=='all' && S.room && !roomHasCat(v, S.cat)) S.cat='all'; renderPage(); renderPill(); if(S.room) collapse(); hint(S.room? `${ROOM[v].name}${S.cat!=='all'?' · '+CAT[S.cat].name:''}` : 'Selection cleared'); return true; },
   roomcat(v){ const [r,c]=v.split('|'); S.tab='building'; S.screen='home'; S.room=r; S.cat=c; S.control=null; S.q=''; renderPage(); renderPill(); collapse(); hint(`${ROOM[r].name} · ${CAT[c].name}`); return true; },
   roomgo(v){ push(); if(ROOM[v].place==='hotel') S.place='hotel'; S.tab='building'; S.screen='home'; S.room=v; S.cat='all'; S.control=null; render(); collapse(); return true; },
   open(v){ push(); S.control=v; S.room=CTRL[v].room; S.tab='building'; S.screen='control'; S.nfc=false; render(); collapse(); return true; },
@@ -4419,12 +4173,8 @@ const ACT_PILL = {
   page(v){ push(); S.screen=v; S.nfc=false; S.pop=null; render(); collapse(); return true; },
   planner(){ S.tab='planner'; S.screen='home'; S.control=null; H=[]; render(); collapse(); return true; },
   sched(v){ PL.openSched(v); collapse(); return true; },
-  modes(){ PL.openList('modes'); collapse(); return true; },
-  pllist(v){ PL.openList(v); collapse(); return true; },
   plall(){ PL.openAll(); collapse(); return true; },
-  plmode(v){ PL.openMode(v); collapse(); return true; },
   plnew(v){ collapse(); if(v==='mode') PL.newMode(); else PL.newSched(); return true; },
-  pltoday(){ S.tab='planner'; S.screen='home'; S.control=null; H=[]; PL.goToday(); collapse(); return true; },
   search(){ S.qFocus=true; S.q=''; if(!isRoot()){ S.screen='home'; renderPage(); } setPill(1, {force:true}); return true; },
   setq(v){ S.q=v; S.qFocus=true; renderPill(); return true; },
   actf(v){ S.actFilter=v; renderPage(); renderPill(); return true; },
