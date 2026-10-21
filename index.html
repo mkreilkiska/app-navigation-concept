@@ -1266,7 +1266,14 @@ svg{display:block}
 .tpill .pbar button svg{width:22px;height:22px;flex:none}
 .tpill .pbar .nl{font-size:10px;font-weight:600;letter-spacing:.01em;line-height:1;white-space:nowrap}
 .tpill .pbar .glyph{width:56px;opacity:1}
-.tpill .pbar .glyph .hamb{padding:0;width:20px;gap:5px}
+.tpill .pbar .glyph .hamb{padding:0;width:20px;gap:5px;height:22px;justify-content:center;flex:none}
+/* every door carries a word: Menu (Back on sub-pages) under the glyph, on the verbs' label line; on the phone the engine places it and folds it away in mini */
+.tpill:not(.rail) .pbar .glyph .nl{position:absolute;left:0;right:0;top:37.5px;text-align:center}
+/* the selected verb's chevron (the kit's “this opens”): placed and turned by the engine on the phone, beside the icon on the rail */
+.tpill .pbar .pchev{display:block;width:12px;height:12px;pointer-events:none;transform-origin:50% 50%}
+.tpill .pbar .pchev svg{width:12px;height:12px;display:block}
+.tpill:not(.rail) .pbar .vb button>.pchev{position:absolute;left:0;top:0;will-change:transform}
+.tpill.rail .pbar .pchev{position:absolute;left:41px;top:17.5px}
 .tpill .pbar .glyph .hamb i{background:#fff;width:20px}
 .tpill .pbar .glyph .hamb i:last-child{width:13px}
 .tpill .pbar .glyph svg{width:24px;height:24px}
@@ -1448,7 +1455,7 @@ html.lox-app .appsetbg.on,html.lox-app .appset.on{display:block}
 </style>
 
 <div class="bar" id="bar" data-release="first">
-  <div class="brand"><strong>Loxone App Navigation Concept</strong><span>First release (01.11.): nav bar as today, Access in the side menu. Target: the pill, one object for the nav bar and the side menu with three verbs (Favorites · Building · Planner) and three states (condensed, expanded, full) plus mini; the bell for what happened, Access in the menu, Building as rooms × categories, the Planner after the design team’s prototypes; on the tablet the pill docks as the rail. V17 app UI from the Figma file IB/LOX APP; Instrument Sans stands in for LOXONE Sans. Example data.</span></div>
+  <div class="brand"><strong>Loxone App Navigation Concept</strong><span>First release (01.11.): nav bar as today, Access in the side menu. Target: the pill, one object for the nav bar and the side menu with three verbs (Favorites · Building · Planner) and three states (condensed, expanded, full) plus mini, every door with a word; Activity and Access in the menu, Building as rooms × categories, the Planner after the design team’s prototypes; on the tablet the pill docks as the rail. V17 app UI from the Figma file IB/LOX APP; Instrument Sans stands in for LOXONE Sans. Example data.</span></div>
   <div class="ctl">
     <label>Release <span class="seg" id="segRel"><button data-set="release" data-v="first" aria-pressed="true">First (nav bar as today)</button><button data-set="release" data-v="target" aria-pressed="false">Target</button></span></label>
     <label class="pillctl">Pill <span class="seg" id="segState"><button data-state="-1">Mini</button><button data-state="0" aria-pressed="true">Pill</button><button data-state="1">Expanded</button><button data-state="2">Full</button></span></label>
@@ -1778,7 +1785,7 @@ const SETMAP = [
   ['My doors and gates from anywhere', 'Menu › Access › My doors'],
   ['Context menu on tab screens', null],
   ['Sort, change visualisation, expert settings', 'Building “…” and Room “…”'],
-  ['Notifications list / Messages centre', 'Activity (bell in the header)'],
+  ['Notifications list / Messages centre', 'Menu › Building › Activity · the notification itself'],
 ];
 
 /* ---------- state ---------- */
@@ -3514,14 +3521,14 @@ const NOTES = {
   tablet:{t:'Rail, facet sidebar, main area', tags:['Stream C','04 PP-04','09 §4'], b:['The rail is the nav bar turned vertical, with the menu on top. Favorites, Building, Planner: nothing to choose, nothing hidden at the bottom.','The sidebar belongs to Building only: categories as a wrapped pill cloud, rooms by floor with their squares. Pick a category and the rooms collapse; pick a room and the squares stay as entry points.','The main area follows: nothing selected → Central functions and room cards; a lens → that category across the building; a room → its functions; both → the group, or the single control opened in the side panel.']},
 };
 /* the Target: the pill's states and the pages whose shape the pill changes */
-const RULES_T = ['One object. The nav bar and the side menu are the same pill: three verbs at the bottom. Every state is one tap away: a verb switches and lands on the condensed pill, the active verb opens its sheet and closes it again, the glyph opens the menu, the dimmed page closes everything. A pull moves the sheet between condensed and expanded; the menu is the glyph’s alone.','Three verbs, the same on every device: Favorites (what matters to me), Building (where and what), Planner (when). What happened is Activity in the menu, one tap from the glyph, and the notification itself; getting in is the Access group of the menu and a widget on the lock screen. On the tablet the pill docks left as a rail; expanded it is the facet sidebar, full it is the menu panel.','The page is always the result. Building shows what the selection in the pill means: nothing selected → Central and the rooms; a room, a category, or both → their functions. No separate room page.','Every setting has exactly one home: Menu › Access, Menu › Building, Menu › App, Menu › Loxone. The validation table proves nothing got lost.'];
+const RULES_T = ['One object. The nav bar and the side menu are the same pill: three verbs at the bottom and Menu at its left end. Every state is one tap away: a verb switches and lands on the condensed pill, the active verb opens its sheet and closes it again, Menu opens the menu, the dimmed page closes everything. A pull moves the sheet between condensed and expanded; the menu is Menu’s alone. Every door carries a word: the glyph reads Menu (Back on sub-pages), the selected verb carries a chevron because a tap opens it, search sits on top of every sheet, the menu included. The doors check proves it.','Three verbs, the same on every device: Favorites (what matters to me), Building (where and what), Planner (when). What happened is Activity in the menu, one tap from Menu, and the notification itself; getting in is the Access group of the menu and a widget on the lock screen. On the tablet the pill docks left as a rail; expanded it is the facet sidebar, full it is the menu panel.','The page is always the result. Building shows what the selection in the pill means: nothing selected → Central and the rooms; a room, a category, or both → their functions. No separate room page.','Every setting has exactly one home: Menu › Access, Menu › Building, Menu › App, Menu › Loxone. The validation table proves nothing got lost.'];
 const BAR = [
   ['Favorites','daily','dwell','what matters to me','everyone','on the bar',1],
   ['Building','daily','dwell','where and what','everyone','on the bar',1],
   ['Planner','weekly to daily','dwell','when','owners and families','on the bar, as the next big feature ships',1],
   ['Activity','event-driven','a check','what happened','everyone','Menu › Building › Activity; the notification itself is the entry point'],
   ['Access','at the door','one scan','get in','key holders','Menu › Access, plus a lock-screen widget, the Action button or a Shortcut; Wallet keys later'],
-  ['Search','on demand','none','find','everyone','top of the expanded pill, “/”'],
+  ['Search','on demand','none','find','everyone','top of every sheet of the pill, the menu included; “/”'],
   ['Central','daily','dwell','a room of Building','owners','first room in Building'],
   ['Categories','daily','a lens','a subset of Building','everyone','the lens in Building and in the Planner'],
   ['Energy · Security · Audio','daily for some','dwell','categories','some','Building lens, Favorites tiles'],
@@ -3530,17 +3537,17 @@ const BAR = [
   ['Trust · places','rare','a switch','which place','multi-place owners','menu header'],
 ];
 const NOTES_T = {
-  pill:{t:'The pill, condensed', tags:['Target','V17 NavBar','iOS 26'], b:['Today’s V17 bar with three verbs, labels, and the menu glyph at its left end: outline glyphs, the selected verb filled (the calendar fills its body under the header line). Tap a verb to switch, tap the active verb to expand, scroll the page to shrink it to the active verb only. One material in every state: the kit’s black bar in light mode, the elevated surface with a Loxone-green hairline in dark mode; the sheet and the menu open in the same material, and the hairline fades as the sheet opens.','The header above is the kit’s neutral variant, slim (56 px): the wordmark and, on the right, the place with its connection dot (tap it to change place). Search lives on top of the sheet, Activity in the menu: the header carries context, not actions.','Three verbs, not four: Favorites, Building, Planner. The candidates table (“The bar”) shows why Activity became the bell and Access a menu group with a lock-screen widget.','Spring: stiffness 320, damping 40, mass 1, the values from the V17 nav bar in Figma. Every move is interruptible: grab it mid-flight and it follows your finger.']},
-  mini:{t:'Mini: out of the way while you read', tags:['Target','iOS 26'], b:['Scrolling down folds the inactive verbs away; the menu glyph and the active verb stay, the verb as icon and label in a row, the way the iOS 26 tab bar minimizes to its selected tab. The width follows the label.','One continuous move: icon and label are positioned by the engine, so the column layout of the bar and the row layout of the mini pill are the same elements at two ends of one spring. Scroll up, tap, or pull to bring it back.']},
-  expanded:{t:'Expanded: the controls of the active verb', tags:['Target','Stream C'], b:['Tap the active verb: Building opens the facets, the categories as one row of icons that stays on top (all of them visible, no words, the chosen one in its colour), the rooms by floor as compact rows right under it. Tap a category and the rooms filter in place; tap a room or a square and the sheet drops back while the page behind shows the result. Tap Building again to close the sheet.','Favorites: edit, sorting, the status pills. Planner: jumps (today, every schedule today, the two lists), the operating modes running or due today, create.','The search field on top covers rooms, functions, schedules, modes and every setting with its path. Type “kitchen light” or “CarPlay”.','Material: the sheet is the pill’s own surface in both themes, with the kit’s dark-drawer tokens for its content. One object keeps one material through its states (the Dynamic Island, the iOS 26 tab bar that morphs into its search field, Material’s tone-based dark surfaces that lift by tone, not by outline). The hairline that lifts the condensed pill off a dark page fades out as the sheet opens: a frame around a sheet reads as a window, not as a lift.']},
-  full:{t:'Full: the menu, grouped by owner', tags:['Target','Stream A','07 §3','09 §5'], b:['The hamburger has moved into the pill. Tap the glyph or pull to the top: the sheet grows and becomes the menu, Access · Building · App · Loxone, with the place in the header and log off in the footer. The sheet keeps the pill’s material in every state; only its content changes, and the menu is the kit’s dark drawer in both themes.','The page behind scales down and dims, so the menu reads as a layer over the app, not a different app.','Every entry of today’s menu has exactly one home here or under Access; see the settings map. Locked rows for people without full access are shown with the reason.']},
-  tablet:{t:'The rail: the same object, docked left', tags:['Target','09 §4'], b:['Switch the device above to watch the morph: the frame grows, the pill travels to the left edge and turns into the rail, the verbs stack. Condensed, the rail is as tall as its content: the menu glyph and the three verbs; expanded it unfolds to the facet sidebar, full to the menu panel.','Tap the active verb or drag the handle on the rail’s right edge. The header carries the place with its connection (tap it to change place) and the system status; search sits on top of the sheet, Activity and Help & about live in the menu.','A phone in landscape takes this layout too: the rail saves the height, the header is compact, the facets overlay the page. A tablet in portrait overlays as well; in landscape the expanded rail pushes the content.']},
+  pill:{t:'The pill, condensed', tags:['Target','V17 NavBar','iOS 26','Round 5: doors'], b:['Today’s V17 bar with three verbs and Menu at its left end, every slot with its word: Menu (Back on sub-pages), Favorites, Building, Planner. Outline glyphs, the selected verb filled (the calendar fills its body under the header line). Tap a verb to switch, tap the active verb to expand, scroll the page to shrink it to the active verb only.','The selected verb carries a chevron (⌃) after its word, because a tap on it opens its sheet; while the sheet is open the chevron points down, and it folds away in mini. It is the kit’s own grammar: a word with a chevron opens something (Rooms ⌄, Arm ⌄, Mood ⌄, All floors ⌄, the place in the header). Nothing new on the screen: four words and one chevron make the pill’s two hidden doors visible.','One material in every state: the kit’s black bar in light mode, the elevated surface with a Loxone-green hairline in dark mode; the sheet and the menu open in the same material, and the hairline fades as the sheet opens.','The header above is the kit’s neutral variant, slim (56 px): the wordmark and, on the right, the place with its connection dot (tap it to change place). Search lives on top of every sheet, the menu included, Activity in the menu: the header carries context, not actions.','Three verbs, not four: Favorites, Building, Planner. The candidates table (“The bar”) shows why Activity became the bell and Access a menu group with a lock-screen widget.','Spring: stiffness 320, damping 40, mass 1, the values from the V17 nav bar in Figma. Every move is interruptible: grab it mid-flight and it follows your finger.']},
+  mini:{t:'Mini: out of the way while you read', tags:['Target','iOS 26'], b:['Scrolling down folds the inactive verbs away; the menu glyph and the active verb stay, the verb as icon and label in a row, the way the iOS 26 tab bar minimizes to its selected tab. The width follows the label. The word Menu and the chevron fold away with the other labels: in mini a tap brings the bar back first, so nothing promises a sheet.','One continuous move: icon and label are positioned by the engine, so the column layout of the bar and the row layout of the mini pill are the same elements at two ends of one spring. Scroll up, tap, or pull to bring it back.']},
+  expanded:{t:'Expanded: the controls of the active verb', tags:['Target','Stream C'], b:['Tap the active verb, the one with the chevron: Building opens the facets, the categories as one row of icons that stays on top (all of them visible, no words, the chosen one in its colour), the rooms by floor as compact rows right under it. Tap a category and the rooms filter in place; tap a room or a square and the sheet drops back while the page behind shows the result. Tap Building again to close the sheet.','Favorites: edit, sorting, the status pills. Planner: jumps (today, every schedule today, the two lists), the operating modes running or due today, create.','The search field on top covers rooms, functions, schedules, modes and every setting with its path. Type “kitchen light” or “CarPlay”. The chevron after the verb’s word points down while the sheet is open: the same tap closes it.','Material: the sheet is the pill’s own surface in both themes, with the kit’s dark-drawer tokens for its content. One object keeps one material through its states (the Dynamic Island, the iOS 26 tab bar that morphs into its search field, Material’s tone-based dark surfaces that lift by tone, not by outline). The hairline that lifts the condensed pill off a dark page fades out as the sheet opens: a frame around a sheet reads as a window, not as a lift.']},
+  full:{t:'Full: the menu, grouped by owner', tags:['Target','Stream A','07 §3','09 §5'], b:['The hamburger has moved into the pill and reads Menu. Tap it: the sheet grows and becomes the menu, the search field on top, then Access · Building · App · Loxone with the place in the header and log off in the footer. Whoever opens the menu because they are lost meets search first; type in it and the results replace the menu until the field is empty again. The sheet keeps the pill’s material in every state; only its content changes, and the menu is the kit’s dark drawer in both themes.','The page behind scales down and dims, so the menu reads as a layer over the app, not a different app.','Every entry of today’s menu has exactly one home here or under Access; see the settings map. Locked rows for people without full access are shown with the reason.']},
+  tablet:{t:'The rail: the same object, docked left', tags:['Target','09 §4'], b:['Switch the device above to watch the morph: the frame grows, the pill travels to the left edge and turns into the rail, the verbs stack. Condensed, the rail is as tall as its content: Menu and the three verbs, each with its word; expanded it unfolds to the facet sidebar, full to the menu panel.','Tap the active verb (its chevron points right, where the sidebar opens, and back while it is open) or drag the handle on the rail’s right edge. The header carries the place with its connection (tap it to change place) and the system status; search sits on top of every sheet, the menu included, Activity and Help & about live in the menu.','A phone in landscape takes this layout too: the rail saves the height, the header is compact, the facets overlay the page. A tablet in portrait overlays as well; in landscape the expanded rail pushes the content.']},
   building:{t:'Building: the page is the result, the facets live in the pill', tags:['Target','Stream C','09 §2 rule 2'], b:['Nothing selected: Central’s functions and the room cards. Tap Building again for the facets: the categories as one row of icons, the rooms by floor as compact rows with one square per category present, lit when something is on or open.','Tap a room, a category, or a square and the pill drops back while the page shows the result: the selection title (Kitchen · Lighting) with “…” for the room and × to clear. Rooms and categories narrow each other, in either order.','There is no separate room page: the selection is the page. Central is a room in the same model.']},
   'building-lens':{t:'The lens: one category across the building', tags:['Target','Stream C'], b:['With a lens the page collapses into that category’s functions, Central first, each with its inline action: the “all lights” view without a separate Categories tab.','Clear it with × in the title or in the pill; add a room in the pill to narrow further.']},
-  favorites:{t:'Favorites: my shortcuts, with state', tags:['Target','04 PP-05','05 Hebel 1'], b:['Unchanged V17 home: Highlight header, pills, FunctionCards_M. The pills continue with live state (lights on, open doors, alarm, the Planner’s state); each is a shortcut into Building or a control.','“Edit” is the primary action of the view and sits in the expanded pill with the sorting. Sorting mode lives once, under Menu › App › Appearance, start & language.','The pill below: Favorites · Building · Planner with labels and the menu glyph at its left end. The header above is slim: the wordmark and the place with its connection. Activity and Access live in the menu (tap the glyph); the lock screen carries the key.']},
-  activity:{t:'Activity: what happened, in the menu', tags:['Target','04 PP-18','06 Pattern 2'], b:['One timeline for push history, system messages and the Messages Centre, the same six categories as the notification settings, actions inline.','Its home is the first row of Menu › Building, with the count of new items; the notification itself is the usual entry point. The header carries no bell: it was present on every root page at all times, for a check that happens a few times a day.','The pill stays: the glyph is the back chevron here, the three verbs stay reachable.']},
+  favorites:{t:'Favorites: my shortcuts, with state', tags:['Target','04 PP-05','05 Hebel 1'], b:['Unchanged V17 home: Highlight header, pills, FunctionCards_M. The pills continue with live state (lights on, open doors, alarm, the Planner’s state); each is a shortcut into Building or a control.','“Edit” is the primary action of the view and sits in the expanded pill with the sorting. Sorting mode lives once, under Menu › App › Appearance, start & language.','The pill below: Favorites · Building · Planner with labels and Menu at its left end, the selected verb with its chevron. The header above is slim: the wordmark and the place with its connection. Activity and Access live in the menu (tap Menu); the lock screen carries the key.']},
+  activity:{t:'Activity: what happened, in the menu', tags:['Target','04 PP-18','06 Pattern 2'], b:['One timeline for push history, system messages and the Messages Centre, the same six categories as the notification settings, actions inline.','Its home is the first row of Menu › Building, with the count of new items; the notification itself is the usual entry point. The header carries no bell: it was present on every root page at all times, for a check that happens a few times a day.','The pill stays: its left end reads Back here, the three verbs stay reachable.']},
 };
-const SUB_NOTE = 'The pill stays: on a control, its hub or any settings page the glyph at its left end is the back chevron, so the floating back button of V17 is no longer needed and the three verbs stay reachable.';
+const SUB_NOTE = 'The pill stays: on a control, its hub or any settings page its left end reads Back, so the floating back button of V17 is no longer needed and the three verbs stay reachable.';
 function noteKey(){
   if(S.release==='target' && pillEl()){ if(P.target>=2) return 'full'; if(P.target>=1 && S.screen==='home') return 'expanded'; if(P.target<=-1) return 'mini'; }
   let key = S.menu ? 'menu' : S.screen==='home' ? (S.tab==='building' && S.cat!=='all' ? 'building-lens' : S.tab) : S.screen;
@@ -3582,13 +3589,15 @@ function notesHtml(){
   ];
   window.__flows = flows;
   const val = validateMap(); const ok = val.filter(x=>x.status==='ok').length, rm = val.filter(x=>x.status==='removed').length, bad = val.filter(x=>x.status==='bad').length;
+  const doors = target ? validateDoors() : null;
+  const doorsHtml = !doors ? `<div class="eyebrow">Doors</div><h2>Every destination behind a word</h2><p>The check runs for an owner in their own home (a guest’s narrow rights hide menu rows on purpose): switch the scenario to “One home” or to “Home, office and a stay”.</p>` : `<div class="eyebrow">Doors</div><h2>Every destination behind a word</h2><p>The usability test will not run, so the prototype checks the one thing it would have found first: a door nobody sees. From every root page each destination is reached by tapping things that carry a word, at most two taps to the page that holds it. A gesture, “/”, an unlabelled glyph or a second tap on something without a cue does not count; those stay as shortcuts. The check reads the live markup of the pill and the menu: drop a word or the chevron and its rows turn red.</p><div class="valsum"><span class="ok">${doors.worded} behind a word</span><span class="${doors.hidden?'bad':''}">${doors.hidden} hidden</span><span class="${doors.deep?'bad':''}">${doors.deep} deeper than two taps</span></div><table class="valtable">${doors.rows.map(x=> x.grp ? `<tr class="grp"><td colspan="3">${x.grp}</td></tr>` : `<tr><td>${x.dest}</td><td><button ${x.go?`data-doorgo="${x.go}"`:`data-setgo="${x.home.replace(/"/g,'&quot;')}"`}>${x.steps.map(s=>s.w).join(' › ')}</button>${x.rest.length?`<small style="display:block;color:var(--muted)">then ${x.rest.join(' › ')} on that page</small>`:''}</td><td class="${x.status==='worded'?'ok':'bad'}">${x.status==='worded'? (x.steps.length===1?'1 tap':x.steps.length+' taps') : x.status==='deep' ? x.steps.length+' taps' : x.why}</td></tr>`).join('')}</table>`;
   const mapHtml = `<div class="eyebrow">Settings map</div><h2>Every setting of today’s app and its one home</h2><p>From document 03 (section 3) and the two menu screenshots. Left: today. Right: where it lives in the Target; each home is resolved by the prototype itself (“opens” means the screen exists here, tap it; “removed” means the entry is gone on purpose and the reason is stated).</p><div class="valsum"><span class="ok">${ok} open</span><span>${rm} removed, explained</span><span class="${bad?'bad':''}">${bad} unresolved</span></div><table class="valtable">${val.map(x=> x.grp ? `<tr class="grp"><td colspan="3">${x.grp}</td></tr>` : `<tr><td>${x.today}</td><td><button data-setgo="${x.home.replace(/"/g,'&quot;')}">${x.home}</button></td><td class="${x.status==='ok'?'ok':x.status==='removed'?'rm':'bad'}">${x.status==='ok'?'opens':x.status==='removed'?'removed':'check'}</td></tr>`).join('')}</table>`;
   const barHtml = `<div class="eyebrow">The bar</div><h2>What earns a place on the bar</h2><p>Four tests, all four must hold: used most days; a place with dwell time, not a one-shot action; its own mental model, not a subset of another verb; relevant to every user type. Where the frequent action is not in the app at all (a scan at the door), the home is the lock screen, not a tab.</p><table class="bartable"><tr><th>Candidate</th><th>Often · dwell</th><th>Home</th></tr>${BAR.map(r=>`<tr class="${r[6]?'on':''}"><td><b>${r[0]}</b><small>${r[3]} · ${r[4]}</small></td><td>${r[1]}<small>${r[2]}</small></td><td>${r[5]}</td></tr>`).join('')}</table><p>Benchmarks with three verbs or fewer: Busch-free@home Next (Dashboard · Rooms · Automation, the best-rated DACH pro app), Google Home (Home · Activity · Automations), Apple Home (one tab plus a menu). Research: schedules are a documented pain (04 PP-08, 05 Flow 7 and 14), notifications are reactive (05 Flow 13), the scan is a widget wish (04 PP-25).</p>`;
   const eyebrow = target ? `Target: the pill · ${S.device} · ${pillStateName()}` : 'First release (01.11.): nav bar as today, Access in the side menu';
   const screenHtml = `<div class="eyebrow">${eyebrow}</div><h2>${n.t}</h2>${n.tags?`<div class="tags">${n.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>`:''}<ul>${bullets.map(x=>`<li>${x}</li>`).join('')}</ul><div class="eyebrow" style="margin-top:14px">${target?'The four rules of the pill':'The four rules'}</div><ol class="rules">${rules.map(r=>`<li>${r}</li>`).join('')}</ol>`;
-  return `${S.map? mapHtml : S.why? barHtml : screenHtml}
-    <div class="flows"><h3>Try these flows</h3><button class="map" data-why="1">${S.why? '← Back to the screen notes' : 'The bar: why these three verbs'}</button><button class="map" data-map="1">${S.map? '← Back to the screen notes' : `Settings map: every setting, one home (${ok} open · ${rm} removed · ${bad} unresolved)`}</button>${flows.map((f,i)=>`<button data-flow="${i}">${f[0]}</button>`).join('')}</div>
-    <p class="srcnote">Target: every state by tap (a verb switches, the active verb opens and closes its sheet, the glyph opens the menu, the dimmed page closes); a pull moves the sheet between condensed and expanded only (left and right on the tablet rail); Esc collapses; “/” opens search. Tags point to the research package (document number and pain point) and to the three input streams: A side menu, B Access, C filter navigation. UI source: Figma IB/LOX APP, UI KIT V17 (colours, type, FunctionCards_M, ListCard, Full_Header, NavBar, side menu, Access screens, IRC and lighting deliveries, tablet concepts). Benchmarks for the pill: Apple Maps’ sheet detents, the iOS 26 minimizing tab bar, the iPadOS 18 tab-bar-to-sidebar morph. Instrument Sans replaces LOXONE Sans. Example data, not a real installation.</p>`;
+  return `${S.map? mapHtml : S.why? barHtml : S.doors && target ? doorsHtml : screenHtml}
+    <div class="flows"><h3>Try these flows</h3><button class="map" data-why="1">${S.why? '← Back to the screen notes' : 'The bar: why these three verbs'}</button><button class="map" data-map="1">${S.map? '← Back to the screen notes' : `Settings map: every setting, one home (${ok} open · ${rm} removed · ${bad} unresolved)`}</button>${target? `<button class="map" data-doors="1">${S.doors? '← Back to the screen notes' : doors ? `Doors: every destination behind a word (${doors.worded} worded · ${doors.hidden} hidden · ${doors.deep} deeper)` : 'Doors: every destination behind a word'}</button>`:''}${flows.map((f,i)=>`<button data-flow="${i}">${f[0]}</button>`).join('')}</div>
+    <p class="srcnote">Target: every state by tap (a verb switches, the active verb opens and closes its sheet and carries a chevron that says so, Menu opens the menu, the dimmed page closes); every door carries a word, search sits on top of every sheet, the menu included; a pull moves the sheet between condensed and expanded only (left and right on the tablet rail); Esc collapses; “/” opens search. Tags point to the research package (document number and pain point) and to the three input streams: A side menu, B Access, C filter navigation. UI source: Figma IB/LOX APP, UI KIT V17 (colours, type, FunctionCards_M, ListCard, Full_Header, NavBar, side menu, Access screens, IRC and lighting deliveries, tablet concepts). Benchmarks for the pill: Apple Maps’ sheet detents, the iOS 26 minimizing tab bar, the iPadOS 18 tab-bar-to-sidebar morph. Instrument Sans replaces LOXONE Sans. Example data, not a real installation.</p>`;
 }
 function ensurePlace(){ if(!S.place){ S.scenario='home'; document.getElementById('scen').value='home'; applyScenario(); } S.menu=false; S.nfc=false; S.pop=null; }
 
@@ -3753,6 +3762,7 @@ const smooth = (x)=>{ x=clamp(x,0,1); return x*x*(3-2*x); };
 /* the mini pill: the menu glyph and the active verb as icon + label (the iOS 26 minimized tab bar); its width follows the label */
 const MINI = {h:56, glyph:48, pad:4, gap:8, icon:22, igap:8, lpad:18, font:'600 13px "Instrument Sans", system-ui, sans-serif', font0:'600 10px "Instrument Sans", system-ui, sans-serif'};
 const VERB = {w:88, h:60, icon:22, label:10, gap:3};
+const CHEV = {w:12, gap:1};   /* the selected verb's chevron: a 12 px box after its label (the stroke inside it is about half that) */
 const MEAS = {};
 function labelW(txt, font){ const k=font+'|'+txt; if(MEAS[k]!==undefined) return MEAS[k]; const c = labelW.ctx || (labelW.ctx = document.createElement('canvas').getContext('2d')); c.font = font; const w = c.measureText(txt).width; MEAS[k]=w; return w; }
 function keptVerb(){ return TABS_TARGET.find(x=>x[0]===S.tab) || ['','','']; }
@@ -3809,21 +3819,29 @@ function applyPill(){
   /* the verbs: on the phone the icon and the label are positioned by hand, so the mini state is one continuous move
      (column layout at 0, the kept verb as icon + label in a row at -1, the other verbs fold to nothing) */
   const glyph = bar.querySelector('.glyph');
-  if(isRail){ bar.style.padding=''; if(glyph){ glyph.style.width=''; glyph.style.height=''; } bar.querySelectorAll('.vb button').forEach(b=>{ b.style.cssText=''; b.querySelectorAll('svg,.nl').forEach(x=>{ x.style.cssText=''; }); }); }
+  /* the selected verb's chevron points where its sheet comes from and turns with the spring: up on the phone, right on the rail; it points back while the sheet is open */
+  const chev = bar.querySelector('.pchev');
+  if(isRail){ bar.style.padding=''; if(glyph){ glyph.style.width=''; glyph.style.height=''; glyph.querySelectorAll('.hamb,svg,.nl').forEach(x=>{ x.style.cssText=''; }); } bar.querySelectorAll('.vb button').forEach(b=>{ b.style.cssText=''; b.querySelectorAll('svg,.nl').forEach(x=>{ x.style.cssText=''; }); }); if(chev){ chev.style.opacity=''; chev.style.transform = `rotate(${-90+180*open}deg)`; } }
   else {
     const m = mini, mg = miniGeom();
+    const top0 = (VERB.h - (VERB.icon+VERB.gap+VERB.label))/2;
     bar.style.padding = `0 ${lerp(5,MINI.pad,m)}px`;
-    if(glyph){ glyph.style.width = lerp(56,MINI.glyph,m)+'px'; glyph.style.height = lerp(60,MINI.glyph,m)+'px'; }
+    /* the glyph's word sits on the verbs' label line and folds away in mini; its icon moves from the verbs' icon line to the centre of the mini circle */
+    if(glyph){ glyph.style.width = lerp(56,MINI.glyph,m)+'px'; glyph.style.height = lerp(60,MINI.glyph,m)+'px';
+      const gi = glyph.querySelector('.hamb,svg'), gl = glyph.querySelector('.nl');
+      if(gi) gi.style.transform = `translateY(${lerp(top0+VERB.icon/2-VERB.h/2, 0, m)}px)`;
+      if(gl){ gl.style.top = (top0+VERB.icon+VERB.gap)+'px'; gl.style.opacity = String(clamp(1-2*m,0,1)); } }
     const kept = keptVerb()[0];
     bar.querySelectorAll('.vb button').forEach(b=>{
       const keep = b.dataset.v===kept; const active = b.getAttribute('aria-current')==='page';
       const w = keep ? lerp(VERB.w, mg.activeW, m) : VERB.w*(1-m); const h = lerp(VERB.h, MINI.glyph, m);
       b.style.width = w+'px'; b.style.height = h+'px'; b.style.borderRadius = lerp(VERB.h/2, MINI.glyph/2, m)+'px';
       b.style.opacity = active ? '' : String((b.getAttribute('aria-disabled')==='true'?0.18:0.5)*(keep ? 1 : 1-m));
-      const svg = b.querySelector('svg'), nl = b.querySelector('.nl');
-      const top0 = (VERB.h - (VERB.icon+VERB.gap+VERB.label))/2;
+      const svg = b.querySelector('svg'), nl = b.querySelector('.nl'), ch = b.querySelector('.pchev');
       if(svg){ const x = keep ? lerp((VERB.w-VERB.icon)/2, MINI.lpad, m) : (VERB.w-VERB.icon)/2; const y = keep ? lerp(top0, (MINI.glyph-MINI.icon)/2, m) : top0; svg.style.transform = `translate(${x}px,${y}px)`; }
-      if(nl){ const lw0 = labelW(nl.textContent, MINI.font0); const fs = keep ? lerp(VERB.label, 13, m) : VERB.label; nl.style.fontSize = fs+'px'; const x = keep ? lerp((VERB.w-lw0)/2, MINI.lpad+MINI.icon+MINI.igap, m) : (VERB.w-lw0)/2; const y = keep ? lerp(top0+VERB.icon+VERB.gap, (MINI.glyph-13)/2, m) : top0+VERB.icon+VERB.gap; nl.style.transform = `translate(${x}px,${y}px)`; nl.style.opacity = keep ? String(Math.pow(Math.abs(1-2*m), 0.7)) : String(1-m); }
+      if(nl){ const lw0 = labelW(nl.textContent, MINI.font0), cw = ch ? CHEV.gap+CHEV.w : 0; const fs = keep ? lerp(VERB.label, 13, m) : VERB.label; nl.style.fontSize = fs+'px'; const x = keep ? lerp((VERB.w-lw0-cw)/2, MINI.lpad+MINI.icon+MINI.igap, m) : (VERB.w-lw0-cw)/2; const y = keep ? lerp(top0+VERB.icon+VERB.gap, (MINI.glyph-13)/2, m) : top0+VERB.icon+VERB.gap; nl.style.transform = `translate(${x}px,${y}px)`; nl.style.opacity = keep ? String(Math.pow(Math.abs(1-2*m), 0.7)) : String(1-m);
+        /* the chevron rides after the label and folds away in mini, where a tap brings the bar back first */
+        if(ch){ const lw = keep ? lerp(lw0, labelW(nl.textContent, MINI.font), m) : lw0; ch.style.transform = `translate(${x+lw+CHEV.gap}px,${y+(fs-CHEV.w)/2}px) rotate(${180*(1-open)}deg)`; ch.style.opacity = String(clamp(1-2*m,0,1)); } }
     });
   }
   /* page behind: scale and dim at full, dim lightly when expanded */
@@ -3920,7 +3938,7 @@ function setDevice(dev, instant){
   D.raf = requestAnimationFrame(step);
 }
 /* ---------- the Target release: the pill, one object for the nav bar and the side menu ---------- */
-SETMAP.push(['Chrome', null], ['Hamburger button (top left)', 'The pill: menu glyph at its left end, or pull to full'], ['Tab bar (Favorites, Central, Rooms, Categories, Trust)', 'The pill: three verbs; Central, Rooms and Categories live in Building, Trust in the menu header'], ['Floating back button', 'The pill: its left end becomes the back chevron on sub-pages'], ['Quick-selection rail (Miniserver letters)', 'Menu header › Change place'], ['Search icon (header)', 'The pill: search on top of the expanded sheet, “/”'], ['Bell (header, version 2.2)', 'Menu › Building › Activity; the notification itself opens the timeline'], ['Trust tab, quick-selection rail (which place)', 'The header: the place with its connection on the right; tap → Menu header › Change place']);
+SETMAP.push(['Chrome', null], ['Hamburger button (top left)', 'The pill: Menu at its left end, the glyph with its word'], ['Tab bar (Favorites, Central, Rooms, Categories, Trust)', 'The pill: three verbs; Central, Rooms and Categories live in Building, Trust in the menu header'], ['Floating back button', 'The pill: its left end reads Back on sub-pages'], ['Quick-selection rail (Miniserver letters)', 'Menu header › Change place'], ['Search icon (header)', 'The pill: search on top of every sheet, the menu included; “/”'], ['Bell (header, version 2.2)', 'Menu › Building › Activity; the notification itself opens the timeline'], ['Trust tab, quick-selection rail (which place)', 'The header: the place with its connection on the right; tap → Menu header › Change place']);
 const TABS = TABS_TARGET;
 
 /* Building in the Target: the page is the result of the selection, the facets live in the pill */
@@ -3937,7 +3955,7 @@ function buildingPage(){
     return `${cr? `<div class="rsec" style="--c:var(--a-fg)"><span class="dot"></span>${cr.name} · whole building</div><div class="grid">${C().filter(c=>c.room===cr.id).map(tile).join('')}</div>`:''}
       <div class="rsec" style="--c:var(--a-fg)"><span class="dot"></span>Rooms<a href="#" data-act="bpage" data-v="bset" style="margin-left:auto;text-transform:none;letter-spacing:0;color:var(--a-fg);display:inline-flex;align-items:center;gap:4px;text-decoration:none">${I('dots')} Building</a></div>
       <div class="roomcards ${S.device==='phone'?'two':''}">${R().filter(r=>r.floor!=='Whole building').map(roomCard).join('')}</div>
-      <p class="note" style="margin-top:14px">Pull the pill up for rooms and categories, or tap a square here. The page is always the result of the selection.</p>`;
+      <p class="note" style="margin-top:14px">Tap Building again (it carries the chevron) for rooms and categories, or tap a square here. The page is always the result of the selection.</p>`;
   }
   const {title, sub, list} = selectionTitle();
   return `<div class="seltitle"><div style="flex:1;min-width:0"><h1>${title}</h1><small>${sub}</small></div>${S.room? `<button class="circ" data-act="bpage" data-v="roomset" aria-label="Room settings">${I('dots')}</button>`:''}<button class="circ" data-act="clearsel" aria-label="Clear selection">${I('x')}</button></div>
@@ -4010,20 +4028,25 @@ function quickHtml(){
 function menuHtml(){
   const s = menuSheet(); const i = s.indexOf('<div class="mh">'); return s.slice(i, s.lastIndexOf('</div>'));
 }
+/* every door carries a word: the glyph reads Menu (Back on sub-pages) like the verbs read theirs, and the selected verb carries the kit's
+   chevron, because a tap on it opens its sheet (a word with a chevron opens something: Rooms ⌄, Mood ⌄, the place in the header) */
 function pillBar(){
   const noPlace = !S.place; const cur = S.tab; const root = isRoot();
-  const glyph = root ? `<button class="glyph" data-act="menu" aria-label="Menu"><span class="hamb"><i></i><i></i></span></button>` : `<button class="glyph" data-act="back" aria-label="Back">${I('arrow-left')}</button>`;
+  const glyph = root ? `<button class="glyph" data-act="menu" aria-label="Menu"><span class="hamb"><i></i><i></i></span><span class="nl">Menu</span></button>` : `<button class="glyph" data-act="back" aria-label="Back">${I('arrow-left')}<span class="nl">Back</span></button>`;
   /* outline glyphs; the selected verb carries the filled one. Help & about lives in the menu (Loxone), so the rail carries no second entry */
-  const verbs = TABS.map(([id,icon,label,filled])=>{ const on = cur===id && root && !noPlace; return `<button data-act="tab" data-v="${id}" aria-current="${on?'page':'false'}" aria-label="${label}" ${noPlace?'aria-disabled="true"':''}>${I(on?filled:icon)}<span class="nl">${label}</span></button>`; }).join('');
+  const verbs = TABS.map(([id,icon,label,filled])=>{ const on = cur===id && root && !noPlace; return `<button data-act="tab" data-v="${id}" aria-current="${on?'page':'false'}" aria-label="${label}" ${on?`aria-expanded="${P.target>=1}"`:''} ${noPlace?'aria-disabled="true"':''}>${I(on?filled:icon)}<span class="nl">${label}</span>${on?`<i class="pchev" aria-hidden="true">${I('chevdown')}</i>`:''}</button>`; }).join('');
   return `${glyph}<span class="vb">${verbs}</span>`;
 }
+/* search sits on top of every sheet, the menu included: whoever opens the menu because they are lost meets the search field first */
+function sheetFull(){ return P.target>=2 || P.t>1.5; }
+function sheetHead(full){ return `<div class="sbox">${I('search')}<input id="q" type="search" placeholder="${full?'Search everything':S.tab==='building'?'Rooms, functions, settings':S.tab==='planner'?'Schedules, modes, functions':'Search everything'}" value="${S.q.replace(/"/g,'&quot;')}" aria-label="Search"></div>`; }
+function sheetBody(full){ return full && !S.q.trim() ? menuHtml() : quickHtml(); }
 function renderPill(){
   const el = pillEl(); if(!el) return;
-  const full = P.target>=2 || P.t>1.5;
+  const full = sheetFull();
   el.querySelector('.pbar').innerHTML = pillBar();
-  const head = el.querySelector('.phead');
-  head.innerHTML = full ? '' : `<div class="sbox">${I('search')}<input id="q" type="search" placeholder="${S.tab==='building'?'Rooms, functions, settings':S.tab==='planner'?'Schedules, modes, functions':'Search everything'}" value="${S.q.replace(/"/g,'&quot;')}" aria-label="Search"></div>`;
-  el.querySelector('.pbody').innerHTML = full ? menuHtml() : quickHtml();
+  el.querySelector('.phead').innerHTML = sheetHead(full);
+  el.querySelector('.pbody').innerHTML = sheetBody(full);
   el.classList.toggle('rail', D.target>0.5);
   applyPill(); /* the bar is positioned by the engine, so a fresh render needs the current geometry at once */
   const q = document.getElementById('q'); if(q && S.qFocus){ q.focus(); q.setSelectionRange(q.value.length,q.value.length); S.qFocus=false; }
@@ -4050,6 +4073,78 @@ function renderAll(){
 function hint(msg){ const h=document.getElementById('hint'); if(!h) return; h.textContent=msg; h.classList.add('on'); clearTimeout(hint.t); hint.t=setTimeout(()=>h.classList.remove('on'), 2200); }
 function collapse(){ if(S.release==='target' && pillEl()) setPill(0); }
 
+/* ---------- the doors check: every destination behind a word ---------- */
+/* No usability test will run, so the prototype checks the one thing such a test finds first: a door nobody sees. From every root page each
+   destination is reached by tapping things that carry a word, two taps at most to the page that holds it. A gesture, “/”, an unlabelled glyph
+   or a second tap on something without a cue is a shortcut, not a door. The check reads the live markup, so a dropped word or chevron turns rows red. */
+const DOOR_ROOTS = ['favorites','building','planner'];
+const DOOR_PAGE_WORD = {function:'Schedules'};   /* “Planner › function › Entries”: the function is picked under Schedules */
+function doorsLive(){
+  const keep = {tab:S.tab, screen:S.screen, q:S.q, room:S.room, cat:S.cat, control:S.control};
+  const dom = (h)=>{ const d=document.createElement('div'); d.innerHTML=h; return d; };
+  const words = (el)=> el ? el.textContent.replace(/\s+/g,' ').trim() : '';
+  const roots = {};
+  DOOR_ROOTS.forEach(tab=>{
+    Object.assign(S, {tab, screen:'home', q:'', room:null, cat:'all', control:null});
+    const bar = dom(pillBar()), page = dom(rootBody()), sel = bar.querySelector('.vb [aria-current="page"]');
+    roots[tab] = {menu: words(bar.querySelector('.glyph .nl')), verbs: [...bar.querySelectorAll('.vb .nl')].map(words), cue: !!(sel && sel.querySelector('.pchev')), search: !!dom(sheetHead(false)).querySelector('input[type="search"]'), page: words(page), bset: words(page.querySelector('[data-v="bset"]'))};
+  });
+  S.screen = 'activity'; const back = words(dom(pillBar()).querySelector('.glyph .nl'));
+  Object.assign(S, keep);
+  const m = dom(menuHtml()), chip = dom(placeChip());
+  return {roots, back, menuSearch: !!dom(sheetHead(true)).querySelector('input[type="search"]'),
+    rows: [...m.querySelectorAll('.mrow')].map(r=>({title: words(r.querySelector('b')), sub: words(r.querySelector('small'))})),
+    change: words(m.querySelector('.chg')), off: words(m.querySelector('.mfoot .off')), place: words(chip.querySelector('.hnm')), placeCue: !!chip.querySelector('svg')};
+}
+/* the markup only changes with the place, the scenario and the device, so the check runs once per combination, not on every tap */
+function validateDoors(){
+  const pl = currentPlace(); if(!pl || pl.kind!=='own') return null;   /* a guest's narrow rights hide rows on purpose: the check runs for an owner */
+  const key = [S.scenario, S.place, S.device].join('|');
+  if(!validateDoors.c || validateDoors.c.key!==key) validateDoors.c = {key, v: checkDoors()};
+  return validateDoors.c.v;
+}
+function checkDoors(){
+  const L = doorsLive(), R = DOOR_ROOTS.map(t=>L.roots[t]), has = (hay, w)=> hay.toLowerCase().includes(w.toLowerCase());
+  const menu = ()=>({w: R[0].menu || '≡', ok: R.every(r=>r.menu), why: 'the glyph carries no word'});
+  const verb = (v)=>({w:v, ok: R.every(r=>r.verbs.includes(v)), why: `no “${v}” on the bar`});
+  const cue = (tab)=>{ const v = TABS_TARGET.find(x=>x[0]===tab)[2]; return {w:`${v} ⌃`, ok: L.roots[tab].cue, why:`a second tap on ${v} with no cue`}; };
+  const field = (inMenu)=>({w:'the search field', ok: inMenu ? L.menuSearch : R.every(r=>r.search), why: inMenu ? 'no search field on the menu' : 'no search field on the sheet'});
+  const row = (w)=>{ const lw = w.toLowerCase(); const r = L.rows.find(x=>x.title.toLowerCase()===lw) || L.rows.find(x=>has(x.title, w)) || L.rows.find(x=>has(x.sub, w)); return {w: r ? r.title : w, ok: !!r, why: `“${w}” is not in the menu`}; };
+  const page = (tab, w)=>({w, ok: has(L.roots[tab].page, w), why: `“${w}” is not on ${tab}`});
+  const route = (home)=>{
+    const seg = home.split(' · ')[0].replace(/\s*\(.*$/,'').split(' and ')[0].trim().split(' › ');
+    if(seg[0]==='Menu header') return {steps:[menu(), {w:L.change, ok:!!L.change, why:'no “Change place” in the menu header'}], rest:seg.slice(2)};
+    if(seg[0]==='Menu footer') return {steps:[menu(), {w:L.off, ok:!!L.off, why:'no log off in the menu footer'}], rest:[]};
+    if(seg[0]==='Menu') return {steps:[menu(), row(seg[2]||seg[1])], rest:seg.slice(3)};
+    if(seg[0].startsWith('Building “…”')) return {steps:[verb('Building'), {w:'… '+(L.roots.building.bset||'Building'), ok:!!L.roots.building.bset, why:'no “…” on the Building page'}], rest:seg.slice(1)};
+    if(DOOR_ROOTS.includes(seg[0].toLowerCase())) return {steps:[verb(seg[0]), page(seg[0].toLowerCase(), DOOR_PAGE_WORD[seg[1]]||seg[1])], rest:seg.slice(2)};
+    return null;
+  };
+  const verdict = (x)=>{ const bad = x.steps.find(s=>!s.ok); return Object.assign(x, {status: bad ? 'hidden' : x.steps.length>2 ? 'deep' : 'worded', why: bad ? bad.why : ''}); };
+  const rows = [{grp:'What the pill holds'}].concat([
+    {dest:'Search, from the selected verb', go:'search', steps:[{w:'the selected verb ⌃', ok: R.every(r=>r.cue), why:'a second tap on the selected verb with no cue'}, field(false)]},
+    {dest:'Search, from Menu', go:'menusearch', steps:[menu(), field(true)]},
+    {dest:'Building: categories and rooms', go:'building', steps:[verb('Building'), cue('building')]},
+    {dest:'Favorites: edit, sorting, this device', go:'favorites', steps:[verb('Favorites'), cue('favorites')]},
+    {dest:'Planner: jumps, operating modes today, create', go:'planner', steps:[verb('Planner'), cue('planner')]},
+    {dest:'Back, from any sub-page', go:'back', steps:[{w:L.back || '←', ok:!!L.back, why:'the back glyph carries no word'}]},
+    {dest:'Change place, from the header', go:'place', steps:[{w:`${L.place} ⌄`, ok:!!L.place && L.placeCue, why:'the place in the header has no cue'}]},
+  ].map(x=>verdict(Object.assign(x, {rest:[]}))));
+  /* the settings map's homes; the Chrome group describes what replaced the old chrome, removed rows have no door */
+  let grp = '';
+  SETMAP.forEach(x=>{ if(x[1]===null){ grp = x[0]; if(grp!=='Chrome') rows.push({grp}); return; } if(grp==='Chrome' || /^removed/i.test(x[1])) return; const r = route(x[1]); if(r) rows.push(verdict(Object.assign(r, {dest:x[0], home:x[1]}))); else rows.push({dest:x[0], home:x[1], steps:[], rest:[], status:'hidden', why:'no route'}); });
+  const n = rows.filter(x=>!x.grp);
+  return {rows, worded: n.filter(x=>x.status==='worded').length, hidden: n.filter(x=>x.status==='hidden').length, deep: n.filter(x=>x.status==='deep').length};
+}
+/* a row of the doors table, opened in the prototype */
+function doorGo(k){
+  ensurePlace(); S.q=''; S.control=null; H=[];
+  if(k==='back'){ S.screen='home'; render(); ACT_PILL.page('notifications'); return; }
+  if(k==='place'){ S.screen='home'; render(); ACT_PILL.places(); return; }
+  if(k==='menusearch'){ S.screen='home'; render(); S.qFocus=true; setPill(2, {force:true}); return; }
+  if(k!=='search') S.tab=k; S.screen='home'; render(); if(k==='search') S.qFocus=true; setPill(1, {force:true});
+}
+
 /* ---------- the Target's actions: the same names as the First release, with the pill's behaviour (collapse after a choice, the sheet as search and menu) ---------- */
 const ACT_PILL = {
   /* a verb's tap: switching a verb always lands on the condensed pill; the active verb opens its sheet and a second tap closes it (from mini, a tap brings the bar back first) */
@@ -4057,10 +4152,10 @@ const ACT_PILL = {
     if(S.tab===v && isRoot()){ setPill(P.target>=1 ? 0 : (P.target<0 ? 0 : 1)); return true; }
     S.tab=v; S.screen='home'; S.control=null; S.q=''; H=[]; renderPage(); renderPill(); setPill(0); return true; },
   back(){ back(); render(); if(P.target>0) collapse(); return true; },
-  menu(){ setPill(P.target>=2 ? 0 : 2, {force:true}); return true; },
+  menu(){ if(P.target<2) S.q=''; setPill(P.target>=2 ? 0 : 2, {force:true}); return true; },
   closeMenu(){ collapse(); return true; },
   togglePlaces(){ S.placesOpen=!S.placesOpen; renderPill(); return true; },
-  places(){ S.placesOpen=true; setPill(2, {force:true}); return true; },
+  places(){ S.placesOpen=true; S.q=''; setPill(2, {force:true}); return true; },
   place(v){ S.place=v; S.placesOpen=false; S.tab='building'; S.screen='home'; S.room=null; S.control=null; S.cat='all'; H=[]; render(); collapse(); return true; },
   openDemo(){ S.place='demo'; S.tab='building'; S.screen='home'; S.room=null; S.control=null; S.cat='all'; H=[]; render(); collapse(); return true; },
   cat(v){ S.cat=v; S.control=null; S.pop=null; if(!isRoot()){ S.screen='home'; } renderPage(); renderPill(); return true; },
@@ -4101,15 +4196,17 @@ document.addEventListener('click', e=>{
   const sg = e.target.closest('[data-setgo]'); if(sg){ gotoHome(sg.dataset.setgo); return; }
   const ap = e.target.closest('[data-appset]'); if(ap){ appSettings(false); return; }
   const scb = e.target.closest('[data-scen]'); if(scb){ S.scenario=scb.dataset.scen; const sel=document.getElementById('scen'); if(sel) sel.value=S.scenario; applyScenario(); H=[]; render(); collapse(); return; }
-  const map = e.target.closest('[data-map]'); if(map){ S.map=!S.map; S.why=false; notes(); return; }
-  const why = e.target.closest('[data-why]'); if(why){ S.why=!S.why; S.map=false; notes(); return; }
-  const flow = e.target.closest('[data-flow]'); if(flow){ S.map=false; S.why=false; const r = window.__flows[Number(flow.dataset.flow)][1](); if(r!==true) render(); notes(); return; }
+  const map = e.target.closest('[data-map]'); if(map){ S.map=!S.map; S.why=false; S.doors=false; notes(); return; }
+  const why = e.target.closest('[data-why]'); if(why){ S.why=!S.why; S.map=false; S.doors=false; notes(); return; }
+  const drs = e.target.closest('[data-doors]'); if(drs){ S.doors=!S.doors; S.map=false; S.why=false; notes(); return; }
+  const dgo = e.target.closest('[data-doorgo]'); if(dgo){ toTarget(); doorGo(dgo.dataset.doorgo); notes(); return; }
+  const flow = e.target.closest('[data-flow]'); if(flow){ S.map=false; S.why=false; S.doors=false; const r = window.__flows[Number(flow.dataset.flow)][1](); if(r!==true) render(); notes(); return; }
   const stb = e.target.closest('[data-state]'); if(stb){ if(S.release!=='target') return; const t = Number(stb.dataset.state); if(D.target>0.5 && t<0) setPill(0); else setPill(t, {force:true}); notes(); return; }
   const set = e.target.closest('[data-set]'); if(set){
     const k=set.dataset.set, v=set.dataset.v;
     if(k==='device'){ S.pop=null; try{ localStorage.setItem('lox-proto-device', v); }catch(_){} if(S.release==='target'){ document.querySelectorAll('#segDevice button').forEach(b=>b.setAttribute('aria-pressed', b.dataset.v===v)); setDevice(v); notes(); return; } S.device=v; render(); return; }
     S[k]=v;
-    if(k==='release'){ S.trust=false; S.menu=false; S.map=false; S.why=false; if(S.release==='first' && S.tab==='planner'){ S.tab='favorites'; S.screen='home'; } if(S.release==='target'){ if(S.screen==='categories'||S.screen==='room'||S.screen==='search'){ S.screen='home'; } setDevice(S.device, true); P.t=0; P.target=0; P.v=0; } }
+    if(k==='release'){ S.trust=false; S.menu=false; S.map=false; S.why=false; S.doors=false; if(S.release==='first' && S.tab==='planner'){ S.tab='favorites'; S.screen='home'; } if(S.release==='target'){ if(S.screen==='categories'||S.screen==='room'||S.screen==='search'){ S.screen='home'; } setDevice(S.device, true); P.t=0; P.target=0; P.v=0; } }
     if(k==='apptheme' && S.release==='target'){ renderAll(); return; }
     if(k==='motion'){ syncToolbar(); return; }
     render(); return;
@@ -4121,7 +4218,7 @@ document.addEventListener('click', e=>{
   if(S.release==='target') notes();
 });
 document.getElementById('scen').addEventListener('change', e=>{ S.scenario=e.target.value; applyScenario(); H=[]; render(); collapse(); });
-document.addEventListener('input', e=>{ if(e.target.id!=='q') return; S.q=e.target.value; S.qFocus=true; if(S.release==='target'){ const el=pillEl(); if(el) el.querySelector('.pbody').innerHTML = quickHtml(); } else render(); });
+document.addEventListener('input', e=>{ if(e.target.id!=='q') return; S.q=e.target.value; S.qFocus=true; if(S.release==='target'){ const el=pillEl(); if(el) el.querySelector('.pbody').innerHTML = sheetBody(sheetFull()); } else render(); });
 document.addEventListener('keydown', e=>{ if(S.release!=='target') return; if(e.key==='Escape'){ collapse(); } if(e.key==='/' && !/input|textarea/i.test(e.target.tagName)){ e.preventDefault(); ACT_PILL.search(); } });
 
 /* pointer: the pill's drag, and hold-to-open */
