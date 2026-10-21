@@ -1243,14 +1243,11 @@ svg{display:block}
 .pdim.on{pointer-events:auto}
 .tpill{position:absolute;z-index:6;background:#1C1610;color:#fff;box-shadow:0 12px 30px rgba(0,0,0,.22);overflow:hidden;touch-action:none;user-select:none;-webkit-user-select:none;will-change:width,height,border-radius,transform}
 .tpill .sheetbg{position:absolute;inset:0;background:var(--a-bg0);opacity:0;pointer-events:none}
-.tpill .sheetbg.dark{background:linear-gradient(180deg,#0E0E0E,#171717)}
 .tpill .handle{position:absolute;left:0;right:0;top:0;height:22px;display:flex;align-items:center;justify-content:center;opacity:0;cursor:grab;z-index:2}
 .tpill .pwrap{position:absolute;left:0;right:0;top:22px;bottom:76px;display:flex;flex-direction:column;min-height:0}
 .tpill .handle i{width:36px;height:5px;border-radius:3px;background:rgba(28,22,16,.25)}
-.tpill .handle.dark i{background:rgba(255,255,255,.3)}
 .tpill .phead{position:relative;flex:none;padding:2px 16px 8px;opacity:0;z-index:2}
 .tpill .pbody{position:relative;flex:1;min-height:0;overflow:auto;padding:2px 16px 14px;opacity:0;scrollbar-width:thin;z-index:2;color:var(--a-fg)}
-.tpill .pbody.dark{color:#fff}
 .tpill .pbar{position:absolute;left:0;right:0;bottom:0;height:70px;border-radius:35px;background:#1C1610;display:flex;align-items:center;justify-content:space-between;padding:0 5px;z-index:3;transition:box-shadow .2s}
 .tpill .pbar.inset{box-shadow:0 8px 24px rgba(0,0,0,.18)}
 .tpill .pbar button{width:68px;height:60px;border-radius:30px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#fff;opacity:.5;position:relative;overflow:hidden;flex:none}
@@ -1279,24 +1276,35 @@ svg{display:block}
 .tpill.rail .pbar .vb{flex-direction:column;flex:1;justify-content:flex-start;gap:2px;width:100%}
 .tpill.rail .pbar button{width:60px;height:60px}
 .tpill.rail .pbar .glyph{width:60px;height:56px}
-.tpill.rail .pbar .help{margin-top:auto}
 .tpill.rail .phead{position:relative;padding:14px 20px 6px 20px}
 .tpill.rail .pbody{padding:2px 20px 16px 20px}
-/* content inside the light sheet reuses the app styles; dark overrides for the full state */
-.tpill .pbody.dark .lbl{color:rgba(255,255,255,.5)}
-.tpill .pbody.dark .grp{background:rgba(255,255,255,.05);box-shadow:none}
-.tpill .pbody.dark .gr{color:#fff;border-color:rgba(255,255,255,.08)}
-.tpill .pbody.dark .gr .tx small{color:#A2A2A2}
-.tpill .pbody.dark .gr .val{color:#A2A2A2}
-.tpill .pbody.dark .gr .ch{color:#fff}
-.tpill .pbody.dark .note{background:rgba(255,255,255,.06);color:#A2A2A2}
-.tpill .pbody.dark .note b{color:#fff}
-.tpill .pbody.dark .lc{background:rgba(255,255,255,.06);box-shadow:none;color:#fff}
-.tpill .pbody.dark .lc .tx small{color:#A2A2A2}
-.tpill .pbody.dark .lc .ch{color:#fff}
+/* the menu on the sheet's own surface: the kit's dark drawer colours become the app's tokens, so light mode and dark mode each get one surface for every state of the pill */
+.tpill{--pill-accent:var(--a-green-shade)}
+.app[data-apptheme="dark"] .tpill{--pill-accent:var(--a-green)}
 .tpill .pbody .mh{padding:6px 0 8px}
 .tpill .pbody .mb{padding:0;overflow:visible}
 .tpill .pbody .mfoot{padding:12px 8px 4px}
+.tpill .pbody .who b{color:var(--a-fg)}
+.tpill .pbody .who small{color:var(--a-sec2)}
+.tpill .pbody .who .circ{background:var(--a-pill);color:var(--a-fg)}
+.tpill .pbody .msq.dim{background:var(--a-pill);color:var(--a-fg)}
+.tpill .pbody .chg{color:var(--pill-accent)}
+.tpill .pbody .prow2{background:var(--a-pill);color:var(--a-fg)}
+.tpill .pbody .prow2 .tx small{color:var(--a-sec2)}
+.tpill .pbody .prow2 .ok{color:var(--pill-accent)}
+.tpill .pbody .prow2.add{border-color:var(--a-sec)}
+.tpill .pbody .msec{color:var(--a-fg50)}
+.tpill .pbody .mgroup{background:var(--a-tile);box-shadow:var(--a-shadow)}
+.tpill .pbody .mrow{color:var(--a-fg);border-bottom:1px solid var(--a-div)}
+.tpill .pbody .mrow:last-child{border-bottom:0}
+.tpill .pbody .mrow svg.i{color:var(--pill-accent)}
+.tpill .pbody .mrow .tx small{color:var(--a-sec2)}
+.tpill .pbody .mrow .ch{color:var(--a-fg)}
+.tpill .pbody .mrow .val{color:var(--a-sec2)}
+.tpill .pbody .mfoot .q{border-color:var(--a-div);color:var(--a-fg)}
+.tpill .pbody .mfoot .off{color:var(--a-fg)}
+.tpill .pbody .mfoot .off svg{color:var(--pill-accent)}
+.tpill .pbody .mempty{border-color:var(--a-sec);color:var(--a-sec2)}
 .tpill .sbox{height:46px;margin:0}
 .tpill .pbody .list{gap:8px}
 .tpill .pbody .lc.room{padding:10px 14px}
@@ -1334,9 +1342,14 @@ svg{display:block}
 .device{will-change:width,height,border-radius,padding}
 .phint{position:absolute;left:50%;transform:translateX(-50%);bottom:108px;background:rgba(28,22,16,.85);color:#fff;font-size:13px;font-weight:600;padding:8px 14px;border-radius:999px;z-index:7;pointer-events:none;white-space:nowrap;opacity:0;transition:opacity .25s}
 .phint.on{opacity:1}
+/* dark mode: the pill lifts off the page on the kit's elevated surface with a Loxone-green hairline (the First release's bar and rail get the same) */
+.app[data-apptheme="dark"] .tpill{background:#1E1E1E;box-shadow:0 12px 30px rgba(0,0,0,.6),0 0 0 1px rgba(141,255,112,.5)}
+.app[data-apptheme="dark"] .tpill .pbar{background:#1E1E1E}
+.app[data-apptheme="dark"] .tpill .pbar button[aria-current="page"]{background:rgba(255,255,255,.14)}
 .app[data-apptheme="dark"] .tpill .sheetbg{background:#161616}
 .app[data-apptheme="dark"] .tpill .handle i{background:rgba(255,255,255,.3)}
-.app[data-apptheme="dark"] .tpill .pbar.inset{box-shadow:0 8px 24px rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.06)}
+.app[data-apptheme="dark"] .tpill .pbar.inset{box-shadow:0 8px 24px rgba(0,0,0,.5),0 0 0 1px rgba(141,255,112,.4)}
+.app[data-apptheme="dark"] .nav,.app[data-apptheme="dark"] .railpill{background:#1E1E1E;box-shadow:0 12px 30px rgba(0,0,0,.6),0 0 0 1px rgba(141,255,112,.5)}
 /* notes: the bar candidates */
 .bartable{width:100%;border-collapse:collapse;font-size:12px;margin:8px 0 6px}
 .bartable th{text-align:left;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding:5px 5px;border-bottom:1px solid var(--line);font-weight:700}
@@ -1458,6 +1471,10 @@ const X = {
   layout:'<rect x="3.5" y="3.5" width="17" height="17" rx="2"/><path d="M3.5 10h17M10 10v10.5"/>',
   logout:'<path d="M10 4H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h4M15 8l4 4-4 4M19 12H9"/>',
 };
+/* the three verbs of the pill: outline when inactive, filled when selected (the calendar fills its body under the header line only) */
+LX['nav-fav-o'] = {vb:LX['nav-fav'].vb, b:LX['nav-fav'].b.replace('fill="currentColor" ','')};
+LX['nav-central-f'] = {vb:LX['nav-central'].vb, b:LX['nav-central'].b.replace('stroke-width="1.5"','fill="currentColor" stroke-width="1.5"')};
+LX['calendar-f'] = {vb:LX['calendar'].vb, b:'<path d="M1.14282 6.85707H14.8571V13.7143C14.8571 14.3454 14.3454 14.8571 13.7143 14.8571H2.28568C1.65449 14.8571 1.14282 14.3454 1.14282 13.7143Z" fill="currentColor"/>'+LX['calendar'].b};
 const I = (n, cls='') => {
   const d = LX[n];
   if(d) return `<svg class="${cls}" viewBox="${d.vb}" fill="none" aria-hidden="true">${d.b}</svg>`;
@@ -1657,7 +1674,7 @@ function schedulesHere(){ const g = placeGroup(); return SCHEDULES.filter(s=>CTR
 /* every setting of today's app (document 03, section 3, and the two menu screenshots) and its one home in v2 */
 const SETMAP = [
   ['Menu today', null],
-  ['Stories / News', 'Menu › Loxone › News (opt-in, owners) · NEWS pill on Favorites'],
+  ['Stories / News', 'Menu › Loxone › News (opt-in, owners)'],
   ['Scenes', 'Menu › Building › Automations › Scenes'],
   ['Operating modes & calendar', 'Planner › Operating modes (next release; until then Menu › Building › Automations)'],
   ['Schedules per function (Schaltuhr, IRC schedule)', 'Planner › function › Entries · control › Schedule'],
@@ -1791,7 +1808,6 @@ function statusPills(){
     <button class="pl" data-act="bpage" data-v="bsys">${I('heart-rate')} OK</button>
     <button class="pl" data-act="toast" data-v="Weather: 10°, cloudy, rain from 18:00">${I('weather-cloudy')} 10°</button>
     <button class="pl" data-act="tab" data-v="planner">${I('calendar')} ${plStatePill()}</button>
-    <button class="pl" data-act="page" data-v="loxone">${I('news')} NEWS<span class="gd"></span></button>
     <button class="pl" data-act="lens" data-v="lighting">${I('bulb2')} ${lightsOn} on</button>
     <button class="pl ${open?'warn':''}" data-act="open" data-v="c6">${I('window')} ${open? open+' open':'All closed'}</button>
     <button class="pl" data-act="open" data-v="c3">${I('alarm')} ${alarm?'Armed':'Disarmed'}</button>
@@ -3287,7 +3303,7 @@ function screenActs(){
 }
 
 /* ---------- phone frame ---------- */
-const TABS_TARGET = [['favorites','nav-fav','Favorites'],['building','nav-central','Building'],['planner','calendar','Planner']];
+const TABS_TARGET = [['favorites','nav-fav-o','Favorites','nav-fav'],['building','nav-central','Building','nav-central-f'],['planner','calendar','Planner','calendar-f']];
 const TABS_FIRST = [['favorites','nav-fav','Favorites'],['central','nav-central','Central'],['rooms','nav-rooms','Rooms'],['categories','nav-categories','Categories'],['trust','nav-trust','Trust']];
 function tabs(){ return S.release==='first' ? TABS_FIRST : TABS_TARGET; }
 function activeTab(){
@@ -3473,11 +3489,11 @@ const BAR = [
   ['Trust · places','rare','a switch','which place','multi-place owners','menu header'],
 ];
 const NOTES_T = {
-  pill:{t:'The pill, condensed', tags:['Target','V17 NavBar','iOS 26'], b:['Today’s V17 bar with three verbs, labels, and the menu glyph at its left end. Tap a verb to switch, tap the active verb or pull the handle to expand, scroll the page to shrink it to the active verb only.','Three verbs, not four: Favorites, Building, Planner. The candidates table (“The bar”) shows why Activity became the bell and Access a menu group with a lock-screen widget.','Spring: stiffness 320, damping 40, mass 1, the values from the V17 nav bar in Figma. Every move is interruptible: grab it mid-flight and it follows your finger.']},
+  pill:{t:'The pill, condensed', tags:['Target','V17 NavBar','iOS 26'], b:['Today’s V17 bar with three verbs, labels, and the menu glyph at its left end: outline glyphs, the selected verb filled (the calendar fills its body under the header line). Tap a verb to switch, tap the active verb to expand, scroll the page to shrink it to the active verb only. In dark mode the pill lifts off the page with a Loxone-green hairline.','Three verbs, not four: Favorites, Building, Planner. The candidates table (“The bar”) shows why Activity became the bell and Access a menu group with a lock-screen widget.','Spring: stiffness 320, damping 40, mass 1, the values from the V17 nav bar in Figma. Every move is interruptible: grab it mid-flight and it follows your finger.']},
   mini:{t:'Mini: out of the way while you read', tags:['Target','iOS 26'], b:['Scrolling down folds the inactive verbs away; the menu glyph and the active verb stay, the verb as icon and label in a row, the way the iOS 26 tab bar minimizes to its selected tab. The width follows the label.','One continuous move: icon and label are positioned by the engine, so the column layout of the bar and the row layout of the mini pill are the same elements at two ends of one spring. Scroll up, tap, or pull to bring it back.']},
   expanded:{t:'Expanded: the controls of the active verb', tags:['Target','Stream C'], b:['Building arrives with its sheet open: the categories as one row that stays on top, the rooms by floor with their squares right under it. Tap a category and the rooms filter in place; tap a room or a square and the sheet drops back while the page behind shows the result. Tap Building again to close the sheet.','Favorites: edit, sorting, the status pills. Planner: jumps (today, every schedule today, the two lists), the operating modes running or due today, create.','The search field on top covers rooms, functions, schedules, modes and every setting with its path. Type “kitchen light” or “CarPlay”.']},
-  full:{t:'Full: the menu, grouped by owner', tags:['Target','Stream A','07 §3','09 §5'], b:['The hamburger has moved into the pill. Pull to the top or tap the glyph: the sheet turns dark and becomes the menu, Access · Building · App · Loxone, with the place in the header and log off in the footer.','The page behind scales down and dims, so the menu reads as a layer over the app, not a different app.','Every entry of today’s menu has exactly one home here or under Access; see the settings map. Locked rows for people without full access are shown with the reason.']},
-  tablet:{t:'The rail: the same object, docked left', tags:['Target','09 §4'], b:['Switch the device above to watch the morph: the frame grows, the pill travels to the left edge and turns into the rail, the verbs stack. Condensed is the rail, expanded pushes the content and shows the facets as a sidebar, full is the menu panel over the content.','Drag the handle on the rail’s right edge, or tap the active verb. The bell sits in the header, next to search.']},
+  full:{t:'Full: the menu, grouped by owner', tags:['Target','Stream A','07 §3','09 §5'], b:['The hamburger has moved into the pill. Tap the glyph or pull to the top: the sheet grows and becomes the menu, Access · Building · App · Loxone, with the place in the header and log off in the footer. The sheet keeps its surface in every state (light in light mode, dark in dark mode); only its content changes.','The page behind scales down and dims, so the menu reads as a layer over the app, not a different app.','Every entry of today’s menu has exactly one home here or under Access; see the settings map. Locked rows for people without full access are shown with the reason.']},
+  tablet:{t:'The rail: the same object, docked left', tags:['Target','09 §4'], b:['Switch the device above to watch the morph: the frame grows, the pill travels to the left edge and turns into the rail, the verbs stack. Condensed, the rail is as tall as its content: the menu glyph and the three verbs; expanded it unfolds to the facet sidebar, full to the menu panel.','Tap the active verb or drag the handle on the rail’s right edge. The bell sits in the header, next to search; Help & about lives in the menu under Loxone.']},
   building:{t:'Building: the page is the result, the facets live in the pill', tags:['Target','Stream C','09 §2 rule 2'], b:['Nothing selected: Central’s functions and the room cards. Building arrives with the facets open (tap Building again to close them): categories as one row with room counts, rooms by floor with one square per category present, lit when something is on or open.','Tap a room, a category, or a square and the pill drops back while the page shows the result: the selection title (Kitchen · Lighting) with “…” for the room and × to clear. Rooms and categories narrow each other, in either order.','There is no separate room page: the selection is the page. Central is a room in the same model.']},
   'building-lens':{t:'The lens: one category across the building', tags:['Target','Stream C'], b:['With a lens the page collapses into that category’s functions, Central first, each with its inline action: the “all lights” view without a separate Categories tab.','Clear it with × in the title or in the pill; add a room in the pill to narrow further.']},
   favorites:{t:'Favorites: my shortcuts, with state', tags:['Target','04 PP-05','05 Hebel 1'], b:['Unchanged V17 home: Highlight header, pills, FunctionCards_M. The pills continue with live state (lights on, open doors, alarm, the Planner’s state); each is a shortcut into Building or a control.','“Edit” is the primary action of the view and sits in the expanded pill with the sorting. Sorting mode lives once, under Menu › App › Appearance, start & language.','The pill below: Favorites · Building · Planner with labels and the menu glyph at its left end. The bell in the header carries what happened; Access lives in the menu (pull the pill to full) and on the lock screen.']},
@@ -3707,11 +3723,12 @@ function phoneKeys(){
     '2':{w:W-16, h:H-70, r:28, x:8, y:62},
   };
 }
+const RAIL_H = 5 + 56 + 2 + 3*60 + 2*2 + 5;   /* glyph, three verbs, the gaps and the padding: the condensed rail is as tall as its content */
 function tabletKeys(){
   const W=TB.w, H=TB.h;
   return {
-    '-1':{w:70, h:H-60, r:35, x:16, y:44},
-    '0':{w:70, h:H-60, r:35, x:16, y:44},
+    '-1':{w:70, h:RAIL_H, r:35, x:16, y:44},
+    '0':{w:70, h:RAIL_H, r:35, x:16, y:44},
     '1':{w:400, h:H-60, r:35, x:16, y:44},
     '2':{w:490, h:H-60, r:35, x:16, y:44},
   };
@@ -3733,9 +3750,10 @@ function applyPill(){
   const g = {w:lerp(gp.w,gt.w,dt), h:lerp(gp.h,gt.h,dt), r:lerp(gp.r,gt.r,dt), x:lerp(gp.x,gt.x,dt), y:lerp(gp.y,gt.y,dt)};
   el.style.width = g.w+'px'; el.style.height = g.h+'px'; el.style.borderRadius = g.r+'px'; el.style.left = g.x+'px'; el.style.top = g.y+'px';
   const open = clamp(t,0,1), full = clamp(t-1,0,1), mini = clamp(-t,0,1);
-  const bg = el.querySelector('.sheetbg'); bg.style.opacity = open; bg.classList.toggle('dark', full>0.5);
-  const handle = el.querySelector('.handle'); handle.style.opacity = smooth(open*1.4); handle.classList.toggle('dark', full>0.5);
-  const body = el.querySelector('.pbody'); body.style.opacity = smooth((open-0.35)/0.65); body.style.pointerEvents = open>0.6 ? 'auto':'none'; body.classList.toggle('dark', full>0.5);
+  /* the sheet keeps the app's surface in every state (light in light mode, dark in dark mode); only its content changes */
+  const bg = el.querySelector('.sheetbg'); bg.style.opacity = open;
+  const handle = el.querySelector('.handle'); handle.style.opacity = smooth(open*1.4);
+  const body = el.querySelector('.pbody'); body.style.opacity = smooth((open-0.35)/0.65); body.style.pointerEvents = open>0.6 ? 'auto':'none';
   const head = el.querySelector('.phead'); head.style.opacity = smooth((open-0.4)/0.6); head.style.pointerEvents = open>0.6 ? 'auto':'none';
   const bar = el.querySelector('.pbar');
   const isRail = dt>0.5;
@@ -3943,9 +3961,9 @@ function menuHtml(){
 function pillBar(){
   const noPlace = !S.place; const cur = S.tab; const root = isRoot();
   const glyph = root ? `<button class="glyph" data-act="menu" aria-label="Menu"><span class="hamb"><i></i><i></i></span></button>` : `<button class="glyph" data-act="back" aria-label="Back">${I('arrow-left')}</button>`;
-  const verbs = TABS.map(([id,icon,label])=>`<button data-act="tab" data-v="${id}" aria-current="${cur===id && root && !noPlace?'page':'false'}" aria-label="${label}" ${noPlace?'aria-disabled="true"':''}>${I(icon)}<span class="nl">${label}</span></button>`).join('');
-  const help = D.target>0.5 ? `<button class="help" data-act="page" data-v="loxone" aria-label="Help">${I('question')}</button>` : '';
-  return `${glyph}<span class="vb">${verbs}</span>${help}`;
+  /* outline glyphs; the selected verb carries the filled one. Help & about lives in the menu (Loxone), so the rail carries no second entry */
+  const verbs = TABS.map(([id,icon,label,filled])=>{ const on = cur===id && root && !noPlace; return `<button data-act="tab" data-v="${id}" aria-current="${on?'page':'false'}" aria-label="${label}" ${noPlace?'aria-disabled="true"':''}>${I(on?filled:icon)}<span class="nl">${label}</span></button>`; }).join('');
+  return `${glyph}<span class="vb">${verbs}</span>`;
 }
 function renderPill(){
   const el = pillEl(); if(!el) return;
