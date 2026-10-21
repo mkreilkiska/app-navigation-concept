@@ -1276,8 +1276,8 @@ svg{display:block}
 .tpill.rail .pbar .vb{flex-direction:column;flex:1;justify-content:flex-start;gap:2px;width:100%}
 .tpill.rail .pbar button{width:60px;height:60px}
 .tpill.rail .pbar .glyph{width:60px;height:56px}
-.tpill.rail .phead{position:relative;padding:14px 20px 6px 20px}
-.tpill.rail .pbody{padding:2px 20px 16px 20px}
+.tpill.rail .phead{position:relative;padding:14px 16px 6px 16px}
+.tpill.rail .pbody{padding:2px 16px 16px 16px}
 /* the menu on the sheet's own surface: the kit's dark drawer colours become the app's tokens, so light mode and dark mode each get one surface for every state of the pill */
 .tpill{--pill-accent:var(--a-green-shade)}
 .app[data-apptheme="dark"] .tpill{--pill-accent:var(--a-green)}
@@ -1307,7 +1307,34 @@ svg{display:block}
 .tpill .pbody .mempty{border-color:var(--a-sec);color:var(--a-sec2)}
 .tpill .sbox{height:46px;margin:0}
 .tpill .pbody .list{gap:8px}
-.tpill .pbody .lc.room{padding:10px 14px}
+/* the rooms as compact rows: icon, name, the category squares; the summary and the chevron go (the row itself opens the room) */
+.tpill .pbody .list{gap:6px}
+.tpill .pbody .lc.room{flex-direction:row;align-items:center;gap:8px;min-height:52px;padding:6px 10px 6px 12px}
+.tpill .pbody .lc.room .r1{flex:1;min-width:0;gap:10px}
+.tpill .pbody .lc.room .r1 .ic{width:28px;height:28px}
+.tpill .pbody .lc.room .r1 .ic svg{width:22px;height:22px}
+.tpill .pbody .lc.room .r1 .tx{font-size:15px}
+.tpill .pbody .lc.room .r1 .ch{display:none}
+.tpill .pbody .lc.room .r1 .tr{font-size:13px;gap:6px}
+.tpill .pbody .lc.room .r2{padding-left:0;flex:none}
+.tpill .pbody .lc.room .r2 small{display:none}
+.tpill .pbody .lc.room .cq{width:28px;height:28px;border-radius:7px}
+.tpill .pbody .lc.room .cq svg{width:16px;height:16px}
+.tpill .pbody .lc.room .cqs{gap:4px}
+/* the rail's sidebar is narrower than the phone sheet: smaller squares keep the room names whole */
+.tpill.rail .pbody .lc.room .cq{width:24px;height:24px;border-radius:6px}
+.tpill.rail .pbody .lc.room .cq svg{width:14px;height:14px}
+.tpill.rail .pbody .lc.room .cqs{gap:3px}
+.tpill.rail .pbody .lc.room{padding:6px 8px 6px 10px}
+/* the categories as one row of icons, all visible at once; the chosen one in its colour */
+.catrow{display:flex;justify-content:space-between;gap:6px;padding:2px 0 4px}
+.catq{flex:1 1 0;max-width:46px;height:44px;border-radius:12px;background:var(--a-pill);display:inline-flex;align-items:center;justify-content:center;color:var(--c);position:relative}
+.catq svg{width:22px;height:22px}
+.catq.on{background:var(--c);color:#1C1610}
+.catq.on::after{content:"";position:absolute;left:50%;bottom:-6px;width:4px;height:4px;border-radius:2px;background:var(--a-fg);transform:translateX(-50%)}
+/* the Target's header is the kit's neutral variant: the page's own surface, ink on it */
+.fh.neutral{background:var(--a-bg0);color:var(--a-fg)}
+.fh.neutral .icb .badge{background:var(--a-fg);border-color:var(--a-bg0)}
 .tpill .pbody .flabel{font-size:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--a-fg50);padding:12px 2px 8px;display:flex;justify-content:space-between;align-items:center}
 .tpill .pbody .flabel a{text-transform:none;letter-spacing:0;font-weight:600;color:var(--a-fg);display:inline-flex;align-items:center;gap:4px;font-size:13px;text-decoration:none}
 .tpill .pbody .flabel a svg{width:14px;height:14px}
@@ -1316,11 +1343,8 @@ svg{display:block}
 .tpill .quick .btn{height:44px;font-size:14px}
 /* Building's facets: the categories as one row that stays on top of the sheet, the rooms right under it */
 .tpill .pbody .facets-top{position:sticky;top:-2px;z-index:2;background:var(--a-bg0);margin:-2px -16px 0;padding:2px 16px 6px}
-.tpill.rail .pbody .facets-top{margin:-2px -20px 0;padding:2px 20px 6px}
+.tpill.rail .pbody .facets-top{margin:-2px -16px 0;padding:2px 16px 6px}
 .app[data-apptheme="dark"] .tpill .pbody .facets-top{background:#161616}
-.tpill .pbody .facets-top .pills{margin:0 -16px;padding:2px 16px 4px}
-.tpill.rail .pbody .facets-top .pills{margin:0;padding:2px 0 4px}
-.tpill .pbody .facets-top .pills.wrapchips{margin:0;padding:0}
 /* in-page selection title (phone Building) */
 .seltitle{display:flex;align-items:center;gap:10px;margin:10px 0 6px}
 .seltitle h1{margin:0;font-size:28px;font-weight:600;letter-spacing:-.01em;line-height:1.1;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -3473,7 +3497,7 @@ const NOTES = {
   tablet:{t:'Rail, facet sidebar, main area', tags:['Stream C','04 PP-04','09 §4'], b:['The rail is the nav bar turned vertical, with the menu on top. Favorites, Building, Planner: nothing to choose, nothing hidden at the bottom. The bell sits in the header, next to search.','The sidebar belongs to Building only: categories as a wrapped pill cloud, rooms by floor with their squares. Pick a category and the rooms collapse; pick a room and the squares stay as entry points.','The main area follows: nothing selected → Central functions and room cards; a lens → that category across the building; a room → its functions; both → the group, or the single control opened in the side panel.']},
 };
 /* the Target: the pill's states and the pages whose shape the pill changes */
-const RULES_T = ['One object. The nav bar and the side menu are the same pill: three verbs at the bottom. Every state is one tap away: the active verb opens its sheet and closes it again, Building arrives with its sheet open, the glyph opens the menu, the dimmed page closes everything. Pulling is the continuous alternative, never required.','Three verbs, the same on every device: Favorites (what matters to me), Building (where and what), Planner (when). What happened is the bell in the header; getting in is the Access group of the menu and a widget on the lock screen. On the tablet the pill docks left as a rail; expanded it is the facet sidebar, full it is the menu panel.','The page is always the result. Building shows what the selection in the pill means: nothing selected → Central and the rooms; a room, a category, or both → their functions. No separate room page.','Every setting has exactly one home: Menu › Access, Menu › Building, Menu › App, Menu › Loxone. The validation table proves nothing got lost.'];
+const RULES_T = ['One object. The nav bar and the side menu are the same pill: three verbs at the bottom. Every state is one tap away: a verb switches and lands on the condensed pill, the active verb opens its sheet and closes it again, the glyph opens the menu, the dimmed page closes everything. A pull moves the sheet between condensed and expanded; the menu is the glyph’s alone.','Three verbs, the same on every device: Favorites (what matters to me), Building (where and what), Planner (when). What happened is the bell in the header; getting in is the Access group of the menu and a widget on the lock screen. On the tablet the pill docks left as a rail; expanded it is the facet sidebar, full it is the menu panel.','The page is always the result. Building shows what the selection in the pill means: nothing selected → Central and the rooms; a room, a category, or both → their functions. No separate room page.','Every setting has exactly one home: Menu › Access, Menu › Building, Menu › App, Menu › Loxone. The validation table proves nothing got lost.'];
 const BAR = [
   ['Favorites','daily','dwell','what matters to me','everyone','on the bar',1],
   ['Building','daily','dwell','where and what','everyone','on the bar',1],
@@ -3489,12 +3513,12 @@ const BAR = [
   ['Trust · places','rare','a switch','which place','multi-place owners','menu header'],
 ];
 const NOTES_T = {
-  pill:{t:'The pill, condensed', tags:['Target','V17 NavBar','iOS 26'], b:['Today’s V17 bar with three verbs, labels, and the menu glyph at its left end: outline glyphs, the selected verb filled (the calendar fills its body under the header line). Tap a verb to switch, tap the active verb to expand, scroll the page to shrink it to the active verb only. In dark mode the pill lifts off the page with a Loxone-green hairline.','Three verbs, not four: Favorites, Building, Planner. The candidates table (“The bar”) shows why Activity became the bell and Access a menu group with a lock-screen widget.','Spring: stiffness 320, damping 40, mass 1, the values from the V17 nav bar in Figma. Every move is interruptible: grab it mid-flight and it follows your finger.']},
+  pill:{t:'The pill, condensed', tags:['Target','V17 NavBar','iOS 26'], b:['Today’s V17 bar with three verbs, labels, and the menu glyph at its left end: outline glyphs, the selected verb filled (the calendar fills its body under the header line). Tap a verb to switch, tap the active verb to expand, scroll the page to shrink it to the active verb only. In dark mode the pill lifts off the page with a Loxone-green hairline. The header above is the kit’s neutral variant.','Three verbs, not four: Favorites, Building, Planner. The candidates table (“The bar”) shows why Activity became the bell and Access a menu group with a lock-screen widget.','Spring: stiffness 320, damping 40, mass 1, the values from the V17 nav bar in Figma. Every move is interruptible: grab it mid-flight and it follows your finger.']},
   mini:{t:'Mini: out of the way while you read', tags:['Target','iOS 26'], b:['Scrolling down folds the inactive verbs away; the menu glyph and the active verb stay, the verb as icon and label in a row, the way the iOS 26 tab bar minimizes to its selected tab. The width follows the label.','One continuous move: icon and label are positioned by the engine, so the column layout of the bar and the row layout of the mini pill are the same elements at two ends of one spring. Scroll up, tap, or pull to bring it back.']},
-  expanded:{t:'Expanded: the controls of the active verb', tags:['Target','Stream C'], b:['Building arrives with its sheet open: the categories as one row that stays on top, the rooms by floor with their squares right under it. Tap a category and the rooms filter in place; tap a room or a square and the sheet drops back while the page behind shows the result. Tap Building again to close the sheet.','Favorites: edit, sorting, the status pills. Planner: jumps (today, every schedule today, the two lists), the operating modes running or due today, create.','The search field on top covers rooms, functions, schedules, modes and every setting with its path. Type “kitchen light” or “CarPlay”.']},
+  expanded:{t:'Expanded: the controls of the active verb', tags:['Target','Stream C'], b:['Tap the active verb: Building opens the facets, the categories as one row of icons that stays on top (all of them visible, no words, the chosen one in its colour), the rooms by floor as compact rows right under it. Tap a category and the rooms filter in place; tap a room or a square and the sheet drops back while the page behind shows the result. Tap Building again to close the sheet.','Favorites: edit, sorting, the status pills. Planner: jumps (today, every schedule today, the two lists), the operating modes running or due today, create.','The search field on top covers rooms, functions, schedules, modes and every setting with its path. Type “kitchen light” or “CarPlay”.']},
   full:{t:'Full: the menu, grouped by owner', tags:['Target','Stream A','07 §3','09 §5'], b:['The hamburger has moved into the pill. Tap the glyph or pull to the top: the sheet grows and becomes the menu, Access · Building · App · Loxone, with the place in the header and log off in the footer. The sheet keeps its surface in every state (light in light mode, dark in dark mode); only its content changes.','The page behind scales down and dims, so the menu reads as a layer over the app, not a different app.','Every entry of today’s menu has exactly one home here or under Access; see the settings map. Locked rows for people without full access are shown with the reason.']},
   tablet:{t:'The rail: the same object, docked left', tags:['Target','09 §4'], b:['Switch the device above to watch the morph: the frame grows, the pill travels to the left edge and turns into the rail, the verbs stack. Condensed, the rail is as tall as its content: the menu glyph and the three verbs; expanded it unfolds to the facet sidebar, full to the menu panel.','Tap the active verb or drag the handle on the rail’s right edge. The bell sits in the header, next to search; Help & about lives in the menu under Loxone.']},
-  building:{t:'Building: the page is the result, the facets live in the pill', tags:['Target','Stream C','09 §2 rule 2'], b:['Nothing selected: Central’s functions and the room cards. Building arrives with the facets open (tap Building again to close them): categories as one row with room counts, rooms by floor with one square per category present, lit when something is on or open.','Tap a room, a category, or a square and the pill drops back while the page shows the result: the selection title (Kitchen · Lighting) with “…” for the room and × to clear. Rooms and categories narrow each other, in either order.','There is no separate room page: the selection is the page. Central is a room in the same model.']},
+  building:{t:'Building: the page is the result, the facets live in the pill', tags:['Target','Stream C','09 §2 rule 2'], b:['Nothing selected: Central’s functions and the room cards. Tap Building again for the facets: the categories as one row of icons, the rooms by floor as compact rows with one square per category present, lit when something is on or open.','Tap a room, a category, or a square and the pill drops back while the page shows the result: the selection title (Kitchen · Lighting) with “…” for the room and × to clear. Rooms and categories narrow each other, in either order.','There is no separate room page: the selection is the page. Central is a room in the same model.']},
   'building-lens':{t:'The lens: one category across the building', tags:['Target','Stream C'], b:['With a lens the page collapses into that category’s functions, Central first, each with its inline action: the “all lights” view without a separate Categories tab.','Clear it with × in the title or in the pill; add a room in the pill to narrow further.']},
   favorites:{t:'Favorites: my shortcuts, with state', tags:['Target','04 PP-05','05 Hebel 1'], b:['Unchanged V17 home: Highlight header, pills, FunctionCards_M. The pills continue with live state (lights on, open doors, alarm, the Planner’s state); each is a shortcut into Building or a control.','“Edit” is the primary action of the view and sits in the expanded pill with the sorting. Sorting mode lives once, under Menu › App › Appearance, start & language.','The pill below: Favorites · Building · Planner with labels and the menu glyph at its left end. The bell in the header carries what happened; Access lives in the menu (pull the pill to full) and on the lock screen.']},
 };
@@ -3519,7 +3543,7 @@ function notesHtml(){
     ['First release: Access in the side menu', ()=>{ S.release='first'; ensurePlace(); S.tab='favorites'; S.screen='home'; S.menu=true; S.placesOpen=false; }],
     ['First release: hotel key only (start page)', ()=>{ S.release='first'; S.scenario='guest'; document.getElementById('scen').value='guest'; applyScenario(); }],
     ['First release: Rooms tab with the lens', ()=>{ S.release='first'; ensurePlace(); S.tab='building'; S.screen='home'; S.room=null; S.cat='lighting'; }],
-    ['Target: Building arrives with its facets open', ()=>{ toTarget(); ensurePlace(); S.tab='building'; S.screen='home'; S.room=null; S.cat='all'; S.q=''; render(); setPill(1, {force:true}); return true; }],
+    ['Target: the Building facets (tap Building twice)', ()=>{ toTarget(); ensurePlace(); S.tab='building'; S.screen='home'; S.room=null; S.cat='all'; S.q=''; render(); setPill(1, {force:true}); return true; }],
     ['Target: pick Kitchen × Lighting from the pill', ()=>{ toTarget(); ensurePlace(); S.tab='building'; S.screen='home'; S.room='kitchen'; S.cat='lighting'; S.q=''; render(); setPill(0, {force:true}); hint('Kitchen · Lighting, chosen in the pill'); return true; }],
     ['Target: pull to full, the menu', ()=>{ toTarget(); ensurePlace(); S.screen='home'; render(); setPill(2, {force:true}); return true; }],
     ['Target: scroll, the pill goes mini', ()=>{ toTarget(); ensurePlace(); S.tab='favorites'; S.screen='home'; render(); setPill(-1, {force:true}); return true; }],
@@ -3546,7 +3570,7 @@ function notesHtml(){
   const screenHtml = `<div class="eyebrow">${eyebrow}</div><h2>${n.t}</h2>${n.tags?`<div class="tags">${n.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>`:''}<ul>${bullets.map(x=>`<li>${x}</li>`).join('')}</ul><div class="eyebrow" style="margin-top:14px">${target?'The four rules of the pill':'The four rules'}</div><ol class="rules">${rules.map(r=>`<li>${r}</li>`).join('')}</ol>`;
   return `${S.map? mapHtml : S.why? barHtml : screenHtml}
     <div class="flows"><h3>Try these flows</h3><button class="map" data-why="1">${S.why? '← Back to the screen notes' : 'The bar: why these three verbs'}</button><button class="map" data-map="1">${S.map? '← Back to the screen notes' : `Settings map: every setting, one home (${ok} open · ${rm} removed · ${bad} unresolved)`}</button>${flows.map((f,i)=>`<button data-flow="${i}">${f[0]}</button>`).join('')}</div>
-    <p class="srcnote">Target: every state by tap (the active verb opens and closes its sheet, the glyph opens the menu, the dimmed page closes); pulling the handle or the bar is the continuous alternative (left and right on the tablet rail); Esc collapses; “/” opens search. Tags point to the research package (document number and pain point) and to the three input streams: A side menu, B Access, C filter navigation. UI source: Figma IB/LOX APP, UI KIT V17 (colours, type, FunctionCards_M, ListCard, Full_Header, NavBar, side menu, Access screens, IRC and lighting deliveries, tablet concepts). Benchmarks for the pill: Apple Maps’ sheet detents, the iOS 26 minimizing tab bar, the iPadOS 18 tab-bar-to-sidebar morph. Instrument Sans replaces LOXONE Sans. Example data, not a real installation.</p>`;
+    <p class="srcnote">Target: every state by tap (a verb switches, the active verb opens and closes its sheet, the glyph opens the menu, the dimmed page closes); a pull moves the sheet between condensed and expanded only (left and right on the tablet rail); Esc collapses; “/” opens search. Tags point to the research package (document number and pain point) and to the three input streams: A side menu, B Access, C filter navigation. UI source: Figma IB/LOX APP, UI KIT V17 (colours, type, FunctionCards_M, ListCard, Full_Header, NavBar, side menu, Access screens, IRC and lighting deliveries, tablet concepts). Benchmarks for the pill: Apple Maps’ sheet detents, the iOS 26 minimizing tab bar, the iPadOS 18 tab-bar-to-sidebar morph. Instrument Sans replaces LOXONE Sans. Example data, not a real installation.</p>`;
 }
 function ensurePlace(){ if(!S.place){ S.scenario='home'; document.getElementById('scen').value='home'; applyScenario(); } S.menu=false; S.nfc=false; S.pop=null; }
 
@@ -3729,7 +3753,7 @@ function tabletKeys(){
   return {
     '-1':{w:70, h:RAIL_H, r:35, x:16, y:44},
     '0':{w:70, h:RAIL_H, r:35, x:16, y:44},
-    '1':{w:400, h:H-60, r:35, x:16, y:44},
+    '1':{w:440, h:H-60, r:35, x:16, y:44},
     '2':{w:490, h:H-60, r:35, x:16, y:44},
   };
 }
@@ -3783,7 +3807,7 @@ function applyPill(){
   const page = document.getElementById('page'); const dim = document.getElementById('dim');
   if(page){ page.style.transform = isRail ? '' : `scale(${1-0.04*smooth(full)})`; page.style.opacity = String(Math.pow(Math.abs(2*dt-1), 1.5)); }
   if(dim){ const ov = (isRail && APP && TB.w<1100) ? 0.18*smooth(open) : 0; dim.style.opacity = String(isRail ? ov+0.35*smooth(full) : 0.10*smooth(open)+0.30*smooth(full)); dim.classList.toggle('on', t>0.55); }
-  const main = document.getElementById('tbmain'); if(main){ const push = (APP && TB.w<1100) ? 0 : 330; main.style.paddingLeft = (102 + push*smooth(Math.max(0,Math.min(1,t))) )+'px'; }
+  const main = document.getElementById('tbmain'); if(main){ const push = (APP && TB.w<1100) ? 0 : 370; main.style.paddingLeft = (102 + push*smooth(Math.max(0,Math.min(1,t))) )+'px'; }
   /* frame morph */
   const dev = document.getElementById('device'); if(dev && !APP){ const a=FR.phone, b=FR.tablet; dev.style.width=lerp(a.w,b.w,dt)+'px'; dev.style.height=lerp(a.h,b.h,dt)+'px'; dev.style.borderRadius=lerp(a.r,b.r,dt)+'px'; dev.style.padding=lerp(a.p,b.p,dt)+'px'; dev.querySelector('.screen').style.borderRadius=lerp(a.sr,b.sr,dt)+'px'; }
   fit();
@@ -3826,7 +3850,8 @@ function pillDragMove(e){
   if(!d.moved){ d.moved=true; }
   e.preventDefault();
   let t = d.isRail ? d.t0 + dx/300 : d.t0 - dy/420;
-  const lo = d.isRail ? 0 : -1, hi = 2;
+  /* a pull moves the sheet between condensed and expanded only; the menu opens from the glyph (a pull that starts in the menu may close it) */
+  const lo = d.isRail ? 0 : -1, hi = d.t0>1.5 ? 2 : 1;
   if(t<lo) t = lo - (lo-t)*0.25; if(t>hi) t = hi + (t-hi)*0.25;
   P.t = t; d.samples.push([performance.now(), t]); if(d.samples.length>6) d.samples.shift();
   const open = clamp(t,0,1); if(Math.abs(open - clamp(P.lastRenderT||0,0,1))>0.5 || (t>0.3 && !P.rendered)) { renderPill(); P.lastRenderT=t; P.rendered=true; }
@@ -3838,7 +3863,7 @@ function pillDragEnd(e){
   e.preventDefault();
   const s0 = d.samples[0], s1 = d.samples[d.samples.length-1]; const dtm = Math.max(16, s1[0]-s0[0]); const v = (s1[1]-s0[1])/(dtm/1000);
   const projected = P.t + v*0.12;
-  const dets = d.isRail ? [0,1,2] : [-1,0,1,2];
+  const dets = (d.isRail ? [0,1,2] : [-1,0,1,2]).filter(x=> d.t0>1.5 || x<=1);
   let best = dets[0]; dets.forEach(x=>{ if(Math.abs(x-projected)<Math.abs(best-projected)) best=x; });
   if(best===-1 && d.t0>0) best = 0; /* never fall from a sheet straight into mini */
   P.v = v; P.target = best; renderPill(); animatePill();
@@ -3908,7 +3933,7 @@ function rootBody(){
 function phonePage(){
   const root = isRoot(); const [title, sub] = screenTitle();
   const header = root
-    ? `<div class="fh">${statusBar()}<div class="row"><span class="wm">${wordmark()}</span><span class="sp"></span>${S.place? bellBtn('icb') : ''}<button class="icb" data-act="search" aria-label="Search">${I('search')}</button></div></div>`
+    ? `<div class="fh neutral">${statusBar()}<div class="row"><span class="wm">${wordmark()}</span><span class="sp"></span>${S.place? bellBtn('icb') : ''}<button class="icb" data-act="search" aria-label="Search">${I('search')}</button></div></div>`
     : `${statusBar()}<div class="dh"><div class="t"><h1>${title}</h1>${sub?`<small>${sub}</small>`:''}</div><div class="acts">${screenActs()}</div></div>`;
   return `${header}<div class="body">${root? rootBody() : screenBody()}</div>`;
 }
@@ -3936,8 +3961,10 @@ function facetsHtml(){
   const byFloor = FL().slice(1).map(f=>({f, rooms:rooms.filter(r=>r.floor===f)})).filter(g=>g.rooms.length);
   const central = rooms.find(r=>r.floor==='Whole building');
   const sel = S.cat!=='all' ? CAT[S.cat] : null;
-  /* one category at a time, so the categories are one row that stays on top; the rooms follow right under it */
-  return `<div class="facets-top"><div class="flabel" style="padding-top:4px"><span>Categories</span>${sel? `<a href="#" data-act="cat" data-v="all">All ${I('x')}</a>`:''}</div>${catPills(S.cat, null, D.target>0.5)}</div>
+  /* one category at a time: the categories are one row of icons that stays on top, every category visible at once; tapping the chosen one again clears it. The rooms follow right under it */
+  const cats = CATS.filter(c=>roomsWithCat(c.id).length);
+  const catRow = `<div class="catrow" role="tablist" aria-label="Category">${cats.map(c=>`<button class="catq${S.cat===c.id?' on':''}" role="tab" aria-pressed="${S.cat===c.id}" aria-label="${c.name} · ${roomsWithCat(c.id).length} rooms" title="${c.name}" style="--c:${c.color}" data-act="cat" data-v="${S.cat===c.id?'all':c.id}">${I(c.icon)}</button>`).join('')}</div>`;
+  return `<div class="facets-top"><div class="flabel" style="padding-top:4px"><span>Categories</span>${sel? `<a href="#" data-act="cat" data-v="all">All ${I('x')}</a>`:''}</div>${catRow}</div>
     <div class="flabel" style="padding-top:10px"><span>Rooms${sel?` · ${sel.name}`:''}</span><a href="#" data-act="floor">${S.floor} ${I('chevdown')}</a></div>
     <div class="list">${central? roomRow(central, S.cat, S.room===central.id):''}</div>
     ${byFloor.map(g=>`<div class="flabel">${g.f}</div><div class="list">${g.rooms.map(r=>roomRow(r, S.cat, S.room===r.id)).join('')}</div>`).join('')}
@@ -3972,8 +3999,6 @@ function renderPill(){
   const head = el.querySelector('.phead');
   head.innerHTML = full ? '' : `<div class="sbox">${I('search')}<input id="q" type="search" placeholder="${S.tab==='building'?'Rooms, functions, settings':S.tab==='planner'?'Schedules, modes, functions':'Search everything'}" value="${S.q.replace(/"/g,'&quot;')}" aria-label="Search"></div>`;
   el.querySelector('.pbody').innerHTML = full ? menuHtml() : quickHtml();
-  /* the chosen category stays in view in its row (horizontal only, the sheet itself does not move) */
-  const onCat = el.querySelector('.facets-top .pills [aria-pressed="true"]'); const row = onCat && onCat.closest('.pills'); if(row && !row.classList.contains('wrapchips')){ const left = onCat.offsetLeft - (row.clientWidth - onCat.offsetWidth)/2; row.scrollLeft = Math.max(0, left); }
   el.classList.toggle('rail', D.target>0.5);
   applyPill(); /* the bar is positioned by the engine, so a fresh render needs the current geometry at once */
   const q = document.getElementById('q'); if(q && S.qFocus){ q.focus(); q.setSelectionRange(q.value.length,q.value.length); S.qFocus=false; }
@@ -4002,12 +4027,10 @@ function collapse(){ if(S.release==='target' && pillEl()) setPill(0); }
 
 /* ---------- the Target's actions: the same names as the First release, with the pill's behaviour (collapse after a choice, the sheet as search and menu) ---------- */
 const ACT_PILL = {
-  /* a verb's tap: the active verb opens its sheet and closes it again; Building arrives with its sheet open, the other verbs arrive closed */
+  /* a verb's tap: switching a verb always lands on the condensed pill; the active verb opens its sheet and a second tap closes it (from mini, a tap brings the bar back first) */
   tab(v){ if(!S.place){ toast('Connect a place or explore the demo home first'); return true; }
     if(S.tab===v && isRoot()){ setPill(P.target>=1 ? 0 : (P.target<0 ? 0 : 1)); return true; }
-    S.tab=v; S.screen='home'; S.control=null; S.q=''; H=[]; renderPage();
-    if(v==='building'){ renderPill(); setPill(1, {force:true}); return true; }
-    if(P.target>=2) setPill(0); else { renderPill(); if(P.target===-1) setPill(0); } return true; },
+    S.tab=v; S.screen='home'; S.control=null; S.q=''; H=[]; renderPage(); renderPill(); setPill(0); return true; },
   back(){ back(); render(); if(P.target>0) collapse(); return true; },
   menu(){ setPill(P.target>=2 ? 0 : 2, {force:true}); return true; },
   closeMenu(){ collapse(); return true; },
