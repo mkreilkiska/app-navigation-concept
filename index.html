@@ -384,14 +384,22 @@ svg{display:block}
 .pass.full{width:100%;height:auto;min-height:150px;flex:1 1 auto}
 .quiet{font-size:14px;color:var(--a-fg50);text-align:center;margin:22px 0 0}
 .quiet button{color:var(--a-fg);font-weight:600;text-decoration:underline;text-underline-offset:3px}
-.nfc{position:absolute;inset:0;background:linear-gradient(180deg,var(--a-bg0),var(--a-bg1));display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:24px;text-align:center;z-index:5}
-.nfc .ring{width:140px;height:140px;border-radius:50%;background:var(--a-tile);box-shadow:var(--a-shadow-lg);display:flex;align-items:center;justify-content:center;animation:pulse 1.6s ease-in-out infinite;color:var(--a-fg)}
-.app[data-apptheme="dark"] .nfc .ring{background:rgba(255,255,255,.06)}
-.nfc .ring svg{width:56px;height:56px}
-@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
-@media (prefers-reduced-motion: reduce){.nfc .ring{animation:none}}
-.nfc h2{margin:0;font-size:24px;font-weight:600}
-.nfc p{margin:0;color:var(--a-sec2);max-width:30ch;font-size:15px}
+/* reader mode (round 7): the Access page with the Code Touch, and the system's NFC sheet over it, drawn in the system's own type */
+.reader{display:flex;justify-content:center;padding:48px 0 0}
+.ctouch{width:212px;height:212px;border-radius:5px;box-shadow:0 18px 34px rgba(0,0,0,.28),0 3px 8px rgba(0,0,0,.18);line-height:0}
+.iosscrim{position:absolute;inset:0;background:rgba(0,0,0,.26);z-index:8;animation:iosFade .25s ease-out}
+.iosnfc{position:absolute;left:14px;right:14px;bottom:12px;max-width:400px;margin:0 auto;z-index:9;background:#fff;color:#000;border-radius:40px;padding:30px 30px 26px;display:flex;flex-direction:column;align-items:center;text-align:center;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",system-ui,sans-serif;animation:iosUp .34s cubic-bezier(.32,.72,0,1)}
+.iosnfc .t{font-size:23px;color:#8E8E93;letter-spacing:-.01em}
+.iosnfc .ring{width:124px;height:124px;margin:22px 0 18px;padding:0;background:none;border:0;cursor:pointer}
+.iosnfc .ring svg{width:124px;height:124px;display:block}
+.iosnfc p{margin:0 0 26px;font-size:15px;line-height:1.35;color:#000}
+.iosnfc .cancel{width:100%;max-width:284px;height:50px;border-radius:14px;background:#E3E3E8;color:#000;font-size:17px;font-weight:600;font-family:inherit}
+.app[data-apptheme="dark"] .iosnfc{background:#1C1C1E;color:#fff}
+.app[data-apptheme="dark"] .iosnfc p{color:#fff}
+.app[data-apptheme="dark"] .iosnfc .cancel{background:#3A3A3C;color:#fff}
+@keyframes iosUp{from{transform:translateY(110%)}}
+@keyframes iosFade{from{opacity:0}}
+@media (prefers-reduced-motion: reduce){.iosnfc,.iosscrim{animation:none}}
 
 /* activity */
 .arow{display:flex;align-items:flex-start;gap:12px;padding:14px 0;border-bottom:1px solid var(--a-div)}
@@ -1882,12 +1890,17 @@ function controlsFor(roomId, catId){
 }
 function groupedByCat(list){ return CATS.map(c=>({cat:c, items:list.filter(x=>x.cat===c.id)})).filter(g=>g.items.length); }
 function orderedByCat(list){ return groupedByCat(list).flatMap(g=>g.items); }
-/* the Favorites pills as in today's app: the system status and the weather (round 6 dropped the Planner's state and the category counts) */
+/* a phone reads NFC cards, a tablet does not; a phone in landscape takes the tablet layout (the rail) but stays a phone */
+function hasReader(){ return S.device==='phone' || (APP && Math.min(innerWidth, innerHeight) < 600); }
+/* the Favorites pills: the system status and the weather as in today's app (round 6 dropped the Planner's state and the category counts), and Access on the phone (round 7) */
 function statusPills(){
-  if(placeGroup()==='hotel') return `<div class="pills" aria-label="Status"><button class="pl" data-act="page" data-v="stay">${I('nav-central')} Room 189 ready</button><button class="pl" data-act="toast" data-v="Weather: 10°, cloudy, rain from 18:00">${I('weather-cloudy')} 10°</button></div>`;
+  /* Access (round 7): the phone becomes the card, one tap from the home page; a tablet has no reader */
+  const access = hasReader() ? `<button class="pl" data-act="nfc">${I('accesscard')} Access</button>` : '';
+  if(placeGroup()==='hotel') return `<div class="pills" aria-label="Status"><button class="pl" data-act="page" data-v="stay">${I('nav-central')} Room 189 ready</button><button class="pl" data-act="toast" data-v="Weather: 10°, cloudy, rain from 18:00">${I('weather-cloudy')} 10°</button>${access}</div>`;
   return `<div class="pills" aria-label="Status">
     <button class="pl" data-act="bpage" data-v="bsys">${I('heart-rate')} OK</button>
     <button class="pl" data-act="toast" data-v="Weather: 10°, cloudy, rain from 18:00">${I('weather-cloudy')} 10°</button>
+    ${access}
   </div>`;
 }
 
@@ -2087,7 +2100,7 @@ function keyOnlyBody(passes){
   const p = passes[0];
   return `<div class="lbl first"><span>${passes.length>1?'Your keys':'Your key'}</span></div>
     <div class="list">${passes.map(x=>passCard(x,true,'toast',x.title+': '+x.doors+' · '+x.valid)).join('')}</div>
-    <button class="btn" style="margin-top:12px" data-act="nfc">${I('accesscard')} Use access</button>
+    ${useAccessBtn('margin-top:12px')}
     <div class="lbl"><span>${p.place}</span></div>
     ${grpRows([{icon:'clock',label:'Check-out',sub:p.valid,trail:''},{icon:'door',label:'Opens',sub:p.doors,trail:''},{icon:'partner',label:'Reception',sub:'Front desk · 24 h',v:'Calls the reception'},{icon:'bell',label:'Notify me about this key',sub:'Expiry and door events',trail:bbt(S.notif.access,'ntoggle','access','Notifications for this key')}])}
     <p class="note">Your phone is the key. Hold it to the reader at any door this key opens; nothing to choose first. Settings are in the menu, top left.</p>
@@ -2102,7 +2115,7 @@ function stayBody(withFooter){
       <div class="row"><button class="btn" data-act="roomgo" data-v="r189">${I('nav-rooms')} Your room</button><button class="btn sec" data-act="roomgo" data-v="hcentral">${I('nav-central')} Hotel services</button></div></div>
     <div class="lbl"><span>Your key</span></div>
     <div class="list">${passCard(p,true,'toast',p.title+': '+p.doors+' · '+p.valid)}${others.map(x=>passCard(x,true,'toast',x.title+': '+x.doors+' · '+x.valid)).join('')}</div>
-    <button class="btn" style="margin-top:12px" data-act="nfc">${I('accesscard')} Use access</button>
+    ${useAccessBtn('margin-top:12px')}
     <div class="lbl"><span>Today</span></div>
     ${grpRows([{icon:'clock',label:'Breakfast',sub:'07:00 – 10:00 · Restaurant',val:'07:00',trail:''},{icon:'calendar',label:'Spa',sub:'Booked · entrance with your key',val:'17:00',trail:''},{icon:'door',label:'Check-out',sub:'Late check-out until 14:00 available',val:p.checkout,act:'toast',v:'Asks the reception for late check-out'}])}
     <div class="lbl sm"><span>Reception</span></div>
@@ -2123,7 +2136,7 @@ function ownerAccessBody(){
   return `${stay? `<div class="lbl first"><span>Now</span></div><button class="tile22" data-act="page" data-v="stay"><span class="ic g">${I('nav-central')}</span><span class="tx"><b>${stay.place} · ${stay.title}</b><small>${stay.ready} · check-out ${stay.checkout}</small></span><span class="ar">${I('arrow-right')}</span></button>`:''}
     <div class="lbl ${stay?'':'first'}"><span>Keys</span><a href="#" data-act="page" data-v="keys">All ${passes.length} ${I('chevron')}</a></div>
     <div class="passes">${passes.map(p=>passCard(p)).join('')}<button class="pass add" data-act="toast" data-v="Accept an invitation (Access Sharing) or scan a code">${I('plus')} Add key</button></div>
-    <button class="btn" data-act="nfc">${I('accesscard')} Use access</button>
+    ${useAccessBtn()}
     <div class="lbl"><span>My doors</span><span class="hint">${doors.length} across your Miniservers</span></div>
     <div class="grid">${doors.map(tile).join('')}</div>
     <div class="lbl"><span>Shared by me</span><a href="#" data-act="page" data-v="shared">Manage ${I('chevron')}</a></div>
@@ -2142,7 +2155,7 @@ function keysBody(){
   const now = passes.filter(p=>p.kind==='stay'), always = passes.filter(p=>p.kind==='own'||p.kind==='membership'), visits = passes.filter(p=>p.kind==='visit');
   const grp = (label, items) => items.length? `<div class="lbl sm" style="margin-top:6px"><span>${label}</span></div><div class="list">${items.map(p=>passCard(p,true)).join('')}</div>` : '';
   return `${grp('Now · stays', now)}${grp('Always · home and memberships', always)}${grp('Shared with you · visits', visits)}
-    <div class="btnrow" style="margin-top:12px"><button class="btn" data-act="nfc">${I('accesscard')} Use access</button><button class="btn sec" data-act="toast" data-v="Accept an invitation (Access Sharing) or scan a code">${I('plus')} Add key</button></div>
+    <div class="btnrow" style="margin-top:12px">${useAccessBtn()}<button class="btn sec" data-act="toast" data-v="Accept an invitation (Access Sharing) or scan a code">${I('plus')} Add key</button></div>
     <div class="lbl sm"><span>My access log</span></div>
     ${grpRows([{icon:'door',label:'Front door · Home Salzburg',sub:'Today 17:42',trail:''},{icon:'door',label:'Main entrance · KISKA Studio',sub:'Yesterday 08:55',trail:''}])}
     <p class="note">One key, many doors: the phone presents a single NFC card, every key is a permission a place gave you. The reader decides. A stay, a membership and a visit are the same object with a different relationship.</p>`;
@@ -2307,7 +2320,16 @@ function searchBody(){
     ${q && !rooms.length && !cats.length && !ctrls.length && !sets.length && !plSearchRows(q) ? `<div class="empty">Nothing for “${S.q}”. Try a room, a function or a setting.</div>`:''}
     ${q? `<div class="lbl sm"><span>Help</span></div>${grpRows([{icon:'question',label:`“${S.q}” in the knowledge base`,sub:'Opens help in the app'}])}`:''}`;
 }
-function nfcOverlay(){ return `<div class="nfc" role="dialog" aria-label="Use access"><div class="ring">${I('nfc')}</div><h2>Hold near the reader</h2><p>Works for every door you have a key for. The reader checks your permission.</p><button class="btn sec" style="max-width:220px" data-act="nfcClose">Done</button></div>`; }
+/* reader mode (round 7): the system's NFC sheet over the Access page with the Code Touch, as the app does it today on iOS; the reader decides.
+   Tap the blue ring to stand in for holding the phone to the reader. A tablet has no reader, so neither the Access pill nor “Use access” shows there. */
+const CTOUCH = `<svg viewBox="0 0 212 212" width="212" height="212" aria-hidden="true"><defs><linearGradient id="ctg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#262626"/><stop offset="1" stop-color="#151515"/></linearGradient></defs><rect width="212" height="212" rx="5" fill="url(#ctg)"/>${[94,102,110,118].map(x=>`<circle cx="${x}" cy="25" r="1.6" fill="#8C8C8C"/>`).join('')}<g fill="#9E9E9E" font-size="17" font-weight="300" text-anchor="middle" font-family="inherit">${[['1','2','3',''],['4','5','6','0'],['7','8','9','']].map((r,k)=>r.map((d,c)=>d?`<text x="${[42,84,127,169][c]}" y="${57+k*34.5}">${d}</text>`:'').join('')).join('')}</g><g fill="none" stroke="#9E9E9E" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M164.5 56h9M165.5 56v-4.5a3.5 3.5 0 0 1 7 0V56M167.6 58.4a1.4 1.4 0 0 0 2.8 0"/><path d="M163.5 120.5l4 4 7.5-8"/></g><circle cx="106" cy="158" r="6.5" fill="none" stroke="#BDBDBD" stroke-width="1.6"/><circle cx="106" cy="158" r="2.8" fill="#BDBDBD"/><text x="106" y="191" fill="#8F8F8F" font-size="10" font-weight="600" letter-spacing="1.6" text-anchor="middle" font-family="inherit">LOXONE</text></svg>`;
+function readerBody(){ return `<div class="reader"><div class="ctouch" role="img" aria-label="Loxone NFC Code Touch">${CTOUCH}</div></div>`; }
+function useAccessBtn(style=''){ return !hasReader() ? '' : `<button class="btn" ${style?`style="${style}"`:''} data-act="nfc">${I('accesscard')} Use access</button>`; }
+function nfcOverlay(){
+  const done = S.nfc==='done';
+  const ring = `<svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="56" fill="none" stroke="#3478F6" stroke-width="5"/>${done ? '<path d="M38 61l15 15 30-32" fill="none" stroke="#3478F6" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>' : '<rect x="37" y="21" width="46" height="80" rx="10" fill="#DCEAFD" stroke="#3478F6" stroke-width="3.5"/><rect x="52" y="27" width="16" height="4.5" rx="2.25" fill="#3478F6"/>'}</svg>`;
+  return `<div class="iosscrim"></div><div class="iosnfc" role="dialog" aria-label="Ready to Scan"><div class="t">Ready to Scan</div><button class="ring" data-act="nfcDone" aria-label="Hold the phone near the reader (prototype: tap)">${ring}</button><p>${done ? 'Access granted' : 'Hold your device near the NFC tag.'}</p><button class="cancel" data-act="nfcClose">${done ? 'Done' : 'Cancel'}</button></div>`;
+}
 
 /* ---------- the menu (hamburger): Building · App · Loxone, grouped by whose settings they are ----------
    Building changes with the Miniserver, App and Loxone stay the same across Miniservers. All three are expanded (every row two taps from
@@ -3346,7 +3368,7 @@ function back(){ S.menu=false; S.nfc=false; S.pop=null; S.pl.sheet=null; S.pl.me
 /* pages reached from the menu (App, Loxone) and from Access; the tab underneath stays as it was */
 const PAGES = {
   notifications:['Notifications','Menu › App'], appearance:['Appearance & start','Menu › App · mode, start view, language, Ambient'], integrations:['Integrations','Menu › App'], profile:['Profile & Security','Menu › App'],
-  loxone:['Help & about','Menu › Loxone'], accesspage:['Access','Menu › App · keys, stays, doors, sharing'], activity:['Activity','What happened · notifications and system messages'], modes:['Operating modes','Planner · every operating mode of the place'], schedules:['Schedules','Planner · every schedule of the place'], keys:['All keys','Access'], shared:['Shared by me','Access'], places:['Miniservers','Menu › Edit · connection, Trust, order'], stay:['Your stay','Hotel Lagoon · Room 189'], search:['Search','Rooms · functions · settings'],
+  loxone:['Help & about','Menu › Loxone'], accesspage:['Access','Menu › App · keys, stays, doors, sharing'], activity:['Activity','What happened · notifications and system messages'], modes:['Operating modes','Planner · every operating mode of the place'], schedules:['Schedules','Planner · every schedule of the place'], keys:['All keys','Access'], shared:['Shared by me','Access'], places:['Miniservers','Menu › Edit · connection, Trust, order'], reader:['Access',''], stay:['Your stay','Hotel Lagoon · Room 189'], search:['Search','Rooms · functions · settings'],
 };
 function screenTitle(){
   if(S.screen==='room'){ const r=ROOM[S.room]; return [r.name, r.id==='central'?'Whole building':r.floor]; }
@@ -3380,6 +3402,7 @@ function screenBody(){
     case 'keys': return keysBody();
     case 'shared': return sharedBody();
     case 'places': return placesBody();
+    case 'reader': return readerBody();
     case 'stay': return stayBody(false);
     case 'search': return searchBody();
     default: return BPAGES[S.screen] ? bpageBody(S.screen) : '';
@@ -3513,7 +3536,7 @@ function tabletApp(){
       body = `<div class="tb-split"><div class="left">${left}</div><div class="panel"><div class="ph"><button class="circ" data-act="closePanel" aria-label="Close">${I('arrow-left')}</button><h2>${c.name}<small>${ROOM[c.room].name} · ${CAT[c.cat].name}</small></h2><button class="circ" data-act="toast" data-v="Expands the control to the full width" aria-label="Expand">${I('expand')}</button><button class="circ" data-act="closePanel" aria-label="Close">${I('x')}</button></div>${controlDetail(c)}<div class="lbl sm"><span>Settings</span></div>${hubBody(c)}</div></div>`;
     } else body = left;
   }
-  crumb = crumb.replace(/^<span>›<\/span>/,'');
+  crumb = crumb.replace(/^(<span><\/span>)?<span>›<\/span>/,''); /* a page without a parent label starts with its own name */
   const main = `<div class="tb-main">
     <div class="tb-head"><div class="t">${crumb && crumb!==`<span>${title}</span>` ? `<div class="crumb">${crumb}</div>` : ""}<h1>${back? `<button class="bk" data-act="back" aria-label="Back">${I('arrow-left')}</button>`:''}${title}</h1></div><div class="right">${right}</div></div>
     <div class="tb-body">${body}</div>
@@ -3544,6 +3567,7 @@ const NOTES = {
   keys:{t:'All keys, grouped by relationship', tags:['Stream B','08 §1'], b:['Now (stays), Always (home, memberships), Shared with you (visits). The same card, a different label; the stay card opens the stay page, the others open their details.','Past stays are not archived here. A finished stay disappears from Access and stays visible in Activity. Hotel photos are not needed: the key is the object, not the façade.']},
   shared:{t:'Shared by me: the giving side of Access Sharing', tags:['Stream B','03 §3.1'], b:['People with a key from you, pending invitations, revoke. Share access picks doors, a person and a time window; the key arrives on their phone.','Accounts, NFC cards and rights stay in Menu › Building › User Management, named as today. Sharing a key is a building right: people without it see only the keys they received.']},
   stay:{t:'The stay: a place you have for two nights', tags:['Phase two','08 §1','PMS later'], b:['Phase two version: the hotel is a place with narrow rights. Building shows Hotel services and Room 189, Favorites holds what the hotel pre-selected, the menu knows only the reception and the data contract.','The hero carries the one status that matters: the room is ready at your comfort temperature. Below: the key, today (breakfast, spa, check-out), reception requests, and what the hotel sees, deleted at check-out.','Nothing new in the navigation. The stay page is the key page with sections that appear only when a hotel provides them; a friend’s garage or a gym membership never shows them.','Later, not here: preferences that travel, the room greeting you on the wall display, the PMS connector, Wallet keys.']},
+  reader:{t:'Access: the phone becomes the card', tags:['01.11. NFC Cards','Round 7'], b:['The Access pill on Favorites (phone only: a tablet has no reader) and “Use access” on the Access page put the phone into reader mode: the Access page with the Code Touch under the system’s NFC sheet, “Ready to Scan”, as the app does it today on iOS. The reader decides which door opens.','Prototype: tap the blue ring to stand in for holding the phone to the reader; the sheet shows “Access granted” and closes by itself. Cancel goes back to where you came from.','Faster still, outside the app: the lock-screen widget, the Action button or a Shortcut (described, not built).']},
   places:{t:'Miniservers', tags:['04 PP-16','07 §4','Round 6'], b:['Every Miniserver with its connection, Trust and “save password”; add via the partner’s code, diagnose, order, remove. Reached from “Edit” beside “Change Miniserver” in the menu header.','Switching lives in the menu header, managing lives here. The Demo Miniserver is not in this list: it sits under Menu › Loxone, a tour rather than an installation.','Several Miniservers in one building (an office with eight, two of them main ones with their own appearance) stay separate entries for now; grouping them by building is a later step, and the word “place” is gone because a building is not a Miniserver.']},
   notifications:{t:'Menu › App › Notifications', tags:['04 PP-18','Phase B'], b:['Categories with Push and Critical, quiet hours, per place, this device. History lives in Activity, not here.']},
   appearance:{t:'Menu › App › Appearance, start & language', tags:['03 §3 Visualisierung & App','04 PP-11'], b:['Mode, header, text size, haptics; where the app opens, inactivity, presence; language; Ambient Mode; sorting & layout. Everything this device decides, one page, no sub-levels.']},
@@ -3780,8 +3804,10 @@ const ACT = {
   arm(v){ CTRL[v].armed=!CTRL[v].armed; },
   ndev(v){ S.notifDevice=v; },
   ntoggle(v){ S.notif[v]=!S.notif[v]; },
-  nfc(){ S.nfc=true; },
-  nfcClose(){ S.nfc=false; },
+  /* reader mode: the Access page with the Code Touch under the system's NFC sheet; Cancel goes back, a read closes by itself */
+  nfc(){ push(); S.screen='reader'; S.nfc='scan'; S.menu=false; },
+  nfcClose(){ back(); },
+  nfcDone(){ S.nfc='done'; setTimeout(()=>{ if(S.nfc==='done'){ back(); render(); notes(); } }, 1500); },
   noop(){ toast('Not part of this prototype'); return true; },
   toast(v){ toast(v); return true; },
 };
@@ -3811,31 +3837,51 @@ function labelW(txt, font){ const k=font+'|'+txt; if(MEAS[k]!==undefined) return
 function keptVerb(){ return TABS_TARGET.find(x=>x[0]===S.tab) || ['','','']; }
 /* the mini pill keeps the selected verb's chevron (round 6), so its width counts it */
 function miniGeom(){ const lw = labelW(keptVerb()[2], MINI.font); const cw = (isRoot() && S.place) ? CHEV.gap+CHEV.w : 0; const activeW = MINI.lpad + MINI.icon + MINI.igap + lw + cw + MINI.lpad; return {w: MINI.pad*2 + MINI.glyph + MINI.gap + activeW, activeW, lw}; }
-/* Favorites' sheet is short (two actions) and grows to the full sheet while the search is in use; G springs between the two heights */
+/* every sheet and the menu are as tall as their content (round 7; round 6 did it for Favorites only), between a floor and the old maximum;
+   the search grows them to the maximum while it is in use (G springs between the fitted height and the maximum) */
 const G = {t:0, v:0, target:0, raf:null, last:0};
-const FAV_SHEET = 262;
+const SHEET_MIN = 230;
+const FIT = {e:0, f:0, e0:0, f0:0, state:null, w:'', a:{t:1, v:0, target:1, raf:null, last:0}};
+function fitNow(k){ return lerp(FIT[k+'0'], FIT[k], FIT.a.t); }
+/* measure the content of the expanded sheet (e) and of the menu (f) at their real widths, in a hidden copy inside the pill so the pill's CSS applies.
+   While a state stays open its height only grows (a filter never moves the sheet under the finger); a new state measures afresh. */
+function measureFit(){
+  const el = pillEl(); if(!el) return;
+  const rail = D.target>0.5; FIT.w = (rail?'r':'p')+(rail?TB.w:PH.w);
+  const probe = (head, body, w)=>{ const c = document.createElement('div'); c.className = 'pwrap'; c.setAttribute('aria-hidden','true'); c.style.cssText = `position:absolute;left:0;top:0;right:auto;bottom:auto;width:${w}px;height:auto;visibility:hidden;pointer-events:none`; c.innerHTML = `<div class="phead" style="opacity:0">${head}</div><div class="pbody" style="flex:none;overflow:visible">${body}</div>`; el.appendChild(c); const h = c.offsetHeight; c.remove(); return h; };
+  const e = probe(sheetHead(false), quickHtml(), rail ? 440-70 : PH.w-16), f = probe(sheetHead(true), sheetBody(true), rail ? 490-70 : PH.w-16);
+  const same = P.target>=1 && FIT.state===P.target; FIT.state = P.target;
+  const ne = same && P.target===1 ? Math.max(e, FIT.e) : e, nf = same && P.target===2 ? Math.max(f, FIT.f) : f;
+  if(Math.abs(ne-FIT.e)<1 && Math.abs(nf-FIT.f)<1) return;
+  FIT.e0 = FIT.e ? fitNow('e') : ne; FIT.f0 = FIT.f ? fitNow('f') : nf; FIT.e = ne; FIT.f = nf;
+  if(P.t>0.05 && !P.drag){ const a = FIT.a; a.t=0; a.v=0; a.target=1; if(a.raf) cancelAnimationFrame(a.raf); a.last=0; const step=(now)=>{ const more = springStep(a, now, ()=>applyPill()); applyPill(); if(more) a.raf=requestAnimationFrame(step); }; a.raf=requestAnimationFrame(step); }
+  else { FIT.a.t=1; FIT.a.target=1; FIT.a.v=0; }
+}
 function setGrow(on){ const tg = on ? 1 : 0; if(G.target===tg) return; G.target = tg; if(G.raf) cancelAnimationFrame(G.raf); G.last=0; const step=(now)=>{ const more = springStep(G, now, ()=>applyPill()); applyPill(); if(more) G.raf=requestAnimationFrame(step); }; G.raf=requestAnimationFrame(step); }
-if(document.fonts && document.fonts.ready) document.fonts.ready.then(()=>{ Object.keys(MEAS).forEach(k=>delete MEAS[k]); applyPill(); });
+if(document.fonts && document.fonts.ready) document.fonts.ready.then(()=>{ Object.keys(MEAS).forEach(k=>delete MEAS[k]); FIT.state=null; measureFit(); applyPill(); });
 
 /* key geometry per state; t runs from -1 (mini) over 0 (pill) and 1 (expanded) to 2 (full) */
 function phoneKeys(){
   const W=PH.w, H=PH.h; const mg = miniGeom(); const B = APP ? APP_B : 24;
-  const full1 = Math.round(H*0.56), sh1 = S.tab==='favorites' && isRoot() ? Math.round(lerp(Math.min(FAV_SHEET, full1), full1, G.t)) : full1;
+  const max1 = Math.round(H*0.56), max2 = H-70;
+  const sh1 = Math.round(lerp(clamp(22 + fitNow('e') + 70, SHEET_MIN, max1), max1, G.t)), sh2 = Math.round(lerp(clamp(22 + fitNow('f') + 70, SHEET_MIN, max2), max2, G.t));
   return {
     '-1':{w:mg.w, h:MINI.h, r:MINI.h/2, x:(W-mg.w)/2, y:H-B-70+(70-MINI.h)/2},
     '0':{w:352, h:70, r:35, x:(W-352)/2, y:H-B-70},
     '1':{w:W-16, h:sh1, r:28, x:8, y:H-8-sh1},
-    '2':{w:W-16, h:H-70, r:28, x:8, y:62},
+    '2':{w:W-16, h:sh2, r:28, x:8, y:H-8-sh2},
   };
 }
 const RAIL_H = 5 + 56 + 2 + 3*60 + 2*2 + 5;   /* glyph, three verbs, the gaps and the padding: the condensed rail is as tall as its content */
 function tabletKeys(){
   const W=TB.w, H=TB.h; const x = 16 + (APP ? INS.l : 0), y = APP ? INS.t + 16 : 44; /* in app mode the rail keeps 16 px to the real status bar and to the side inset */
+  /* the panel hangs from the rail's top and is as tall as its content, never shorter than the rail itself */
+  const maxT = H-y-16, fitT = (k)=> Math.round(lerp(clamp(fitNow(k), RAIL_H, maxT), maxT, G.t));
   return {
     '-1':{w:70, h:RAIL_H, r:35, x, y},
     '0':{w:70, h:RAIL_H, r:35, x, y},
-    '1':{w:440, h:H-y-16, r:35, x, y},
-    '2':{w:490, h:H-y-16, r:35, x, y},
+    '1':{w:440, h:fitT('e'), r:35, x, y},
+    '2':{w:490, h:fitT('f'), r:35, x, y},
   };
 }
 function geomAt(keys, t){
@@ -3850,6 +3896,7 @@ function pillEl(){ return document.getElementById('pill'); }
 function applyPill(){
   const el = pillEl(); if(!el) return;
   appSize();
+  if(FIT.w !== (D.target>0.5 ? 'r'+TB.w : 'p'+PH.w)) measureFit();
   const t = P.t, dt = D.t;
   const gp = geomAt(phoneKeys(), t), gt = geomAt(tabletKeys(), Math.max(0,t));
   const g = {w:lerp(gp.w,gt.w,dt), h:lerp(gp.h,gt.h,dt), r:lerp(gp.r,gt.r,dt), x:lerp(gp.x,gt.x,dt), y:lerp(gp.y,gt.y,dt)};
@@ -3922,6 +3969,7 @@ function animatePill(){
 }
 function setPill(target, opts={}){
   target = clamp(target, D.target>0.5 ? 0 : -1, 2);
+  if(target<1 && !S.q.trim()) setGrow(false); /* a closed sheet gives the search's extra height back */
   if(opts.instant){ P.t=target; P.target=target; P.v=0; if(P.raf){ cancelAnimationFrame(P.raf); P.raf=null; } renderPill(); applyPill(); onPillSettle(); return; }
   if(P.target!==target || opts.force){ P.target=target; renderPill(); animatePill(); } else if(!P.raf && P.t!==target){ animatePill(); }
 }
@@ -4047,7 +4095,7 @@ function tabletPage(){
     if(!S.room && S.cat==='all'){ title='Building'; crumb = root + `<span>Building</span>`; body = buildingPage(); right += `<button class="circ" data-act="bpage" data-v="bset" aria-label="Building settings">${I('dots')}</button>`; }
     else { const sel = selectionTitle(); title = sel.title; crumb = root + `<span>Building</span>${sep}<span>${sel.title}</span>`; back=true; body = sel.list.length? `<div class="rsec" style="--c:${S.cat!=='all'?CAT[S.cat].color:'var(--a-fg)'}"><span class="dot"></span>${sel.sub}</div><div class="grid">${sel.list.map(tile).join('')}</div>` : `<div class="empty">Nothing here for this selection.</div>`; if(S.room) right += `<button class="circ" data-act="bpage" data-v="roomset" aria-label="Room settings">${I('dots')}</button>`; }
   }
-  crumb = crumb.replace(/^<span>›<\/span>/,'');
+  crumb = crumb.replace(/^(<span><\/span>)?<span>›<\/span>/,''); /* a page without a parent label starts with its own name */
   return `${tabletStatus()}
     <div class="tb2" id="tbmain"><div class="tb-head"><div class="t">${crumb && crumb!==`<span>${title}</span>` ? `<div class="crumb">${crumb}</div>` : ""}<h1>${back? `<button class="bk" data-act="${S.screen==='home'?'clearsel':'back'}" aria-label="Back">${I('arrow-left')}</button>`:''}${title}</h1></div><div class="right">${right}</div></div><div class="tb-body body">${body}</div></div>`;
 }
@@ -4109,6 +4157,7 @@ function renderPill(){
   el.querySelector('.phead').innerHTML = sheetHead(full);
   el.querySelector('.pbody').innerHTML = sheetBody(full);
   el.classList.toggle('rail', D.target>0.5);
+  measureFit(); /* the sheet's height follows its content (round 7) */
   applyPill(); /* the bar is positioned by the engine, so a fresh render needs the current geometry at once */
   const q = document.getElementById('q'); if(q && S.qFocus){ q.focus(); q.setSelectionRange(q.value.length,q.value.length); S.qFocus=false; }
 }
@@ -4243,8 +4292,9 @@ const ACT_PILL = {
   setq(v){ S.q=v; S.qFocus=true; renderPill(); return true; },
   actf(v){ S.actFilter=v; renderPage(); renderPill(); return true; },
   prefset(v){ const [k,val]=v.split('|'); S.prefs[k]=val; if(k==='theme' && (val==='Light'||val==='Dark')){ S.apptheme=val.toLowerCase(); renderAll(); return true; } render(); return true; },
-  nfc(){ S.nfc=true; renderPage(); collapse(); return true; },
-  nfcClose(){ S.nfc=false; renderPage(); return true; },
+  nfc(){ push(); S.screen='reader'; S.nfc='scan'; render(); collapse(); return true; },
+  nfcClose(){ back(); render(); return true; },
+  nfcDone(){ S.nfc='done'; renderPage(); setTimeout(()=>{ if(S.nfc==='done'){ back(); render(); notes(); } }, 1500); return true; },
   pop(){ return true; }, closePop(){ return true; },
   setFloor(v){ S.floor=v; const b=pillEl()&&pillEl().querySelector('.pbody'); const y=b?b.scrollTop:0; renderPill(); const b2=pillEl()&&pillEl().querySelector('.pbody'); if(b2) b2.scrollTop=y; return true; },
   closePanel(){ S.control=null; S.screen='home'; render(); return true; },
