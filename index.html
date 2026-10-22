@@ -1463,6 +1463,114 @@ svg{display:block}
 .states button{flex:1;padding:8px 6px;border-radius:10px;border:1px solid var(--line);font-weight:600;font-size:12px;background:var(--panel)}
 .states button[aria-pressed="true"]{background:var(--fg);color:var(--panel);border-color:var(--fg)}
 
+/* ---------- Theme: Mono (22.10.). One tint for the whole app (Figma EX-LOX-APP, "Concept settings page theme": Anthracite, Russet Brown, Dark Sage, Midnight Blue).
+   Cards and pills become translucent white layers, every category colour collapses into white, the header takes the tint; warnings stay functional. ---------- */
+.app[data-mono="anthracite"]{--mono:#1C1C1C}
+.app[data-mono="russet"]{--mono:#7C431C}
+.app[data-mono="sage"]{--mono:#495C4A}
+.app[data-mono="midnight"]{--mono:#3F4668}
+.app[data-mono]{
+  --a-bg0:var(--mono); --a-bg1:color-mix(in srgb,var(--mono) 82%,#000); --a-tile:rgba(255,255,255,.09); --a-tile2:rgba(255,255,255,.07); --a-pill:rgba(255,255,255,.12); --a-pill2:rgba(255,255,255,.2); --a-sel:rgba(255,255,255,.12);
+  --a-fg:#FFFFFF; --a-fg50:rgba(255,255,255,.58); --a-fg40:rgba(255,255,255,.46); --a-sec:rgba(255,255,255,.55); --a-sec2:rgba(255,255,255,.66); --a-div:rgba(255,255,255,.12);
+  --a-green:#FFFFFF; --a-green-shade:#FFFFFF; --a-fn-green:#FFFFFF; --a-ink:#FFFFFF; --a-ink-fg:var(--mono); --a-header:transparent; --a-header-fg:#FFFFFF;
+  --a-shadow:none; --a-shadow-lg:none; --cat-lighting:#FFFFFF; --cat-shading:#FFFFFF; --cat-climate:#FFFFFF; --cat-audio:#FFFFFF; --cat-security:#FFFFFF; --cat-energy:#FFFFFF; --cat-access:#FFFFFF; --cat-windows:#FFFFFF; --cat-ventilation:#FFFFFF; --cat-presence:#FFFFFF; --cat-multimedia:#FFFFFF; --cat-controls:#FFFFFF; --cat-info:#FFFFFF; --cat-unassigned:#FFFFFF; --knob:#FFFFFF;
+  --ink80:rgba(255,255,255,.8); --ink20:rgba(255,255,255,.2); --ink5:rgba(255,255,255,.08); --on-ink:var(--mono); --pl-card:rgba(255,255,255,.09); --pl-solid:color-mix(in srgb,var(--mono) 80%,#fff 0%); --pl-ctl:rgba(255,255,255,.12); --pl-line:rgba(255,255,255,.08); --pl-green:#FFFFFF; --pl-gtint:rgba(255,255,255,.14); --pl-gsoft:rgba(255,255,255,.2); --pl-gdone:rgba(255,255,255,.4); --pl-sh:none; color-scheme:dark
+}
+.app[data-mono] .fh,.app[data-mono] .fh.neutral{background:transparent;color:#fff}
+.app[data-mono] .icb .badge,.app[data-mono] .circ .badge{background:#fff;border-color:var(--mono)}
+.app[data-mono] .badge{border-color:var(--mono)}
+.app[data-mono] .nav,.app[data-mono] .railpill,.app[data-mono] .backfab,.app[data-mono] .pop{background:color-mix(in srgb,var(--mono) 42%,#000);box-shadow:0 12px 30px rgba(0,0,0,.45)}
+.app[data-mono] .nav .badge,.app[data-mono] .railpill .badge{border-color:color-mix(in srgb,var(--mono) 42%,#000)}
+.app[data-mono] .navfade{background:linear-gradient(180deg,transparent,var(--a-bg1) 70%)}
+.app[data-mono] .tg i{background:#fff}
+.app[data-mono] .tg.on i{background:var(--mono)}
+.app[data-mono] .bbt{background:rgba(255,255,255,.22)}
+.app[data-mono] .bbt.on{background:#fff}
+.app[data-mono] .bbt.on i{background:var(--mono)}
+.app[data-mono] .hold .fill{background:rgba(255,255,255,.35)}
+.app[data-mono] .hold.done{background:#fff;color:var(--mono)}
+.app[data-mono] .ab .cd{background:conic-gradient(#fff,#9a9a9a,#fff,#6a6a6a,#fff)}
+.app[data-mono] .pl.cat[aria-pressed="true"],.app[data-mono] .pl.on,.app[data-mono] .xl.cat,.app[data-mono] .sq2.chk,.app[data-mono] .ab.on,.app[data-mono] .pass,.app[data-mono] .msq,.app[data-mono] .tile22 .ic.g,.app[data-mono] .catq.on{color:var(--mono)}
+.app[data-mono] .pl.cat[aria-pressed="true"] svg,.app[data-mono] .xl.cat svg,.app[data-mono] .sq2.chk svg{color:var(--mono)}
+.app[data-mono] .prow[aria-pressed="true"] .av{box-shadow:0 0 0 2px var(--mono),0 0 0 4px #fff}
+.app[data-mono] .prow .av,.app[data-mono] .stayhero .h .av{background:rgba(255,255,255,.14);color:#fff}
+.app[data-mono] .lc.sel .cq{background:rgba(0,0,0,.08);color:color-mix(in srgb,var(--mono) 60%,#fff)}
+.app[data-mono] .stat{box-shadow:none}
+.app[data-mono] .scrim{background:rgba(0,0,0,.5)}
+.app[data-mono] .sheet,.app[data-mono] .menupage{background:linear-gradient(180deg,color-mix(in srgb,var(--mono) 55%,#000),color-mix(in srgb,var(--mono) 65%,#000))}
+.app[data-mono] .toast{background:#fff;color:var(--mono)}
+.app[data-mono] .pass.dim{color:#fff}
+.app[data-mono] .pass.dim .st2 i{background:rgba(255,255,255,.6)}
+.app[data-mono] .pass .st2 i{background:var(--mono)}
+.app[data-mono] .lc.dashed,.app[data-mono] .empty,.app[data-mono] .pass.add,.app[data-mono] .prow.add .av{border-color:rgba(255,255,255,.35)}
+.app[data-mono] .tl .bar,.app[data-mono] .slider{background:rgba(255,255,255,.18)}
+.app[data-mono] .island{background:#000}
+.app[data-mono] .tpill{--pill-bg:color-mix(in srgb,var(--mono) 42%,#000);box-shadow:0 12px 30px rgba(0,0,0,.5)}
+.app[data-mono] .phint{background:rgba(255,255,255,.92);color:var(--mono)}
+/* Appearance › Theme swatches */
+.swatches{display:flex;gap:12px;flex-wrap:wrap;width:100%;padding:2px 0 4px}
+.sw{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--a-fg50);width:68px}
+.sw i{display:block;width:60px;height:40px;border-radius:10px;background:var(--sw);box-shadow:inset 0 0 0 1px rgba(255,255,255,.12),0 1px 3px rgba(0,0,0,.15)}
+.sw.on{color:var(--a-fg)}
+.sw.on i{box-shadow:0 0 0 2px var(--a-bg0),0 0 0 4px var(--a-fg)}
+
+/* ---------- Pill 2.0 (22.10., after the design review): no sheet, every filter on its page, the menu as a page (phone) or panel (tablet), the mini as an icon ---------- */
+.pin{flex:1;min-height:0;display:flex;flex-direction:column}
+.pin.anim{animation:pagein .24s cubic-bezier(.2,.7,.2,1)}
+@keyframes pagein{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+/* the menu as a page: the kit's dark drawer, full bleed, the pill stays and its glyph is lit */
+.menupage{position:absolute;inset:0;display:flex;flex-direction:column;background:linear-gradient(180deg,#0E0E0E,#171717);color:#fff;font-size:16px}
+.menupage .st{color:#fff}
+.menupage .mscroll{flex:1;min-height:0;overflow:auto;display:flex;flex-direction:column;padding-bottom:118px;scrollbar-width:thin}
+.menupage .mb{flex:none;overflow:visible}
+.menupage .mfoot{padding-bottom:8px}
+.menupage .msearch{padding:6px 16px 0}
+.menupage .msearch .sbox{height:46px;margin:0;background:rgba(255,255,255,.08);box-shadow:none;color:rgba(255,255,255,.6);font-size:16px;text-align:left;width:100%}
+.menupage .msearch .sbox svg{color:rgba(255,255,255,.6)}
+.menupage .msearch .sbox span{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* favorites: search and Edit on top, the pills follow */
+.favtop{display:flex;gap:8px;align-items:center;margin:0 0 12px}
+.favtop .sbox{flex:1;min-width:0;margin:0;height:48px;color:var(--a-fg50);font-size:16px;text-align:left}
+.favtop .sbox span{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.editb{height:48px;padding:0 16px 0 14px;border-radius:16px;background:var(--a-tile);box-shadow:var(--a-shadow);display:inline-flex;align-items:center;gap:8px;font-weight:600;font-size:15px;color:var(--a-fg);flex:none}
+.editb svg{width:20px;height:20px}
+.favtop.wide{gap:12px;margin-bottom:14px;align-items:flex-start}
+.favtop.wide .sbox{flex:0 1 440px}
+.favtop.wide .pills{margin:0;padding:0;flex:1;justify-content:flex-end;overflow:visible;flex-wrap:wrap}
+.favtop.wide .pills .pl{height:48px}
+/* building: the lens as one lean row that stays while you scroll */
+.chipbar{position:sticky;top:0;z-index:2;margin:-12px -16px 0;padding:10px 0 6px;background:var(--a-bg0)}
+.chipbar::after{content:'';position:absolute;left:0;right:0;bottom:-10px;height:10px;background:linear-gradient(var(--a-bg0),transparent);pointer-events:none}
+.chipbar .pills{margin:0;padding:2px 16px 4px}
+.chipbar .pl{height:40px;border-radius:20px;font-size:14px;padding:0 14px 0 12px;gap:7px}
+.chipbar .pl svg{width:20px;height:20px}
+.tb-body .chipbar{margin:-8px -32px 0 -24px;padding:8px 0 6px}
+.tb-body .chipbar .pills{padding-left:24px;padding-right:32px;margin:0}
+.rsec.anchor{margin-top:22px}
+.body .flchips{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin:0 -16px 10px;padding:0 16px}
+.body .flchips::-webkit-scrollbar{display:none}
+.body .flchip{flex:none;height:34px;padding:0 13px;border-radius:17px;background:var(--a-pill);color:var(--a-fg50);font-size:13px;font-weight:600;white-space:nowrap}
+.body .flchip[aria-pressed="true"]{background:var(--a-ink);color:var(--a-ink-fg)}
+.tb-body .flchips{margin:0 0 10px;padding:0}
+.body .fsub{margin:0 0 8px;gap:6px}
+.body .fsub .pl{height:32px;padding:0 12px;font-size:13px;gap:5px}
+.body .fsub .pl.on .n{color:inherit;opacity:.6}
+/* room cards with a lens on: one state per room, the card opens Room × Category */
+.rc.lens{cursor:pointer}
+.rc.lens .hd{display:flex;align-items:center;gap:10px;width:100%;text-align:left}
+.rc.lens .tr{display:inline-flex;align-items:center;gap:8px;font-size:15px;font-weight:600;color:var(--a-fg50);margin-top:auto}
+.rc.lens .tr .sq{width:30px;height:30px;border-radius:7px;background:var(--a-pill);display:inline-flex;align-items:center;justify-content:center;color:var(--a-fg50);flex:none}
+.rc.lens .tr .sq svg{width:18px;height:18px}
+.rc.lens .tr.active{color:var(--a-fg)}
+.rc.lens .tr.active .sq{background:color-mix(in srgb,var(--c) 30%,transparent);color:var(--a-fg)}
+.rc.lens .tr.warn{color:var(--a-warn)}
+.rc.lens .tr.warn .sq{background:color-mix(in srgb,var(--a-warn) 22%,transparent);color:var(--a-warn)}
+.roomcards.two .rc.lens{min-height:110px}
+.roomcards.two .rc.lens .hd small{display:none}
+/* notes: the changes table */
+.chtable td:first-child{width:28%}
+.chtable td:nth-child(2){width:34%}
+
 /* the toolbar's pill controls belong to the Target release */
 .bar[data-release="first"] .pillctl{display:none}
 /* Building's floors as chips: every floor one tap away (round 6; the label used to cycle one floor per tap) */
@@ -1521,13 +1629,14 @@ html.lox-app.short .pl-ent .gwrap,html.lox-app.short .pl-ent .g2{flex:none;heigh
 </style>
 
 <div class="bar" id="bar" data-release="first">
-  <div class="brand"><strong>Loxone App Navigation Concept</strong><span>First release (01.11.): nav bar as today, Access in the side menu. Target: the pill, one object for the nav bar and the side menu with three verbs (Favorites · Building · Planner) and three states (condensed, expanded, full) plus mini, every door with a word; Activity and Access in the menu, Building as rooms × categories, the Planner after the design team’s prototypes; on the tablet the pill docks as the rail. V17 app UI from the Figma file IB/LOX APP; Instrument Sans stands in for LOXONE Sans. Example data.</span></div>
+  <div class="brand"><strong>Loxone App Navigation Concept</strong><span id="brandtext">First release (01.11.): nav bar as today, Access in the side menu. Pill 1.0 (20.10.): the nav bar and the side menu as one object with three states plus mini. Pill 2.0 (22.10., after the design review with the lead designer): the same object with two sizes and no sheets: every filter sits on its page, the menu is a page on the phone and a panel on the tablet, the pill folds to an icon while you read; Appearance › Theme adds Mono. Three verbs (Favorites · Building · Planner), Activity and Access in the menu, Building as rooms × categories. V17 app UI from the Figma file IB/LOX APP; Instrument Sans stands in for LOXONE Sans. Example data.</span></div>
   <div class="ctl">
-    <label>Release <span class="seg" id="segRel"><button data-set="release" data-v="first" aria-pressed="true">First (nav bar as today)</button><button data-set="release" data-v="target" aria-pressed="false">Target</button></span></label>
+    <label>Release <span class="seg" id="segRel"><button data-set="rel" data-v="first" aria-pressed="false">First (nav bar as today)</button><button data-set="rel" data-v="pill1" aria-pressed="false">Pill 1.0</button><button data-set="rel" data-v="pill2" aria-pressed="true">Pill 2.0</button></span></label>
     <label class="pillctl">Pill <span class="seg" id="segState"><button data-state="-1">Mini</button><button data-state="0" aria-pressed="true">Pill</button><button data-state="1">Expanded</button><button data-state="2">Full</button></span></label>
     <label>Device <span class="seg" id="segDevice"><button data-set="device" data-v="phone" aria-pressed="true">Phone</button><button data-set="device" data-v="tablet" aria-pressed="false">Tablet</button></span></label>
     <label for="scen">Scenario <select id="scen"><option value="guest">Hotel key only (01.11.)</option><option value="stay">Hotel stay (phase two)</option><option value="home" selected>Three Miniservers</option><option value="multi">Three Miniservers and a stay</option></select></label>
     <label>App theme <span class="seg" id="segTheme"><button data-set="apptheme" data-v="light" aria-pressed="true">Light</button><button data-set="apptheme" data-v="dark" aria-pressed="false">Dark</button></span></label>
+    <label for="mono">Theme <select id="mono"><option value="" selected>Colour</option><option value="anthracite">Mono · Anthracite</option><option value="russet">Mono · Russet Brown</option><option value="sage">Mono · Dark Sage</option><option value="midnight">Mono · Midnight Blue</option></select></label>
     <label class="pillctl">Motion <span class="seg" id="segMotion"><button data-set="motion" data-v="spring" aria-pressed="true">Springs</button><button data-set="motion" data-v="reduced" aria-pressed="false">Reduced</button></span></label>
   </div>
 </div>
@@ -1936,6 +2045,7 @@ const SETMAP = [
   ['Settings › User Interface & App', null],
   ['Light / Dark / System', 'Menu › App › Appearance, start & language'],
   ['Theme Highlight / Neutral', 'Menu › App › Appearance, start & language'],
+  ['Theme: Colour / Mono tint (new, 22.10.)', 'Menu › App › Appearance, start & language › Theme'],
   ['Default view per device', 'Menu › App › Appearance, start & language › Start'],
   ['Inactivity timeout → default view', 'Menu › App › Appearance, start & language › Start'],
   ['Category colour (context menu)', 'Building “…” › Rooms & categories'],
@@ -1979,7 +2089,10 @@ const SETMAP = [
 /* app mode: the page fills a real device. Set by ?app=1, by the Expo wrapper (meta lox-app or window.LOX_APP) or by a home-screen web app. */
 const APP = (()=>{ try{ if(new URLSearchParams(location.search).get('app')==='1') return true; }catch(_){} if(window.LOX_APP) return true; if(document.querySelector('meta[name="lox-app"]')) return true; try{ if(navigator.standalone || matchMedia('(display-mode: standalone)').matches) return true; if(matchMedia('(pointer: coarse)').matches && Math.min(innerWidth, innerHeight) < 520) return true; }catch(_){} return false; })();
 if(APP) document.documentElement.classList.add('lox-app');
-const S = {device:'phone', release:'first', scenario:'home', apptheme:'light', tab:'favorites', screen:'home', cat:'all', floor:'All floors', room:null, control:null, menu:false, placesOpen:false, place:'home', nfc:false, notifDevice:'this', notif:{security:true, access:true, energy:false, system:true, info:false, loxone:false}, q:'', holdDone:{}, toast:'', pop:null, trust:false, actFilter:'all', map:false, pl:{sel:TODAY_D, rng:null, open:{}, dense:{}, ft:{kind:[],room:[]}, mft:[], range:'Day', view:'Calendar', esel:TODAY_D, picker:0, multi:null, ed:0, sheet:null, draft:null, sub:null, menu:null, alert:null, toast:null, gtop:251, gleft:0, nudge:1, fx:null, sheetIn:0, focus:null}, prefs:{theme:'Light', header:'Highlight', start:'Favorites', textsize:'System', lock:true, faceDoors:true, haptic:true, nameOpt:''}};
+/* Appearance › Theme (22.10.): Colour as today, or Mono with one tint for the whole app; the tints from the Figma theme board */
+const MONOS = [['anthracite','Anthracite','#1C1C1C'],['russet','Russet Brown','#7C431C'],['sage','Dark Sage','#495C4A'],['midnight','Midnight Blue','#3F4668']];
+/* S.pill: the version of the pill vehicle, '1' (20.10.) or '2' (22.10., after the design review); S.release 'target' means the pill, 'first' today's nav bar */
+const S = {device:'phone', release:'first', pill:'2', mono:'', scenario:'home', apptheme:'light', tab:'favorites', screen:'home', cat:'all', floor:'All floors', room:null, control:null, menu:false, placesOpen:false, place:'home', nfc:false, notifDevice:'this', notif:{security:true, access:true, energy:false, system:true, info:false, loxone:false}, q:'', holdDone:{}, toast:'', pop:null, trust:false, actFilter:'all', map:false, pl:{sel:TODAY_D, rng:null, open:{}, dense:{}, ft:{kind:[],room:[]}, mft:[], range:'Day', view:'Calendar', esel:TODAY_D, picker:0, multi:null, ed:0, sheet:null, draft:null, sub:null, menu:null, alert:null, toast:null, gtop:251, gleft:0, nudge:1, fx:null, sheetIn:0, focus:null}, prefs:{theme:'Light', header:'Highlight', start:'Favorites', textsize:'System', lock:true, faceDoors:true, haptic:true, nameOpt:''}};
 let toastTimer=null;
 
 function scen(){ return SCEN[S.scenario]; }
@@ -2380,6 +2493,8 @@ function appearanceBody(){
   return `<div class="lbl first"><span>Appearance</span><span class="hint">this ${dev}</span></div>
     <div class="grp"><div class="gr"><span class="tx"><b>Mode</b><small>Light, dark, or follow the system</small></span></div><div class="gr" style="padding-top:0">${seg('theme',['Light','Dark','System'])}</div>
       <div class="gr"><span class="tx"><b>Header</b><small>Highlight (green) or Neutral</small></span></div><div class="gr" style="padding-top:0">${seg('header',['Highlight','Neutral'])}</div>
+      <div class="gr"><span class="tx"><b>Theme</b><small>Colour as today, or Mono: one tint for the whole app</small></span></div><div class="gr" style="padding-top:0"><div class="segm sm" role="tablist"><button data-act="prefset" data-v="mono|" aria-pressed="${!S.mono}">Colour</button><button data-act="prefset" data-v="mono|${S.mono||'russet'}" aria-pressed="${!!S.mono}">Mono</button></div></div>
+      ${S.mono? `<div class="gr" style="padding-top:0"><div class="swatches" role="radiogroup" aria-label="Tint">${MONOS.map(m=>`<button class="sw ${S.mono===m[0]?'on':''}" role="radio" aria-checked="${S.mono===m[0]}" data-act="prefset" data-v="mono|${m[0]}" style="--sw:${m[2]}"><i></i><span>${m[1]}</span></button>`).join('')}</div></div>`:''}
       <div class="gr"><span class="tx"><b>Text size</b><small>Follows the system by default</small></span></div><div class="gr" style="padding-top:0">${seg('textsize',['System','Larger','Largest'])}</div>
       <div class="gr">${I('devices','i')}<span class="tx"><b>Haptic feedback</b></span>${bbt(p.haptic,'pref','haptic','Haptic feedback')}</div>
       ${S.device==='tablet'? `<div class="gr">${I('clock','i')}<span class="tx"><b>Clock in header</b></span>${bbt(true,'toast','Clock in the header','Clock')}</div>`:''}</div>
@@ -3295,7 +3410,7 @@ function screenBody(){
     case 'mode': return modePageBody();
     case 'categories': return categoriesBody();
     case 'accesspage': return accessHomeBody();
-    case 'room': return roomBody();
+    case 'room': return V2() ? roomBody2() : roomBody();
     case 'control': return controlDetail(CTRL[S.control]);
     case 'hub': return hubBody(CTRL[S.control]);
     case 'notifications': return notificationsBody();
@@ -3513,59 +3628,110 @@ const NOTES_T = {
   activity:{t:'Activity: what happened, in the menu', tags:['Target','04 PP-18','06 Pattern 2'], b:['One timeline for push history, system messages and the Messages Centre, the same six categories as the notification settings, actions inline.','Its home is the first row of Menu › Building, with the count of new items; the notification itself is the usual entry point. The header carries no bell: it was present on every root page at all times, for a check that happens a few times a day.','The pill stays: its left end reads Back here, the three verbs stay reachable.']},
 };
 const SUB_NOTE = 'The pill stays: on a control, its hub or any settings page its left end reads Back, so the floating back button of V17 is no longer needed and the three verbs stay reachable.';
+
+/* Pill 2.0 (22.10., after the design review with the lead designer): the same structure, a different vehicle */
+const RULES_V2 = ['One object, two sizes. On the phone the pill carries Menu and the three verbs; while you read it folds to the icon of where you are, and a tap or a scroll up brings it back. Nothing slides out of the pill any more: no half-menu, no sheet. On the tablet the pill docks left as a rail; Menu opens the panel beside it.','Three verbs, the same on every device: Favorites (what matters to me), Building (where and what), Planner (when). What happened is Activity in the menu and the notification itself; getting in is Access under Menu › App and a widget on the lock screen.','The page carries its own controls, visible at the top. Favorites: search and Edit, then the status pills. Building: the category groups as one lean row that stays put while you scroll, Central first, the floors as the anchor, then the rooms; a room shows its own groups. Rooms first or categories first, either order, no mode to choose.','The menu is a destination, not an overlay: Menu opens it as a page on the phone (the Menu tab of Amazon, Facebook and YouTube, iOS’s More) and as the panel on the tablet. Every setting keeps one home: Menu › Building, Menu › App, Menu › Loxone, the Miniservers in the menu header. The validation table proves it; the doors check proves every destination is behind a word.'];
+const NOTES_V2 = {
+  favorites:{t:'Favorites: search and Edit on top', tags:['Pill 2.0','Review 21.10.'], b:['The search field is the first thing on the page, Edit beside it, the status pills right below (system status, weather, Access on the phone). Nothing of this hides in a sheet any more; sorting lives once, under Menu › App › Appearance.','The field opens the search page: rooms, functions with inline actions, schedules, operating modes, every setting with its path.','Phone: field and Edit above the pills, because search is expected at the top and the pills are content you scan. Tablet: field and Edit on the left, the pills on the right of the same row. The header stays slim: the wordmark and the Miniserver with its connection.']},
+  building:{t:'Building: the lens on top, the rooms as the spine', tags:['Pill 2.0','Stream C','Apple Home iOS 16','Google Home'], b:['One lean row of chips at the top of the page, the category groups the Miniserver has (Lighting · Shading · Climate · Presence · Audio · Security · Energy · Other); it stays while you scroll. Below: Central, the floors, then the rooms as cards with one square per group present.','Tap a chip: the rooms reduce to the ones that have the group, each card shows that group’s state, and the page scrolls to the Rooms anchor so the result is in view. Central keeps its place above (Central is top by design). A group with several of the project’s categories offers them as chips under the Rooms line.','Tap a room: its page with its own groups on top. Tap a square: Room × Category in one tap. Kitchen → Lights and Lights → Kitchen both work; there is no toggle between “Rooms” and “Categories”, because Apple Home (iOS 16) and Google Home arrived at the same answer: categories as a row on top, rooms as sections below.']},
+  'building-lens':{t:'A lens is on', tags:['Pill 2.0'], b:['Only rooms with this group remain, each with its state (On, 21.6°, Playing, 1 open). Central shows just its functions of this group. A card opens Room × Category.','The floors row under “Rooms” is the anchor the page scrolls to; it hides when a Miniserver has one floor (Apartment Prague). “All” brings every room back. The Office (76 rooms) reads the same way as the house: the row scrolls, the rooms follow.']},
+  room:{t:'A room: its groups on top', tags:['Pill 2.0'], b:['The same lean row, but with the room’s own groups; the lens you came with stays selected, so Lights → Kitchen ends on the same page as Kitchen → Lights.','The pill’s left end reads Back; the three verbs stay reachable; “…” holds the room settings.']},
+  mini2:{t:'Reading: the pill folds to an icon', tags:['Pill 2.0','iOS 26'], b:['Scrolling down folds the pill to a 56 px disc with the icon of where you are, the way the iOS 26 tab bar minimizes to its selected tab. Scroll up, or tap the disc, and the full pill is back.','Hiding the bar completely was rejected: Apple keeps a trace of the tab bar for the same reason, you must never lose the way back. The 1.0 mini (Menu plus the verb with its label and chevron) saved no space, so it went.']},
+  menu2:{t:'Menu: a page on the phone, a panel on the tablet', tags:['Pill 2.0','Amazon · Facebook · YouTube','iOS “More”','Material 3'], b:['Menu is the fourth stop on the pill. On the phone it opens the menu as a page in place, the pattern of the “Menu” items in the bottom bars of Amazon, Facebook and YouTube, and of iOS’s “More” tab. Nothing slides up as a sheet; the pill stays where it is, Menu is lit, any verb takes you out. Search sits on top of the page, so whoever opens the menu because they are lost meets it first.','On the tablet the same word opens the dark panel beside the rail, which the review found right. Material 3 dropped its drawer-from-the-bottom-bar entirely; a bottom sheet for navigation is a pattern the platforms have left.','Content unchanged: the Miniserver in the header (Change Miniserver, Edit), the index Building · App · Loxone, the three blocks, log off and help.']},
+  search:{t:'Search: its own page', tags:['Pill 2.0'], b:['From the field on Favorites, from the icon in the header of Building and Planner, from the top of the menu, or “/”. Rooms, categories, functions with inline actions, schedules and operating modes, every setting with its path, help at the end.']},
+  planner:{t:'Planner: when things happen', tags:['Pill 2.0','Round 10'], b:['The page holds the way into the Entries (“Today, every schedule”), the operating modes and every schedule itself; nothing of the 1.0 sheet is missed. The Planner stays the third verb as the placeholder for the next big feature; once Building has settled, the Planner takes what fits.']},
+  appearance:{t:'Appearance › Theme: Colour or Mono', tags:['Pill 2.0','Figma EX-LOX-APP theme board'], b:['New row “Theme”: Colour as today, or Mono with one tint for the whole app. Four tints from the design team’s theme board (“Edit theme”): Anthracite, Russet Brown, Dark Sage, Midnight Blue.','Mono collapses every category colour into white, cards and pills become translucent layers on the tint, the header takes the tint, the pill goes a shade darker. Warnings stay orange and red: a colour that carries meaning is not decoration. The toolbar’s Theme switch previews it; in the app it is this row.']},
+  tablet:{t:'The rail: the same object, docked left', tags:['Pill 2.0','09 §4'], b:['The pill travels to the left edge and becomes the rail. Two states only: the rail, and the menu panel from Menu. The facets sit on the page, exactly as on the phone, three columns wide; a room opens as a page with Back in the header.','Drag the handle on the rail’s right edge or tap Menu for the panel; the dimmed page closes it.']},
+  activity:{t:'Activity: what happened, in the menu', tags:['Pill 2.0','04 PP-18'], b:['One timeline for push history, system messages and the Messages Centre, actions inline. Its home is the first row of Menu › Building; the notification itself is the usual entry point. The pill’s left end reads Back here.']},
+};
+/* what changed from 1.0 to 2.0, with the evidence */
+const CHANGES = [
+  ['The half-menu (expanded sheet)','Removed. Every filter lives on its page; the pill only switches pages and opens the menu.','Pulling a sheet is undiscoverable, even with a chevron; hidden navigation costs about a fifth of discoverability (NN/g). The review: “unexpected behaviour”.'],
+  ['Favorites: Edit and Sorting in the sheet','Search and Edit at the top of the page, the status pills right below (tablet: on the right of the same row). Sorting once, under Appearance.','The review asked for a prominent search area on Favorites instead of hiding it.'],
+  ['Building: categories and rooms in the sheet','The category groups as one lean row that stays while you scroll; Central; the floors as the anchor; the rooms reduce to the ones with the group and the page scrolls there. A room opens its page with its own groups.','Apple Home dropped its Rooms tab in iOS 16 for a categories row on top with rooms as sections below; Google Home’s room bar scrolls the list to the tapped group. Kitchen → Lights and Lights → Kitchen both work; no mode switch between rooms and categories.'],
+  ['Planner: the way into the Entries and the two New buttons in the sheet','Nothing to replace: the page holds them. The verb stays as the placeholder for the next big feature.',''],
+  ['Mini: Menu plus the verb with its label and chevron','The icon only, a 56 px disc. Tap or scroll up restores the pill.','iOS 26 minimizes the tab bar to the selected tab’s icon. Hiding the bar completely was rejected: you must never lose the way back. The old mini saved no space.'],
+  ['The menu as a sheet from the bottom','A page in place on the phone; the panel beside the rail on the tablet (which the review found right).','Amazon, Facebook and YouTube open their bottom-bar menu as a page; iOS’s “More” tab does the same; Material 3 removed the drawer that opened from the bottom bar and offers no bottom-sheet navigation.'],
+  ['—','Appearance › Theme: Colour or Mono, four tints.','Figma EX-LOX-APP, “Concept settings page theme”: one tint for the whole app, cards as translucent layers.'],
+];
 function noteKey(){
-  if(S.release==='target' && pillEl()){ if(P.target>=2) return 'full'; if(P.target>=1 && S.screen==='home') return 'expanded'; if(P.target<=-1) return 'mini'; }
+  if(S.release==='target' && pillEl()){
+    if(V2()){ if(S.screen==='home' && (S.menu || P.target>=2)) return 'menu2'; if(P.target<=-1 && S.screen==='home') return 'mini2'; }
+    else { if(P.target>=2) return 'full'; if(P.target>=1 && S.screen==='home') return 'expanded'; if(P.target<=-1) return 'mini'; }
+  }
   let key = S.menu ? 'menu' : S.screen==='home' ? (S.tab==='building' && S.cat!=='all' ? 'building-lens' : S.tab) : S.screen;
   if(S.device==='tablet' && ['favorites','building','building-lens','room','control','hub'].includes(key)) key='tablet';
   return key;
 }
-function pillStateName(){ return P.target>=2 ? 'full' : P.target>=1 ? 'expanded' : P.target<=-1 ? 'mini' : S.device==='tablet' ? 'rail' : 'condensed'; }
+function pillStateName(){ if(V2()) return (S.menu || P.target>=2) ? 'menu' : P.target<=-1 ? 'icon' : S.device==='tablet' ? 'rail' : 'pill'; return P.target>=2 ? 'full' : P.target>=1 ? 'expanded' : P.target<=-1 ? 'mini' : S.device==='tablet' ? 'rail' : 'condensed'; }
 function validateMap(){
   return SETMAP.map(x=>{ if(x[1]===null) return {grp:x[0]}; const home=x[1]; const t = setgoTarget(home); const removed = /^removed/i.test(home); return {today:x[0], home, status: removed? 'removed' : t ? 'ok' : 'bad', target:t}; });
 }
-function toTarget(){ if(S.release!=='target'){ S.release='target'; S.trust=false; S.menu=false; setDevice(S.device, true); P.t=0; P.target=0; P.v=0; } }
+/* the flows: toPill('1'|'2') switches to that version of the pill, toTarget keeps the current one */
+function toPill(v){ const same = S.release==='target' && S.pill===v; S.release='target'; S.pill=v; if(!same){ S.trust=false; S.menu=false; S.ch=false; if(v==='1' && (S.screen==='room'||S.screen==='search')) S.screen='home'; setDevice(S.device, true); P.t=0; P.target=0; P.v=0; } }
+function toTarget(){ toPill(S.pill); }
 function notesHtml(){
-  const key = noteKey(); const target = S.release==='target';
-  const n = (target && NOTES_T[key]) || NOTES[key] || NOTES.favorites;
-  const bullets = (target && !isRoot() && S.device==='phone' && !['full','expanded','mini'].includes(key)) ? n.b.concat([SUB_NOTE]) : n.b;
-  const rules = target ? RULES_T : RULES;
-  const flows = [
-    ['First release: Access in the side menu', ()=>{ S.release='first'; ensurePlace(); S.tab='favorites'; S.screen='home'; S.menu=true; S.placesOpen=false; }],
-    ['First release: hotel key only (start page)', ()=>{ S.release='first'; S.scenario='guest'; document.getElementById('scen').value='guest'; applyScenario(); }],
-    ['First release: Rooms tab with the lens', ()=>{ S.release='first'; ensurePlace(); S.tab='building'; S.screen='home'; S.room=null; S.cat='lighting'; }],
-    ['Target: the Building facets (tap Building twice)', ()=>{ toTarget(); ensurePlace(); S.tab='building'; S.screen='home'; S.room=null; S.cat='all'; S.q=''; render(); setPill(1, {force:true}); return true; }],
-    ['Target: pick Kitchen × Lighting from the pill', ()=>{ toTarget(); ensurePlace('home'); S.tab='building'; S.screen='home'; S.room='kitchen'; S.cat='lighting'; S.q=''; render(); setPill(0, {force:true}); hint('Kitchen · Lighting, chosen in the pill'); return true; }],
-    ['Target: pull to full, the menu', ()=>{ toTarget(); ensurePlace(); S.screen='home'; render(); setPill(2, {force:true}); return true; }],
-    ['Target: scroll, the pill goes mini', ()=>{ toTarget(); ensurePlace(); S.tab='favorites'; S.screen='home'; render(); setPill(-1, {force:true}); return true; }],
-    ['Target: morph to the tablet rail (and back)', ()=>{ toTarget(); ensurePlace(); S.screen='home'; render(); setDevice(S.device==='phone'?'tablet':'phone'); return true; }],
-    ['Target: search “kitchen light” in the pill', ()=>{ toTarget(); ensurePlace('home'); S.tab='building'; S.screen='home'; S.q='kitchen light'; S.qFocus=true; render(); setPill(1, {force:true}); return true; }],
-    ['Target: a sub-page, the pill is the back button', ()=>{ toTarget(); ensurePlace('home'); S.tab='building'; S.screen='control'; S.control='l3'; S.room='living'; S.cat='climate'; H=[{tab:'building',screen:'home',room:'living',control:null,cat:'climate',q:''}]; render(); setPill(0, {force:true}); return true; }],
-    ['Target: the Office, an imported office building (76 rooms, 433 functions)', ()=>{ toTarget(); ensurePlace('office'); S.tab='building'; S.screen='home'; S.room=null; S.cat='all'; S.q=''; render(); setPill(1, {force:true}); return true; }],
-    ['Target: Apartment Prague, four rooms and no floors', ()=>{ toTarget(); ensurePlace('prague'); S.tab='building'; S.screen='home'; S.room=null; S.cat='all'; S.q=''; render(); setPill(1, {force:true}); return true; }],
+  const key = noteKey(); const target = S.release==='target'; const v2 = V2();
+  const n = (target && v2 && NOTES_V2[key]) || (target && NOTES_T[key]) || NOTES[key] || NOTES.favorites;
+  const bullets = (target && !isRoot() && S.device==='phone' && !['full','expanded','mini','menu2','mini2'].includes(key)) ? n.b.concat([SUB_NOTE]) : n.b;
+  const rules = target ? (v2 ? RULES_V2 : RULES_T) : RULES;
+  const home2 = (at)=>{ toPill('2'); ensurePlace(at); S.menu=false; S.q=''; S.scrollTo=null; };
+  const flows2 = [
+    ['Pill 2.0: Favorites, search and Edit on top', ()=>{ home2(); S.tab='favorites'; S.screen='home'; S.room=null; render(); setPill(0, {force:true}); return true; }],
+    ['Pill 2.0: Building, tap Lighting and the rooms follow', ()=>{ home2('home'); S.tab='building'; S.screen='home'; S.room=null; S.cat='f:lighting'; S.floor='All floors'; S.scrollTo='rooms'; render(); setPill(0, {force:true}); return true; }],
+    ['Pill 2.0: Kitchen first, then Lighting', ()=>{ home2('home'); S.tab='building'; S.room='kitchen'; S.cat='f:lighting'; S.screen='room'; H=[{tab:'building',screen:'home',room:null,control:null,cat:'all',q:''}]; P.anim=true; render(); setPill(0, {force:true}); return true; }],
+    ['Pill 2.0: scroll, the pill folds to its icon', ()=>{ home2(); S.tab='favorites'; S.screen='home'; S.room=null; render(); setPill(-1, {force:true}); return true; }],
+    ['Pill 2.0: Menu, a page on the phone, a panel on the tablet', ()=>{ home2(); S.screen='home'; S.room=null; if(S.device==='phone'){ S.menu=true; P.anim=true; render(); setPill(0, {force:true}); } else { render(); setPill(2, {force:true}); } return true; }],
+    ['Pill 2.0: search “kitchen light”, its own page', ()=>{ home2('home'); S.tab='building'; S.screen='search'; S.room=null; S.q='kitchen light'; S.qFocus=true; H=[{tab:'building',screen:'home',room:null,control:null,cat:'all',q:''}]; P.anim=true; render(); setPill(0, {force:true}); return true; }],
+    ['Pill 2.0: the Office (76 rooms), Climate across the floors', ()=>{ home2('office'); S.tab='building'; S.screen='home'; S.room=null; S.cat='f:climate'; S.floor='All floors'; S.scrollTo='rooms'; render(); setPill(0, {force:true}); return true; }],
+    ['Pill 2.0: Apartment Prague, four rooms and no floors', ()=>{ home2('prague'); S.tab='building'; S.screen='home'; S.room=null; S.cat='all'; render(); setPill(0, {force:true}); return true; }],
+    ['Pill 2.0: Appearance › Theme, Mono in Russet Brown', ()=>{ home2(); S.screen='appearance'; S.mono='russet'; H=[{tab:S.tab,screen:'home',room:null,control:null,cat:'all',q:''}]; render(); setPill(0, {force:true}); return true; }],
+    ['Back to Colour', ()=>{ S.mono=''; render(); return true; }],
+    ['Pill 2.0: morph to the tablet rail (and back)', ()=>{ home2(); S.screen='home'; S.room=null; render(); setDevice(S.device==='phone'?'tablet':'phone'); return true; }],
+    ['Pill 2.0: a sub-page, the pill is the back button', ()=>{ home2('home'); S.tab='building'; S.screen='control'; S.control='l3'; S.room='living'; S.cat='all'; H=[{tab:'building',screen:'home',room:null,control:null,cat:'all',q:''}]; render(); setPill(0, {force:true}); return true; }],
+  ];
+  const flows1 = [
+    ['Pill 1.0: the Building facets (tap Building twice)', ()=>{ toPill('1'); ensurePlace(); S.tab='building'; S.screen='home'; S.room=null; S.cat='all'; S.q=''; render(); setPill(1, {force:true}); return true; }],
+    ['Pill 1.0: pick Kitchen × Lighting from the pill', ()=>{ toPill('1'); ensurePlace('home'); S.tab='building'; S.screen='home'; S.room='kitchen'; S.cat='lighting'; S.q=''; render(); setPill(0, {force:true}); hint('Kitchen · Lighting, chosen in the pill'); return true; }],
+    ['Pill 1.0: pull to full, the menu', ()=>{ toPill('1'); ensurePlace(); S.screen='home'; render(); setPill(2, {force:true}); return true; }],
+    ['Pill 1.0: scroll, the pill goes mini', ()=>{ toPill('1'); ensurePlace(); S.tab='favorites'; S.screen='home'; render(); setPill(-1, {force:true}); return true; }],
+    ['Pill 1.0: search “kitchen light” in the pill', ()=>{ toPill('1'); ensurePlace('home'); S.tab='building'; S.screen='home'; S.q='kitchen light'; S.qFocus=true; render(); setPill(1, {force:true}); return true; }],
+    ['Pill 1.0: the Office, an imported office building (76 rooms, 433 functions)', ()=>{ toPill('1'); ensurePlace('office'); S.tab='building'; S.screen='home'; S.room=null; S.cat='all'; S.q=''; render(); setPill(1, {force:true}); return true; }],
+    ['Pill 1.0: Planner, pull up for today and create', ()=>{ toPill('1'); ensurePlace(); S.tab='planner'; S.screen='home'; S.q=''; render(); setPill(1, {force:true}); return true; }],
+  ];
+  const shared = [
     ['Planner › the Office: every schedule on one day', ()=>{ toTarget(); ensurePlace('office'); S.tab='planner'; S.screen='schedule'; S.pl.multi=schedulesHere().map(x=>x.id); S.control=S.pl.multi[0]; S.pl.range='Day'; S.pl.view='Calendar'; S.pl.esel=TODAY_D; H=[{tab:'planner',screen:'home',room:null,control:null,cat:'all',q:''}]; }],
-    ['Target: hotel stay, phase two (Favorites with the stay card)', ()=>{ toTarget(); S.scenario='stay'; document.getElementById('scen').value='stay'; applyScenario(); }],
-    ['Target: owner Access from the menu (doors, sharing)', ()=>{ toTarget(); S.scenario='multi'; document.getElementById('scen').value='multi'; applyScenario(); S.tab='favorites'; S.screen='accesspage'; H=[]; }],
-    ['Target: the Planner', ()=>{ toTarget(); ensurePlace(); S.tab='planner'; S.screen='home'; S.pl.sel=TODAY_D; S.pl.rng=null; S.pl.open={}; }],
-    ['Planner: pull up for today and create', ()=>{ toTarget(); ensurePlace(); S.tab='planner'; S.screen='home'; S.q=''; render(); setPill(1, {force:true}); return true; }],
+    ['Hotel stay, phase two (Favorites with the stay card)', ()=>{ toTarget(); S.scenario='stay'; document.getElementById('scen').value='stay'; applyScenario(); }],
+    ['Owner: Access from the menu (doors, sharing)', ()=>{ toTarget(); S.scenario='multi'; document.getElementById('scen').value='multi'; applyScenario(); S.tab='favorites'; S.screen='accesspage'; H=[]; }],
+    ['The Planner', ()=>{ toTarget(); ensurePlace(); S.tab='planner'; S.screen='home'; S.pl.sel=TODAY_D; S.pl.rng=null; S.pl.open={}; }],
     ['Planner › Living Room climate entries (week)', ()=>{ toTarget(); ensurePlace('home'); S.tab='planner'; S.screen='schedule'; S.control='l3'; S.pl.multi=null; S.pl.range='Week'; S.pl.view='Calendar'; S.pl.esel=TODAY_D; H=[{tab:'planner',screen:'home',room:null,control:null,cat:'all',q:''}]; }],
     ['Planner › every schedule on one day', ()=>{ toTarget(); ensurePlace(); S.tab='planner'; S.screen='schedule'; S.pl.multi=schedulesHere().map(x=>x.id); S.control=S.pl.multi[0]; S.pl.range='Day'; S.pl.view='Calendar'; S.pl.esel=TODAY_D; H=[{tab:'planner',screen:'home',room:null,control:null,cat:'all',q:''}]; }],
     ['Planner › Party (operating mode)', ()=>{ toTarget(); ensurePlace('home'); S.tab='planner'; S.screen='mode'; S.pl.mid='party'; H=[{tab:'planner',screen:'home',room:null,control:null,cat:'all',q:''}]; }],
-    ['Target: Activity from the menu', ()=>{ toTarget(); ensurePlace(); S.tab='favorites'; S.screen='activity'; S.menu=false; H=[]; }],
+    ['Activity from the menu', ()=>{ toTarget(); ensurePlace(); S.tab='favorites'; S.screen='activity'; S.menu=false; H=[]; }],
     ['Menu › App › Integrations (CarPlay)', ()=>{ ensurePlace(); S.screen='integrations'; S.menu=false; }],
-    ['Search “CarPlay”', ()=>{ ensurePlace(); S.q='CarPlay'; if(S.release==='target'){ S.screen='home'; S.qFocus=true; render(); setPill(1, {force:true}); return true; } S.screen='search'; S.menu=false; }],
+    ['Search “CarPlay”', ()=>{ ensurePlace(); S.q='CarPlay'; if(S.release==='target' && !V2()){ S.screen='home'; S.qFocus=true; render(); setPill(1, {force:true}); return true; } S.screen='search'; S.qFocus=true; S.menu=false; }],
     ['Hold to open the front door', ()=>{ ensurePlace('home'); S.tab='building'; S.screen='control'; S.control='h2'; S.room='hall'; S.cat='access'; }],
   ];
+  const flowsFirst = [
+    ['First release: Access in the side menu', ()=>{ S.release='first'; ensurePlace(); S.tab='favorites'; S.screen='home'; S.menu=true; S.placesOpen=false; }],
+    ['First release: hotel key only (start page)', ()=>{ S.release='first'; S.scenario='guest'; document.getElementById('scen').value='guest'; applyScenario(); }],
+    ['First release: Rooms tab with the lens', ()=>{ S.release='first'; ensurePlace(); S.tab='building'; S.screen='home'; S.room=null; S.cat='lighting'; }],
+  ];
+  const flows = v2 ? flows2.concat(shared, flows1, flowsFirst) : target ? flows1.concat(shared, flows2, flowsFirst) : flowsFirst.concat(flows2, flows1, shared);
   window.__flows = flows;
   const val = validateMap(); const ok = val.filter(x=>x.status==='ok').length, rm = val.filter(x=>x.status==='removed').length, bad = val.filter(x=>x.status==='bad').length;
   const doors = target ? validateDoors() : null;
-  const doorsHtml = !doors ? `<div class="eyebrow">Doors</div><h2>Every destination behind a word</h2><p>The check runs for an owner in their own home (a guest’s narrow rights hide menu rows on purpose): switch the scenario to “Three Miniservers” or to “Plus a stay”.</p>` : `<div class="eyebrow">Doors</div><h2>Every destination behind a word</h2><p>The usability test will not run, so the prototype checks the one thing it would have found first: a door nobody sees. From every root page each destination is reached by tapping things that carry a word, at most two taps to the page that holds it. A gesture, “/”, an unlabelled glyph or a second tap on something without a cue does not count; those stay as shortcuts. The check reads the live markup of the pill and the menu: drop a word or the chevron and its rows turn red.</p><div class="valsum"><span class="ok">${doors.worded} behind a word</span><span class="${doors.hidden?'bad':''}">${doors.hidden} hidden</span><span class="${doors.deep?'bad':''}">${doors.deep} deeper than two taps</span></div><table class="valtable">${doors.rows.map(x=> x.grp ? `<tr class="grp"><td colspan="3">${x.grp}</td></tr>` : `<tr><td>${x.dest}</td><td><button ${x.go?`data-doorgo="${x.go}"`:`data-setgo="${x.home.replace(/"/g,'&quot;')}"`}>${x.steps.map(s=>s.w).join(' › ')}</button>${x.rest.length?`<small style="display:block;color:var(--muted)">then ${x.rest.join(' › ')} on that page</small>`:''}</td><td class="${x.status==='worded'?'ok':'bad'}">${x.status==='worded'? (x.steps.length===1?'1 tap':x.steps.length+' taps') : x.status==='deep' ? x.steps.length+' taps' : x.why}</td></tr>`).join('')}</table>`;
+  const doorsHtml = !doors ? `<div class="eyebrow">Doors</div><h2>Every destination behind a word</h2><p>The check runs for an owner in their own home (a guest’s narrow rights hide menu rows on purpose): switch the scenario to “Three Miniservers” or to “Plus a stay”.</p>` : `<div class="eyebrow">Doors</div><h2>Every destination behind a word</h2><p>The usability test will not run, so the prototype checks the one thing it would have found first: a door nobody sees. From every root page each destination is reached by tapping things that carry a word, at most two taps to the page that holds it. A gesture, “/”, an unlabelled glyph or a second tap on something without a cue does not count; those stay as shortcuts. The check reads the live markup of the pill, the pages and the menu: drop a word${v2?'':' or the chevron'} and its rows turn red.</p><div class="valsum"><span class="ok">${doors.worded} behind a word</span><span class="${doors.hidden?'bad':''}">${doors.hidden} hidden</span><span class="${doors.deep?'bad':''}">${doors.deep} deeper than two taps</span></div><table class="valtable">${doors.rows.map(x=> x.grp ? `<tr class="grp"><td colspan="3">${x.grp}</td></tr>` : `<tr><td>${x.dest}</td><td><button ${x.go?`data-doorgo="${x.go}"`:`data-setgo="${x.home.replace(/"/g,'&quot;')}"`}>${x.steps.map(s=>s.w).join(' › ')}</button>${x.rest.length?`<small style="display:block;color:var(--muted)">then ${x.rest.join(' › ')} on that page</small>`:''}</td><td class="${x.status==='worded'?'ok':'bad'}">${x.status==='worded'? (x.steps.length===1?'1 tap':x.steps.length+' taps') : x.status==='deep' ? x.steps.length+' taps' : x.why}</td></tr>`).join('')}</table>`;
   const mapHtml = `<div class="eyebrow">Settings map</div><h2>Every setting of today’s app and its one home</h2><p>From document 03 (section 3) and the two menu screenshots. Left: today. Right: where it lives in the Target; each home is resolved by the prototype itself (“opens” means the screen exists here, tap it; “removed” means the entry is gone on purpose and the reason is stated).</p><div class="valsum"><span class="ok">${ok} open</span><span>${rm} removed, explained</span><span class="${bad?'bad':''}">${bad} unresolved</span></div><table class="valtable">${val.map(x=> x.grp ? `<tr class="grp"><td colspan="3">${x.grp}</td></tr>` : `<tr><td>${x.today}</td><td><button data-setgo="${x.home.replace(/"/g,'&quot;')}">${x.home}</button></td><td class="${x.status==='ok'?'ok':x.status==='removed'?'rm':'bad'}">${x.status==='ok'?'opens':x.status==='removed'?'removed':'check'}</td></tr>`).join('')}</table>`;
   const barHtml = `<div class="eyebrow">The bar</div><h2>What earns a place on the bar</h2><p>Four tests, all four must hold: used most days; a place with dwell time, not a one-shot action; its own mental model, not a subset of another verb; relevant to every user type. Where the frequent action is not in the app at all (a scan at the door), the home is the lock screen, not a tab.</p><table class="bartable"><tr><th>Candidate</th><th>Often · dwell</th><th>Home</th></tr>${BAR.map(r=>`<tr class="${r[6]?'on':''}"><td><b>${r[0]}</b><small>${r[3]} · ${r[4]}</small></td><td>${r[1]}<small>${r[2]}</small></td><td>${r[5]}</td></tr>`).join('')}</table><p>Benchmarks with three verbs or fewer: Busch-free@home Next (Dashboard · Rooms · Automation, the best-rated DACH pro app), Google Home (Home · Activity · Automations), Apple Home (one tab plus a menu). Research: schedules are a documented pain (04 PP-08, 05 Flow 7 and 14), notifications are reactive (05 Flow 13), the scan is a widget wish (04 PP-25).</p>`;
-  const eyebrow = target ? `Target: the pill · ${S.device} · ${pillStateName()}` : 'First release (01.11.): nav bar as today, Access in the side menu';
+  const chHtml = `<div class="eyebrow">Pill 1.0 → 2.0</div><h2>What the design review changed, and the evidence</h2><p>Tested with the lead designer on 21.10. on the phone and the tablet; the structure held, the vehicle did not. Every change below answers one point of that feedback and is checked against what the platform owners and the big apps do. Pill 1.0 stays in the toolbar for comparison.</p><table class="bartable chtable"><tr><th>1.0</th><th>2.0</th><th>Why</th></tr>${CHANGES.map(r=>`<tr><td>${r[0]}</td><td><b style="font-weight:600">${r[1]}</b></td><td>${r[2]}</td></tr>`).join('')}</table><p><b>Not adopted, and why.</b> A Rooms/Categories toggle or two searches side by side: a mode switch before browsing, which Apple Home and Google Home both avoid; the squares on the room cards and the chips on the room page already give both orders. A settings gear instead of Menu: the menu holds the Miniserver, Activity, Access and the building, not only settings. The menu sliding in from the side at full width: still an overlay in the user’s eyes; a page in place is what every bottom-bar menu does. Hiding the pill completely on scroll: you lose the way back; Apple keeps the selected tab visible.</p><p class="srcnote">Sources: <a href="https://appleinsider.com/articles/22/07/21/hands-on-apples-home-app-in-ios-16-has-an-all-new-design">Apple Home in iOS 16 (AppleInsider)</a> · <a href="https://9to5google.com/2023/05/25/google-home-3-1-rolling-out/">Google Home 3.1 room bar (9to5Google)</a> · <a href="https://www.createwithswift.com/making-the-tab-bar-collapse-while-scrolling/">iOS 26 tabBarMinimizeBehavior (Create with Swift)</a> · <a href="https://www.nngroup.com/articles/hamburger-menus/">Hamburger menus and hidden navigation (NN/g)</a> · <a href="https://9to5google.com/2025/05/14/material-3-expressive-navigation/">Material 3 Expressive navigation (9to5Google)</a> · <a href="https://www.androidpolice.com/2021/04/01/amazon-app-picks-up-new-ui-with-bottom-bar-navigation-and-better-whole-foods-integration/">Amazon’s bottom bar with a Menu tab (Android Police)</a> · <a href="https://developer.apple.com/design/human-interface-guidelines/tab-bars">HIG: Tab bars</a>.</p>`;
+  const eyebrow = target ? `${v2 ? 'Pill 2.0' : 'Pill 1.0'} · ${S.device} · ${pillStateName()}` : 'First release (01.11.): nav bar as today, Access in the side menu';
   const screenHtml = `<div class="eyebrow">${eyebrow}</div><h2>${n.t}</h2>${n.tags?`<div class="tags">${n.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>`:''}<ul>${bullets.map(x=>`<li>${x}</li>`).join('')}</ul><div class="eyebrow" style="margin-top:14px">${target?'The four rules of the pill':'The four rules'}</div><ol class="rules">${rules.map(r=>`<li>${r}</li>`).join('')}</ol>`;
-  return `${S.map? mapHtml : S.why? barHtml : S.doors && target ? doorsHtml : screenHtml}
-    <div class="flows"><h3>Try these flows</h3><button class="map" data-why="1">${S.why? '← Back to the screen notes' : 'The bar: why these three verbs'}</button><button class="map" data-map="1">${S.map? '← Back to the screen notes' : `Settings map: every setting, one home (${ok} open · ${rm} removed · ${bad} unresolved)`}</button>${target? `<button class="map" data-doors="1">${S.doors? '← Back to the screen notes' : doors ? `Doors: every destination behind a word (${doors.worded} worded · ${doors.hidden} hidden · ${doors.deep} deeper)` : 'Doors: every destination behind a word'}</button>`:''}${flows.map((f,i)=>`<button data-flow="${i}">${f[0]}</button>`).join('')}</div>
-    <p class="srcnote">Target: every state by tap (a verb switches, the active verb opens and closes its sheet and carries a chevron that says so, Menu opens the menu, the dimmed page closes); every door carries a word, search sits on top of every sheet, the menu included; a pull moves the sheet between condensed and expanded only (left and right on the tablet rail); Esc collapses; “/” opens search. Tags point to the research package (document number and pain point) and to the three input streams: A side menu, B Access, C filter navigation. UI source: Figma IB/LOX APP, UI KIT V17 (colours, type, FunctionCards_M, ListCard, Full_Header, NavBar, side menu, Access screens, IRC and lighting deliveries, tablet concepts). Benchmarks for the pill: Apple Maps’ sheet detents, the iOS 26 minimizing tab bar, the iPadOS 18 tab-bar-to-sidebar morph. Instrument Sans replaces LOXONE Sans. Example data, not a real installation.</p>`;
+  const src1 = `Pill 1.0: every state by tap (a verb switches, the active verb opens and closes its sheet and carries a chevron that says so, Menu opens the menu, the dimmed page closes); every door carries a word, search sits on top of every sheet, the menu included; a pull moves the sheet between condensed and expanded only (left and right on the tablet rail); Esc collapses; “/” opens search.`;
+  const src2 = `Pill 2.0: a verb switches pages, the active verb scrolls its page to the top, Menu opens the menu as a page (phone) or the panel (tablet), the dimmed page closes the panel, scrolling folds the pill to its icon and a tap or a scroll up brings it back; “/” opens the search page; Esc closes the menu.`;
+  return `${S.map? mapHtml : S.why? barHtml : S.doors && target ? doorsHtml : S.ch && v2 ? chHtml : screenHtml}
+    <div class="flows"><h3>Try these flows</h3>${v2? `<button class="map" data-ch="1">${S.ch? '← Back to the screen notes' : 'Pill 1.0 → 2.0: what the design review changed, and why'}</button>`:''}<button class="map" data-why="1">${S.why? '← Back to the screen notes' : 'The bar: why these three verbs'}</button><button class="map" data-map="1">${S.map? '← Back to the screen notes' : `Settings map: every setting, one home (${ok} open · ${rm} removed · ${bad} unresolved)`}</button>${target? `<button class="map" data-doors="1">${S.doors? '← Back to the screen notes' : doors ? `Doors: every destination behind a word (${doors.worded} worded · ${doors.hidden} hidden · ${doors.deep} deeper)` : 'Doors: every destination behind a word'}</button>`:''}${flows.map((f,i)=>`<button data-flow="${i}">${f[0]}</button>`).join('')}</div>
+    <p class="srcnote">${target ? (v2 ? src2 : src1) : ''} Tags point to the research package (document number and pain point) and to the three input streams: A side menu, B Access, C filter navigation. UI source: Figma IB/LOX APP, UI KIT V17 (colours, type, FunctionCards_M, ListCard, Full_Header, NavBar, side menu, Access screens, IRC and lighting deliveries, tablet concepts); the Mono tints from EX-LOX-APP. Benchmarks for the pill: Apple Maps’ sheet detents, the iOS 26 minimizing tab bar, the iPadOS 18 tab-bar-to-sidebar morph; for 2.0 Apple Home (iOS 16), Google Home, the Menu tabs of Amazon, Facebook and YouTube. Instrument Sans replaces LOXONE Sans. Example data, not a real installation.</p>`;
 }
 /* a new Miniserver starts unfiltered: its floors, rooms and schedules are others (round 8) */
 function placeReset(){ S.floor='All floors'; S.q=''; S.pl.ft={kind:[],room:[]}; S.pl.mft=[]; S.pl.multi=null; S.pl.open={}; S.pl.sheet=null; }
@@ -3573,15 +3739,19 @@ function placeReset(){ S.floor='All floors'; S.q=''; S.pl.ft={kind:[],room:[]}; 
 function ensurePlace(at){ if(!S.place || (at && !scen().places.includes(at))){ S.scenario='home'; document.getElementById('scen').value='home'; applyScenario(); } if(at && S.place!==at){ S.place=at; placeReset(); } S.menu=false; S.nfc=false; S.pop=null; }
 
 /* ---------- render: the First release rebuilds its frame, the Target keeps the pill alive and re-renders page and pill ---------- */
+function relValue(){ return S.release==='first' ? 'first' : (S.pill==='2' ? 'pill2' : 'pill1'); }
 function syncToolbar(){
-  document.querySelectorAll('.appset [data-set]').forEach(b=>b.setAttribute('aria-pressed', String(S[b.dataset.set])===b.dataset.v));
+  const relv = relValue();
+  document.querySelectorAll('.appset [data-set]').forEach(b=>b.setAttribute('aria-pressed', b.dataset.set==='rel' ? relv===b.dataset.v : String(S[b.dataset.set])===b.dataset.v));
   document.querySelectorAll('.appset [data-scen]').forEach(b=>b.setAttribute('aria-pressed', S.scenario===b.dataset.scen));
   appBar();
   document.querySelectorAll('#segDevice button').forEach(b=>b.setAttribute('aria-pressed', b.dataset.v===S.device));
   document.querySelectorAll('#segTheme button').forEach(b=>b.setAttribute('aria-pressed', b.dataset.v===S.apptheme));
-  document.querySelectorAll('#segRel button').forEach(b=>b.setAttribute('aria-pressed', b.dataset.v===S.release));
+  document.querySelectorAll('#segRel button').forEach(b=>b.setAttribute('aria-pressed', b.dataset.v===relv));
   document.querySelectorAll('#segMotion button').forEach(b=>b.setAttribute('aria-pressed', b.dataset.v===S.motion));
+  const mono = document.getElementById('mono'); if(mono) mono.value = S.mono;
   const bar = document.getElementById('bar'); if(bar) bar.dataset.release = S.release;
+  if(typeof stateSeg==='function') stateSeg();
 }
 function render(){
   if(!S.place && S.screen==='home'){ S.tab='favorites'; S.screen='accesspage'; }
@@ -3589,9 +3759,9 @@ function render(){
   if(S.release==='first' && S.tab==='planner'){ S.tab='favorites'; S.screen='home'; }
   if(S.release==='target'){
     /* the Target has no room page, no categories tab, no search page and no menu sheet: the pill carries them */
-    if(S.screen==='categories' || S.screen==='room'){ S.screen='home'; S.tab='building'; }
-    if(S.menu){ S.menu=false; S.placesOpen=true; S.pillOpen=2; }
-    if(S.screen==='search'){ S.screen='home'; S.qFocus=true; S.pillOpen=1; }
+    if(S.screen==='categories' || (S.screen==='room' && (!V2() || !S.room))){ S.screen='home'; S.tab='building'; }
+    if(S.menu && !(V2() && S.device==='phone')){ S.menu=false; S.placesOpen=true; S.pillOpen=2; }
+    if(S.screen==='search' && !V2()){ S.screen='home'; S.qFocus=true; S.pillOpen=1; }
     renderTarget();
     const po = S.pillOpen; S.pillOpen=0; if(po) setPill(po, {force:true});
     return;
@@ -3610,7 +3780,7 @@ function render(){
 function renderTarget(){
   if((D.target>0.5)!==(S.device==='tablet')) setDevice(S.device, true);
   const dev = document.getElementById('device'), app = dev && dev.querySelector('.app');
-  const stale = !document.getElementById('pill') || !dev.classList.contains(S.device) || !app || app.dataset.apptheme!==S.apptheme;
+  const stale = !document.getElementById('pill') || !dev.classList.contains(S.device) || !app || app.dataset.apptheme!==S.apptheme || (app.dataset.mono||'')!==S.mono || document.getElementById('pill').classList.contains('v2')!==V2();
   if(stale) renderAll();
   else { renderPage(); renderPill(); applyPill(); document.getElementById('notes').innerHTML = notesHtml(); syncToolbar(); }
 }
@@ -3631,9 +3801,10 @@ function appSettingsHtml(){
   const seg=(k,opts)=>`<span class="seg">${opts.map(([v,l])=>`<button data-set="${k}" data-v="${v}">${l}</button>`).join('')}</span>`;
   return `<div class="appsetbg" id="appsetbg" data-appset="close"></div><div class="appset" id="appset" role="dialog" aria-label="Prototype settings">
     <div class="ah"><strong>Prototype</strong><button data-appset="close">Done</button></div>
-    <div class="arow"><span>Release</span>${seg('release',[['first','First (01.11.)'],['target','Target: the pill']])}</div>
+    <div class="arow"><span>Release</span>${seg('rel',[['first','First (01.11.)'],['pill1','Pill 1.0'],['pill2','Pill 2.0']])}</div>
     <div class="arow"><span>Scenario</span><span class="seg">${[['guest','Key only'],['stay','Hotel stay'],['home','Three Miniservers'],['multi','Plus a stay']].map(([v,l])=>`<button data-scen="${v}">${l}</button>`).join('')}</span></div>
     <div class="arow"><span>Theme</span>${seg('apptheme',[['light','Light'],['dark','Dark']])}</div>
+    <div class="arow"><span>Tint</span>${seg('mono',[['','Colour'],['anthracite','Anthracite'],['russet','Russet'],['sage','Sage'],['midnight','Midnight']])}</div>
     <div class="arow"><span>Motion</span>${seg('motion',[['spring','Springs'],['reduced','Reduced']])}</div>
     <p class="ahint">Press and hold with two fingers to open this sheet.</p></div>`;
 }
@@ -3654,8 +3825,8 @@ function gotoHome(path){
   ensurePlace();
   if(t[0]==='demo'){ (S.release==='target' ? ACT_PILL : ACT).openDemo(); if(S.release!=='target') render(); return; }
   if(S.release==='target'){
-    if(t[0]==='menu'){ S.screen='home'; S.placesOpen=true; render(); setPill(2, {force:true}); return; }
-    if(t[0]==='pill'){ S.screen='home'; render(); setPill(0, {force:true}); hint('The pill'); return; }
+    if(t[0]==='menu'){ S.screen='home'; S.placesOpen=true; if(V2() && S.device==='phone'){ S.menu=true; render(); } else { render(); setPill(2, {force:true}); } return; }
+    if(t[0]==='pill'){ S.screen='home'; S.menu=false; render(); setPill(0, {force:true}); hint('The pill'); return; }
     if(t[0]==='tab') ACT_PILL.tab(t[1]); else if(t[0]==='bpage') ACT_PILL.bpage(t[1]); else ACT_PILL.page(t[1]);
     document.getElementById('notes').innerHTML = notesHtml(); return;
   }
@@ -3696,7 +3867,7 @@ const ACT = {
   setgo(v){ gotoHome(v); return true; },
   actf(v){ S.actFilter=v; },
   pref(v){ S.prefs[v]=!S.prefs[v]; },
-  prefset(v){ const [k,val]=v.split('|'); S.prefs[k]=val; if(k==='theme' && (val==='Light'||val==='Dark')) S.apptheme=val.toLowerCase(); },
+  prefset(v){ const [k,val]=v.split('|'); if(k==='mono'){ S.mono=val; return; } S.prefs[k]=val; if(k==='theme' && (val==='Light'||val==='Dark')) S.apptheme=val.toLowerCase(); },
   nameopt(){ S.prefs.nameOpt = S.prefs.nameOpt ? '' : 'Max'; toast(S.prefs.nameOpt ? 'Display name set (optional)' : 'Display name cleared, login stays'); return true; },
   togglefav(v){ CTRL[v].fav=!CTRL[v].fav; },
   toggleLight(v){ const c=CTRL[v]; c.on=!c.on; if(c.on && c.mood==='Off') c.mood='Bright'; },
@@ -3731,6 +3902,9 @@ const FR = {phone:{w:426,h:898,r:62,p:12,sr:50}, tablet:{w:1396,h:1054,r:40,p:15
 const P = {t:0, v:0, target:0, dragging:false, raf:null, last:0, drag:null, mini:false};
 const D = {t:0, v:0, target:0, raf:null, last:0, swapped:false};
 S.motion = 'spring';
+/* Pill 2.0 (22.10., after the design review): two sizes on the phone (the pill, the icon), two on the tablet (the rail, the menu panel); nothing opens out of the pill, the menu is a page on the phone */
+const V2 = () => S.release==='target' && S.pill==='2';
+const MINI2 = {h:56, pad:4, btn:48, icon:22};
 const lerp = (a,b,x)=>a+(b-a)*x;
 const clamp = (x,a,b)=>Math.max(a,Math.min(b,x));
 const smooth = (x)=>{ x=clamp(x,0,1); return x*x*(3-2*x); };
@@ -3743,7 +3917,7 @@ const MEAS = {};
 function labelW(txt, font){ const k=font+'|'+txt; if(MEAS[k]!==undefined) return MEAS[k]; const c = labelW.ctx || (labelW.ctx = document.createElement('canvas').getContext('2d')); c.font = font; const w = c.measureText(txt).width; MEAS[k]=w; return w; }
 function keptVerb(){ return TABS_TARGET.find(x=>x[0]===S.tab) || ['','','']; }
 /* the mini pill keeps the selected verb's chevron (round 6), so its width counts it */
-function miniGeom(){ const lw = labelW(keptVerb()[2], MINI.font); const cw = (isRoot() && S.place) ? CHEV.gap+CHEV.w : 0; const activeW = MINI.lpad + MINI.icon + MINI.igap + lw + cw + MINI.lpad; return {w: MINI.pad*2 + MINI.glyph + MINI.gap + activeW, activeW, lw}; }
+function miniGeom(){ if(V2()) return {w:MINI2.h, activeW:MINI2.btn, lw:0}; const lw = labelW(keptVerb()[2], MINI.font); const cw = (isRoot() && S.place) ? CHEV.gap+CHEV.w : 0; const activeW = MINI.lpad + MINI.icon + MINI.igap + lw + cw + MINI.lpad; return {w: MINI.pad*2 + MINI.glyph + MINI.gap + activeW, activeW, lw}; }
 /* every sheet and the menu are as tall as their content (round 7; round 6 did it for Favorites only), between a floor and the old maximum;
    the search grows them to the maximum while it is in use (G springs between the fitted height and the maximum) */
 const G = {t:0, v:0, target:0, raf:null, last:0};
@@ -3770,6 +3944,7 @@ if(document.fonts && document.fonts.ready) document.fonts.ready.then(()=>{ Objec
 /* key geometry per state; t runs from -1 (mini) over 0 (pill) and 1 (expanded) to 2 (full) */
 function phoneKeys(){
   const W=PH.w, H=PH.h; const mg = miniGeom(); const B = APP ? APP_B : 24;
+  if(V2()){ const pill = {w:352, h:70, r:35, x:(W-352)/2, y:H-B-70}; return {'-1':{w:mg.w, h:MINI2.h, r:MINI2.h/2, x:(W-mg.w)/2, y:H-B-70+(70-MINI2.h)/2}, '0':pill, '1':pill, '2':pill}; }
   const max1 = Math.round(H*0.56), max2 = H-70;
   const sh1 = Math.round(lerp(clamp(22 + fitNow('e') + 70, SHEET_MIN, max1), max1, G.t)), sh2 = Math.round(lerp(clamp(22 + fitNow('f') + 70, SHEET_MIN, max2), max2, G.t));
   return {
@@ -3787,7 +3962,7 @@ function tabletKeys(){
   return {
     '-1':{w:70, h:RAIL_H, r:35, x, y},
     '0':{w:70, h:RAIL_H, r:35, x, y},
-    '1':{w:440, h:fitT('e'), r:35, x, y},
+    '1':{w:V2()?280:440, h:fitT(V2()?'f':'e'), r:35, x, y},
     '2':{w:490, h:fitT('f'), r:35, x, y},
   };
 }
@@ -3804,37 +3979,58 @@ function applyPill(){
   const el = pillEl(); if(!el) return;
   appSize();
   if(FIT.w !== (D.target>0.5 ? 'r'+TB.w : 'p'+PH.w)) measureFit();
-  const t = P.t, dt = D.t;
+  const t = P.t, dt = D.t, v2 = V2();
   const gp = geomAt(phoneKeys(), t), gt = geomAt(tabletKeys(), Math.max(0,t));
   const g = {w:lerp(gp.w,gt.w,dt), h:lerp(gp.h,gt.h,dt), r:lerp(gp.r,gt.r,dt), x:lerp(gp.x,gt.x,dt), y:lerp(gp.y,gt.y,dt)};
   el.style.width = g.w+'px'; el.style.height = g.h+'px'; el.style.borderRadius = g.r+'px'; el.style.left = g.x+'px'; el.style.top = g.y+'px';
   const open = clamp(t,0,1), full = clamp(t-1,0,1), mini = clamp(-t,0,1);
-  /* one material in every state: the sheet is the pill's own surface; the dark-mode hairline that lifts the condensed pill off the page fades as the sheet opens */
-  el.style.setProperty('--ringa', (0.5*(1-smooth(open))).toFixed(3));
-  const bg = el.querySelector('.sheetbg'); bg.style.opacity = open;
-  const handle = el.querySelector('.handle'); handle.style.opacity = smooth(open*1.4);
-  const body = el.querySelector('.pbody'); body.style.opacity = smooth((open-0.35)/0.65); body.style.pointerEvents = open>0.6 ? 'auto':'none';
-  const head = el.querySelector('.phead'); head.style.opacity = smooth((open-0.4)/0.6); head.style.pointerEvents = open>0.6 ? 'auto':'none';
-  const bar = el.querySelector('.pbar');
   const isRail = dt>0.5;
+  /* 2.0: on the tablet the rail opens straight into the menu panel (t 0 → 2); on the phone nothing opens, the menu is a page */
+  const panel = v2 ? (isRail ? clamp(t/2,0,1) : 0) : full;
+  const sheet = v2 ? (isRail ? smooth(panel*1.6) : 0) : open;
+  /* one material in every state: the sheet is the pill's own surface; the dark-mode hairline that lifts the condensed pill off the page fades as the sheet opens */
+  el.style.setProperty('--ringa', (0.5*(1-smooth(sheet))).toFixed(3));
+  const bg = el.querySelector('.sheetbg'); bg.style.opacity = sheet;
+  const handle = el.querySelector('.handle'); handle.style.opacity = v2 ? sheet : smooth(open*1.4);
+  const body = el.querySelector('.pbody'); body.style.opacity = v2 ? smooth((t-0.6)/0.9) : smooth((open-0.35)/0.65); body.style.pointerEvents = (v2 ? t>1.2 : open>0.6) ? 'auto':'none';
+  const head = el.querySelector('.phead'); head.style.opacity = v2 ? 0 : smooth((open-0.4)/0.6); head.style.pointerEvents = (!v2 && open>0.6) ? 'auto':'none';
+  const bar = el.querySelector('.pbar');
   /* one object, one colour (round 6): the bar keeps the pill's surface in every state, no inset and no lift; the sheet's content ends on the bar and fades into it */
-  if(!isRail){ bar.style.left = bar.style.right = bar.style.bottom = '0px'; bar.style.top=''; bar.style.width=''; bar.style.height = lerp(70,MINI.h,mini)+'px'; const wrap = el.querySelector('.pwrap'); wrap.style.left=''; wrap.style.top=''; wrap.style.bottom = '70px'; }
+  if(!isRail){ bar.style.left = bar.style.right = bar.style.bottom = '0px'; bar.style.top=''; bar.style.width=''; bar.style.height = lerp(70, v2 ? MINI2.h : MINI.h, mini)+'px'; const wrap = el.querySelector('.pwrap'); wrap.style.left=''; wrap.style.top=''; wrap.style.bottom = '70px'; }
   else { bar.style.left='0'; bar.style.top='0'; bar.style.bottom='0'; bar.style.right=''; bar.style.width='70px'; bar.style.height=''; const wrap = el.querySelector('.pwrap'); wrap.style.left='70px'; wrap.style.top='0'; wrap.style.bottom='0'; }
-  /* Menu takes the highlight while the menu is open; the selected verb gives it up and its chevron points up again (a tap opens its own sheet from there) */
-  bar.style.setProperty('--menuon', smooth(full).toFixed(3));
+  /* Menu takes the highlight while the menu is open (2.0 on the phone: while the menu page is open); the selected verb gives it up */
+  bar.style.setProperty('--menuon', (v2 ? (isRail ? smooth(panel) : (S.menu ? 1 : 0)) : smooth(full)).toFixed(3));
   const sheetOpen = clamp(open - full, 0, 1);
-  /* the verbs: on the phone the icon and the label are positioned by hand, so the mini state is one continuous move
-     (column layout at 0, the kept verb as icon + label in a row at -1, the other verbs fold to nothing) */
   const glyph = bar.querySelector('.glyph');
-  /* the selected verb's chevron points where its sheet comes from and turns with the spring: up on the phone, right on the rail; it points back while the sheet is open */
   const chev = bar.querySelector('.pchev');
-  if(isRail){ bar.style.padding=''; if(glyph){ glyph.style.width=''; glyph.style.height=''; glyph.querySelectorAll('.hamb,svg,.nl').forEach(x=>{ x.style.cssText=''; }); } bar.querySelectorAll('.vb button').forEach(b=>{ b.style.cssText=''; b.querySelectorAll('svg,.nl').forEach(x=>{ x.style.cssText=''; }); }); if(chev){ chev.style.opacity=''; chev.style.transform = `rotate(${-90+180*sheetOpen}deg)`; } }
+  if(isRail){ bar.style.padding=''; if(glyph){ glyph.style.width=''; glyph.style.height=''; glyph.style.opacity=''; glyph.style.pointerEvents=''; glyph.querySelectorAll('.hamb,svg,.nl').forEach(x=>{ x.style.cssText=''; }); } bar.querySelectorAll('.vb button').forEach(b=>{ b.style.cssText=''; b.querySelectorAll('svg,.nl').forEach(x=>{ x.style.cssText=''; }); }); if(chev){ chev.style.opacity=''; chev.style.transform = `rotate(${-90+180*sheetOpen}deg)`; } }
+  else if(v2){
+    /* 2.0: Menu and the inactive verbs fold to nothing, the kept verb becomes a 48 px disc with its icon, the labels fade */
+    const m = mini; const top0 = (VERB.h - (VERB.icon+VERB.gap+VERB.label))/2;
+    bar.style.padding = `0 ${lerp(5,MINI2.pad,m)}px`;
+    if(glyph){ glyph.style.width = lerp(56,0,m)+'px'; glyph.style.height = lerp(60,MINI2.btn,m)+'px'; glyph.style.opacity = String(1-smooth(m*1.8)); glyph.style.pointerEvents = m>0.5?'none':'';
+      const gi = glyph.querySelector('.hamb,svg'), gl = glyph.querySelector('.nl');
+      if(gi) gi.style.transform = `translateY(${top0+VERB.icon/2-VERB.h/2}px)`;
+      if(gl){ gl.style.top = (top0+VERB.icon+VERB.gap)+'px'; gl.style.opacity = String(clamp(1-2*m,0,1)); } }
+    const kept = keptVerb()[0];
+    bar.querySelectorAll('.vb button').forEach(b=>{
+      const keep = b.dataset.v===kept; const active = b.getAttribute('aria-current')==='page'; const dis = b.getAttribute('aria-disabled')==='true';
+      const w = keep ? lerp(VERB.w, MINI2.btn, m) : VERB.w*(1-m); const h = lerp(VERB.h, MINI2.btn, m);
+      b.style.width = w+'px'; b.style.height = h+'px'; b.style.borderRadius = lerp(VERB.h/2, MINI2.btn/2, m)+'px';
+      const base = dis ? 0.18 : 0.5;
+      b.style.opacity = keep ? String(active ? 1 : lerp(base, dis?0.4:0.9, m)) : String(base*(1-m));
+      b.style.background = active ? `rgba(255,255,255,${(0.2*(1-m)*(1-(S.menu?1:0))).toFixed(3)})` : 'transparent';
+      const svg = b.querySelector('svg'), nl = b.querySelector('.nl');
+      if(svg){ const x = keep ? lerp((VERB.w-VERB.icon)/2, (MINI2.btn-VERB.icon)/2, m) : (VERB.w-VERB.icon)/2; const y = keep ? lerp(top0, (MINI2.btn-VERB.icon)/2, m) : top0; svg.style.transform = `translate(${x}px,${y}px)`; }
+      if(nl){ const lw0 = labelW(nl.textContent, MINI.font0); nl.style.fontSize = VERB.label+'px'; const x = keep ? lerp((VERB.w-lw0)/2, (MINI2.btn-lw0)/2, m) : (VERB.w-lw0)/2; nl.style.transform = `translate(${x}px,${top0+VERB.icon+VERB.gap}px)`; nl.style.opacity = String(1-smooth(m*1.6)); }
+    });
+  }
   else {
     const m = mini, mg = miniGeom();
     const top0 = (VERB.h - (VERB.icon+VERB.gap+VERB.label))/2;
     bar.style.padding = `0 ${lerp(5,MINI.pad,m)}px`;
     /* the glyph's word sits on the verbs' label line and folds away in mini; its icon moves from the verbs' icon line to the centre of the mini circle */
-    if(glyph){ glyph.style.width = lerp(56,MINI.glyph,m)+'px'; glyph.style.height = lerp(60,MINI.glyph,m)+'px';
+    if(glyph){ glyph.style.width = lerp(56,MINI.glyph,m)+'px'; glyph.style.height = lerp(60,MINI.glyph,m)+'px'; glyph.style.opacity=''; glyph.style.pointerEvents='';
       const gi = glyph.querySelector('.hamb,svg'), gl = glyph.querySelector('.nl');
       if(gi) gi.style.transform = `translateY(${lerp(top0+VERB.icon/2-VERB.h/2, 0, m)}px)`;
       if(gl){ gl.style.top = (top0+VERB.icon+VERB.gap)+'px'; gl.style.opacity = String(clamp(1-2*m,0,1)); } }
@@ -3842,7 +4038,7 @@ function applyPill(){
     bar.querySelectorAll('.vb button').forEach(b=>{
       const keep = b.dataset.v===kept; const active = b.getAttribute('aria-current')==='page';
       const w = keep ? lerp(VERB.w, mg.activeW, m) : VERB.w*(1-m); const h = lerp(VERB.h, MINI.glyph, m);
-      b.style.width = w+'px'; b.style.height = h+'px'; b.style.borderRadius = lerp(VERB.h/2, MINI.glyph/2, m)+'px';
+      b.style.width = w+'px'; b.style.height = h+'px'; b.style.borderRadius = lerp(VERB.h/2, MINI.glyph/2, m)+'px'; b.style.background='';
       b.style.opacity = active ? '' : String((b.getAttribute('aria-disabled')==='true'?0.18:0.5)*(keep ? 1 : 1-m));
       const svg = b.querySelector('svg'), nl = b.querySelector('.nl'), ch = b.querySelector('.pchev');
       if(svg){ const x = keep ? lerp((VERB.w-VERB.icon)/2, MINI.lpad, m) : (VERB.w-VERB.icon)/2; const y = keep ? lerp(top0, (MINI.glyph-MINI.icon)/2, m) : top0; svg.style.transform = `translate(${x}px,${y}px)`; }
@@ -3851,11 +4047,11 @@ function applyPill(){
         if(ch){ const lw = keep ? lerp(lw0, labelW(nl.textContent, MINI.font), m) : lw0; ch.style.transform = `translate(${x+lw+CHEV.gap}px,${y+(fs-CHEV.w)/2}px) rotate(${180*(1-sheetOpen)}deg)`; ch.style.opacity = ''; } }
     });
   }
-  /* page behind: scale and dim at full, dim lightly when expanded */
+  /* page behind: 1.0 scales and dims at full, dims lightly when expanded; 2.0 only dims under the tablet panel */
   const page = document.getElementById('page'); const dim = document.getElementById('dim');
-  if(page){ page.style.transform = isRail ? '' : `scale(${1-0.04*smooth(full)})`; page.style.opacity = String(Math.pow(Math.abs(2*dt-1), 1.5)); }
-  if(dim){ const ov = (isRail && APP && TB.w<1100) ? 0.18*smooth(open) : 0; dim.style.opacity = String(isRail ? ov+0.35*smooth(full) : 0.10*smooth(open)+0.30*smooth(full)); dim.classList.toggle('on', t>0.55); }
-  const main = document.getElementById('tbmain'); if(main){ const push = (APP && TB.w<1100) ? 0 : 370; main.style.paddingLeft = (102 + (APP ? INS.l : 0) + push*smooth(Math.max(0,Math.min(1,t))) )+'px'; }
+  if(page){ page.style.transform = (isRail || v2) ? '' : `scale(${1-0.04*smooth(full)})`; page.style.opacity = String(Math.pow(Math.abs(2*dt-1), 1.5)); }
+  if(dim){ const ov = (isRail && APP && TB.w<1100) ? 0.18*smooth(v2 ? panel : open) : 0; dim.style.opacity = String(isRail ? ov+0.35*smooth(panel) : (v2 ? 0 : 0.10*smooth(open)+0.30*smooth(full))); dim.classList.toggle('on', v2 ? (isRail && t>0.9) : t>0.55); }
+  const main = document.getElementById('tbmain'); if(main){ const push = (APP && TB.w<1100) ? 0 : 370; main.style.paddingLeft = (102 + (APP ? INS.l : 0) + push*smooth(v2 ? panel : Math.max(0,Math.min(1,t))) )+'px'; }
   /* frame morph */
   const dev = document.getElementById('device'); if(dev && !APP){ const a=FR.phone, b=FR.tablet; dev.style.width=lerp(a.w,b.w,dt)+'px'; dev.style.height=lerp(a.h,b.h,dt)+'px'; dev.style.borderRadius=lerp(a.r,b.r,dt)+'px'; dev.style.padding=lerp(a.p,b.p,dt)+'px'; dev.querySelector('.screen').style.borderRadius=lerp(a.sr,b.sr,dt)+'px'; }
   fit();
@@ -3875,12 +4071,16 @@ function animatePill(){
   P.raf = requestAnimationFrame(step);
 }
 function setPill(target, opts={}){
-  target = clamp(target, D.target>0.5 ? 0 : -1, 2);
+  const rail = D.target>0.5;
+  target = clamp(target, rail ? 0 : -1, 2);
+  if(V2()){ if(rail && target>0) target=2; if(!rail && target>0) target=0; }
   if(target<1 && !S.q.trim()) setGrow(false); /* a closed sheet gives the search's extra height back */
   if(opts.instant){ P.t=target; P.target=target; P.v=0; if(P.raf){ cancelAnimationFrame(P.raf); P.raf=null; } renderPill(); applyPill(); onPillSettle(); return; }
   if(P.target!==target || opts.force){ P.target=target; renderPill(); animatePill(); } else if(!P.raf && P.t!==target){ animatePill(); }
 }
-function onPillSettle(){ document.querySelectorAll('#segState button').forEach(b=>b.setAttribute('aria-pressed', Number(b.dataset.state)===P.target)); if(P.t<=0){ const bd=pillEl()&&pillEl().querySelector('.pbody'); if(bd) bd.scrollTop=0; } appBar(); }
+function onPillSettle(){ const cur = V2() && S.device==='phone' && S.menu ? 2 : P.target; document.querySelectorAll('#segState button').forEach(b=>b.setAttribute('aria-pressed', Number(b.dataset.state)===cur)); if(P.t<=0){ const bd=pillEl()&&pillEl().querySelector('.pbody'); if(bd) bd.scrollTop=0; } appBar(); }
+/* the toolbar's pill-state segment follows the version: 1.0 Mini · Pill · Expanded · Full, 2.0 Icon · Pill · Menu (Rail · Menu on the tablet) */
+function stateSeg(){ const seg = document.getElementById('segState'); if(!seg) return; const items = V2() ? (S.device==='tablet' ? [[0,'Rail'],[2,'Menu']] : [[-1,'Icon'],[0,'Pill'],[2,'Menu']]) : [[-1,'Mini'],[0,'Pill'],[1,'Expanded'],[2,'Full']]; const cur = V2() && S.device==='phone' && S.menu ? 2 : P.target; seg.innerHTML = items.map(([t,l])=>`<button data-state="${t}" aria-pressed="${t===cur}">${l}</button>`).join(''); }
 
 /* drag: the handle, the bar and the empty sheet area move the pill; a tap on a button is still a tap */
 function pillDragStart(e){
@@ -3898,12 +4098,13 @@ function pillDragMove(e){
   if(!d.moved && Math.hypot(dx,dy)<6) return;
   if(!d.moved){ d.moved=true; }
   e.preventDefault();
-  let t = d.isRail ? d.t0 + dx/300 : d.t0 - dy/420;
-  /* a pull moves the sheet between condensed and expanded only; the menu opens from the glyph (a pull that starts in the menu may close it) */
-  const lo = d.isRail ? 0 : -1, hi = d.t0>1.5 ? 2 : 1;
+  const v2 = V2();
+  let t = d.isRail ? d.t0 + dx/(v2?210:300) : d.t0 - dy/(v2?160:420);
+  /* a pull moves the sheet between condensed and expanded only; the menu opens from the glyph (a pull that starts in the menu may close it). 2.0: pill ↔ icon on the phone, rail ↔ panel on the tablet */
+  const lo = d.isRail ? 0 : -1, hi = v2 ? (d.isRail ? 2 : 0) : (d.t0>1.5 ? 2 : 1);
   if(t<lo) t = lo - (lo-t)*0.25; if(t>hi) t = hi + (t-hi)*0.25;
   P.t = t; d.samples.push([performance.now(), t]); if(d.samples.length>6) d.samples.shift();
-  const open = clamp(t,0,1); if(Math.abs(open - clamp(P.lastRenderT||0,0,1))>0.5 || (t>0.3 && !P.rendered)) { renderPill(); P.lastRenderT=t; P.rendered=true; }
+  if(!v2){ const open = clamp(t,0,1); if(Math.abs(open - clamp(P.lastRenderT||0,0,1))>0.5 || (t>0.3 && !P.rendered)) { renderPill(); P.lastRenderT=t; P.rendered=true; } }
   applyPill();
 }
 function pillDragEnd(e){
@@ -3912,7 +4113,7 @@ function pillDragEnd(e){
   e.preventDefault();
   const s0 = d.samples[0], s1 = d.samples[d.samples.length-1]; const dtm = Math.max(16, s1[0]-s0[0]); const v = (s1[1]-s0[1])/(dtm/1000);
   const projected = P.t + v*0.12;
-  const dets = (d.isRail ? [0,1,2] : [-1,0,1,2]).filter(x=> d.t0>1.5 || x<=1);
+  const dets = V2() ? (d.isRail ? [0,2] : [-1,0]) : (d.isRail ? [0,1,2] : [-1,0,1,2]).filter(x=> d.t0>1.5 || x<=1);
   let best = dets[0]; dets.forEach(x=>{ if(Math.abs(x-projected)<Math.abs(best-projected)) best=x; });
   if(best===-1 && d.t0>0) best = 0; /* never fall from a sheet straight into mini */
   P.v = v; P.target = best; renderPill(); animatePill();
@@ -3923,7 +4124,7 @@ function currentScale(){ const dev=document.getElementById('device'); if(!dev) r
 /* scroll-to-mini on the phone */
 let lastScroll = 0;
 function onBodyScroll(e){
-  if(D.target>0.5 || P.t>0.2 || P.drag) return;
+  if(D.target>0.5 || P.t>0.2 || P.drag || P.progScroll) return;
   const y = e.target.scrollTop; const dy = y - lastScroll; lastScroll = y;
   if(dy>18 && y>40 && P.target!==-1) setPill(-1);
   else if(dy<-12 && P.target===-1) setPill(0);
@@ -3932,6 +4133,7 @@ function onBodyScroll(e){
 /* device morph: phone pill → tablet rail, frame and content follow */
 function setDevice(dev, instant){
   const target = dev==='tablet' ? 1 : 0;
+  if(V2()) S.menu=false; /* the menu page belongs to the phone; the tablet opens the panel */
   if(instant){ D.t=target; D.target=target; D.v=0; D.swapped=true; S.device=dev; return; }
   if(D.target===target) return;
   D.target = target; D.swapped=false;
@@ -3946,7 +4148,7 @@ function setDevice(dev, instant){
   D.raf = requestAnimationFrame(step);
 }
 /* ---------- the Target release: the pill, one object for the nav bar and the side menu ---------- */
-SETMAP.push(['Chrome', null], ['Hamburger button (top left)', 'The pill: Menu at its left end, the glyph with its word'], ['Tab bar (Favorites, Central, Rooms, Categories, Trust)', 'The pill: three verbs; Central, Rooms and Categories live in Building, Trust in the menu header'], ['Floating back button', 'The pill: its left end reads Back on sub-pages'], ['Quick-selection rail (Miniserver letters)', 'Menu header › Change Miniserver'], ['Search icon (header)', 'The pill: search on top of every sheet, the menu included; “/”'], ['Bell (header, version 2.2)', 'Menu › Building › Activity; the notification itself opens the timeline'], ['Trust tab, quick-selection rail (which Miniserver)', 'The header: the Miniserver with its connection on the right; tap → Menu header › Change Miniserver']);
+SETMAP.push(['Chrome', null], ['Hamburger button (top left)', 'The pill: Menu at its left end, the glyph with its word (1.0: the sheet grows into the menu; 2.0: the menu opens as a page on the phone, a panel on the tablet)'], ['Tab bar (Favorites, Central, Rooms, Categories, Trust)', 'The pill: three verbs; Central, Rooms and Categories live in Building, Trust in the menu header'], ['Floating back button', 'The pill: its left end reads Back on sub-pages'], ['Quick-selection rail (Miniserver letters)', 'Menu header › Change Miniserver'], ['Search icon (header)', 'The pill: 1.0 search on top of every sheet, the menu included; 2.0 the field on Favorites, the icon in the header of Building and Planner and the top of the menu page open the search page; “/”'], ['Bell (header, version 2.2)', 'Menu › Building › Activity; the notification itself opens the timeline'], ['Trust tab, quick-selection rail (which Miniserver)', 'The header: the Miniserver with its connection on the right; tap → Menu header › Change Miniserver']);
 const TABS = TABS_TARGET;
 
 /* Building in the Target: the page is the result of the selection, the facets live in the pill */
@@ -3969,32 +4171,103 @@ function buildingPage(){
 function rootBody(){
   if(!S.place) return accessHomeBody();
   switch(S.tab){
-    case 'favorites': return favoritesBody();
-    case 'building': return buildingPage();
+    case 'favorites': return V2() ? favoritesBody2() : favoritesBody();
+    case 'building': return V2() ? buildingPage2() : buildingPage();
     default: return plannerBody();
   }
+}
+
+/* ---------- Pill 2.0: the controls of a verb live on its page ---------- */
+function searchBtn(){ return `<button class="sbox" data-act="search" aria-label="Search">${I('search')}<span>Rooms, functions, settings</span></button>`; }
+function editBtn(){ return `<button class="editb" data-act="toast" data-v="Edit mode: reorder, add and remove favorites. Sorting mode lives under Menu › App › Appearance, start & language.">${I('filter')}<span>Edit</span></button>`; }
+function stayTile(){ const place = currentPlace(); const stay = place && place.kind==='stay' ? PASSES.hotel : null; return stay? `<button class="tile22" style="margin-top:12px" data-act="page" data-v="stay"><span class="ic g">${I('nav-central')}</span><span class="tx"><b>${stay.place} · ${stay.title}</b><small>${stay.ready} · check-out ${stay.checkout}</small></span><span class="ar">${I('arrow-right')}</span></button>` : ''; }
+/* Favorites: the search field and Edit first, the status pills right below (tablet: pills on the right of the same row) */
+function favoritesBody2(){ const favs = C().filter(c=>c.fav); return `<div class="favtop">${searchBtn()}${editBtn()}</div>${statusPills()}${stayTile()}<div class="lbl"><span>Favorites</span><span class="hint">${favs.length}</span></div><div class="grid">${favs.map(tile).join('')}</div>`; }
+function favoritesTablet2(){ const favs = C().filter(c=>c.fav); return `<div class="favtop wide">${searchBtn()}${editBtn()}${statusPills().replace('class="pills"','class="pills wrapchips"')}</div>${stayTile()}<div class="lbl"><span>Favorites</span><span class="hint">${favs.length}</span></div><div class="grid">${favs.map(tile).join('')}</div>`; }
+/* the lens: the category groups as one lean row of chips, sticky at the top of the page; on a room page the room's own groups */
+function famChips(roomId){
+  const fams = roomId ? FAMS.filter(f=>roomHasCat(roomId, f.id)) : FAMS.filter(f=>roomsWithCat(f.id).length);
+  const cur = S.cat==='all' ? null : famOf(S.cat);
+  const n = (f)=> roomId ? '' : `<span class="n">${roomsWithCat(f.id).length}</span>`;
+  return `<div class="chipbar"><div class="pills" role="tablist" aria-label="Category"><button class="pl cat all" role="tab" data-act="cat" data-v="all" aria-pressed="${!cur}">All</button>${fams.map(f=>`<button class="pl cat" role="tab" data-act="cat" data-v="${cur===f.id?'all':f.id}" aria-pressed="${cur===f.id}" style="--c:${f.color}">${I(f.icon)} ${f.name}${n(f)}</button>`).join('')}</div></div>`;
+}
+/* a group with several of the project's categories offers them as chips under the Rooms line (Climate · Windows · Ventilation) */
+function subChips(roomId){
+  const cur = S.cat==='all' ? null : famOf(S.cat); if(!cur || !CAT[cur] || !CAT[cur].fam) return '';
+  const has = (m)=> roomId ? CONTROLS.some(c=>c.room===roomId && c.cat===m) : C().some(c=>c.cat===m);
+  const subs = CAT[cur].members.filter(has); if(subs.length<2) return '';
+  const cnt = (m)=> (roomId ? CONTROLS.filter(c=>c.room===roomId && c.cat===m) : C().filter(c=>c.cat===m)).length;
+  return `<div class="pills wrapchips fsub" role="tablist" aria-label="${CAT[cur].name}">${subs.map(id=>`<button class="pl${S.cat===id?' on':''}" role="tab" aria-pressed="${S.cat===id}" data-act="cat" data-v="${S.cat===id?cur:id}">${CAT[id].name}<span class="n">${cnt(id)}</span></button>`).join('')}</div>`;
+}
+/* a room card; with a lens on it shows that group's state and opens Room × Category */
+function roomCard2(r, catId){
+  if(catId==='all') return roomCard(r);
+  const s = roomState(r.id, catId); const c = CAT[catId];
+  return `<button class="rc lens" data-act="roomcat" data-v="${r.id}|${catId}" style="--c:${c.color}" aria-label="${r.name} · ${c.name}: ${s?s.label:''}"><span class="hd">${I(r.icon)}<b>${r.name}</b><small>${r.floor||''}</small></span><div class="sum">${c.name}</div><span class="tr ${s&&s.active?'active':''} ${s&&s.warn?'warn':''}"><span class="sq">${I(c.icon)}</span><span>${s? s.label : '—'}</span></span></button>`;
+}
+/* Building: the lens row, Central, the Rooms line with the floors as the anchor, the rooms as cards; with a lens on, only the rooms that have it */
+function buildingPage2(){
+  const place = currentPlace(); const cat = S.cat!=='all' ? CAT[S.cat] : null; const col = cat ? cat.color : 'var(--a-fg)';
+  const central = centralRooms().map(cr=>{ const all = orderedByCat(C().filter(c=>c.room===cr.id && matchCat(S.cat, c.cat))); if(!all.length) return ''; const more = all.length>8;
+    return `<div class="rsec" style="--c:${col}"><span class="dot"></span>${cr.name} · whole building${more? `<a href="#" data-act="room" data-v="${cr.id}" class="more">All ${all.length} ${I('chevron')}</a>`:''}</div><div class="grid">${(more? all.slice(0,6) : all).map(tile).join('')}</div>`; }).join('');
+  const all = R().filter(r=>!isCentral(r)); const withCat = all.filter(r=>roomHasCat(r.id, S.cat));
+  const rooms = withCat.filter(r=> S.floor==='All floors' || r.floor===S.floor);
+  const link = place.kind==='stay' ? `<a href="#" class="more" data-act="page" data-v="stay">${I('clock')} Your stay</a>` : `<a href="#" class="more" data-act="bpage" data-v="bset">${I('dots')} Building</a>`;
+  const groups = roomGroups(rooms); const many = groups.length>1; const cls = S.device==='phone' ? 'two' : '';
+  return `${famChips(null)}
+    ${central}
+    <div class="rsec anchor" id="roomsAnchor" style="--c:${col}"><span class="dot"></span>${cat? `${cat.name} · ${withCat.length} room${withCat.length===1?'':'s'}` : `Rooms · ${all.length}`}${link}</div>
+    ${subChips(null)}${floorChips()}
+    ${rooms.length? groups.map(g=>`${g.f && many? `<div class="rsec flr">${g.f}</div>`:''}<div class="roomcards ${cls}">${g.rooms.map(r=>roomCard2(r, S.cat)).join('')}</div>`).join('') : `<div class="empty">${cat? `No room ${S.floor==='All floors'?'':'on this floor '}has ${cat.name}.` : 'No room on this floor.'}</div>`}`;
+}
+/* a room: its own groups on top, the lens you came with stays selected */
+function roomBody2(){
+  const r = ROOM[S.room]; const active = S.cat!=='all' && roomHasCat(S.room, S.cat) ? S.cat : 'all';
+  const list = orderedByCat(controlsFor(S.room, active)); const c = active!=='all' ? CAT[active] : null; const subs = subChips(S.room);
+  return `${famChips(S.room)}${subs}
+    <div class="lbl first" style="margin-top:${subs?'4':'14'}px"><span>${c? c.name : 'All functions'}</span><span class="hint">${list.length} in ${r.name}</span></div>
+    ${list.length? `<div class="grid">${list.map(tile).join('')}</div>` : `<div class="empty">Nothing in ${r.name} for this category.</div>`}`;
+}
+/* the menu as a page (phone): search on top, then the kit's dark menu; the pill stays, Menu is lit */
+function menuPage(){ return `<div class="menupage">${statusBar()}<div class="mscroll"><div class="msearch"><button class="sbox" data-act="search" aria-label="Search">${I('search')}<span>Search everything</span></button></div>${menuHtml()}</div></div>`; }
+/* a tap on a chip moves the viewport to the Rooms anchor, right under the sticky lens row */
+function scrollToRooms(){
+  const b = document.querySelector('#page .body'); const a = document.getElementById('roomsAnchor'); if(!b||!a) return;
+  const bar = b.querySelector('.chipbar'); const off = (bar? bar.offsetHeight : 0) + 20; const s = currentScale() || 1;
+  const top = (a.getBoundingClientRect().top - b.getBoundingClientRect().top)/s + b.scrollTop - off;
+  P.progScroll = true; b.scrollTo({top:Math.max(0, Math.round(top)), behavior: S.motion==='reduced' ? 'auto' : 'smooth'});
+  clearTimeout(scrollToRooms.t); scrollToRooms.t = setTimeout(()=>{ P.progScroll=false; lastScroll=b.scrollTop; }, 700);
 }
 
 /* ---------- the page behind the pill ---------- */
 /* the header's one item besides the wordmark: the Miniserver and its connection, the context the three verbs do not carry; a tap opens the menu with the Miniservers open */
 function placeChip(){ const p = currentPlace(); if(!p) return ''; return `<button class="hplace" data-act="places" aria-label="${p.name}, ${p.statusText}. Change Miniserver"><span class="sdot ${p.status}"></span><span class="hnm">${p.name}</span>${I('chevdown')}</button>`; }
 function phonePage(){
+  const v2 = V2();
+  if(v2 && S.menu) return menuPage();
   const root = isRoot(); const [title, sub] = screenTitle();
+  /* 2.0: the search icon in the header of Building and Planner; Favorites carries the field itself */
+  const srch = v2 && S.place && root && S.tab!=='favorites' ? `<button class="icb" data-act="search" aria-label="Search">${I('search')}</button>` : '';
   const header = root
-    ? `<div class="fh neutral slim">${statusBar()}<div class="row"><span class="wm">${wordmark()}</span><span class="sp"></span>${placeChip()}</div></div>`
+    ? `<div class="fh neutral slim">${statusBar()}<div class="row"><span class="wm">${wordmark()}</span><span class="sp"></span>${srch}${placeChip()}</div></div>`
     : `${statusBar()}<div class="dh"><div class="t"><h1>${title}</h1>${sub?`<small>${sub}</small>`:''}</div><div class="acts">${screenActs()}</div></div>`;
-  return `${header}<div class="body">${root? rootBody() : screenBody()}</div>`;
+  const inner = `${header}<div class="body">${root? rootBody() : screenBody()}</div>`;
+  return v2 ? `<div class="pin ${P.anim && S.motion==='spring' ? 'anim':''}">${inner}</div>` : inner;
 }
 function tabletPage(){
   const place = currentPlace(); const sep = `<span>›</span>`; const root = '';
   let crumb='', title='', body='', back=false;
-  /* the Miniserver and its connection sit top right, as on the phone; the system status lives in the Favorites pills only (round 6) */
-  let right = placeChip();
+  /* the Miniserver and its connection sit top right, as on the phone; the system status lives in the Favorites pills only (round 6); 2.0 adds search on Building and Planner */
+  const v2 = V2();
+  let right = (v2 && place && isRoot() && S.tab!=='favorites' ? `<button class="circ" data-act="search" aria-label="Search">${I('search')}</button>` : '') + placeChip();
   const [stitle, ssub] = screenTitle();
   if(!place){ title = stitle; crumb = `<span>Menu</span>${sep}<span>${stitle}</span>`; body = `<div class="me-tablet" style="margin:0">${accessHomeBody()}</div>`; }
+  else if(v2 && S.screen==='search'){ title='Search'; crumb = `<span>Search</span>`; body = `<div class="me-tablet" style="max-width:760px;margin:0">${searchBody()}</div>`; back=true; right = placeChip(); }
+  else if(v2 && S.screen==='room' && S.room){ const r=ROOM[S.room]; title=r.name; crumb = `<span>Building</span>${sep}<span>${r.name}</span>`; back=true; body = roomBody2(); right += screenActs(); }
   else if(!isRoot()){ const plp = S.screen==='schedule'||S.screen==='mode'; title = stitle; crumb = root + `<span>${plp?'Planner':ssub.replace(' · '+ (BPAGES[S.screen]||{}).s, '')}</span>${sep}<span>${stitle}</span>`; body = plp ? `<div class="pl-tabpage${S.screen==='schedule'?'':' narrow'}">${screenBody()}</div>` : `<div class="me-tablet" style="margin:0">${screenBody()}</div>`; back=true; right += screenActs(); }
-  else if(S.tab==='favorites'){ title='Favorites'; crumb = root + `<span>Favorites</span>`; body = `${statusPills()}<div class="lbl"><span>Favorites</span><a href="#" data-act="toast" data-v="Edit mode: reorder, add and remove favorites">${I('filter')} Edit</a></div><div class="grid">${C().filter(c=>c.fav).map(tile).join('')}</div>`; }
+  else if(S.tab==='favorites'){ title='Favorites'; crumb = root + `<span>Favorites</span>`; body = v2 ? favoritesTablet2() : `${statusPills()}<div class="lbl"><span>Favorites</span><a href="#" data-act="toast" data-v="Edit mode: reorder, add and remove favorites">${I('filter')} Edit</a></div><div class="grid">${C().filter(c=>c.fav).map(tile).join('')}</div>`; }
   else if(S.tab==='planner'){ title='Planner'; crumb = root + `<span>Planner</span>`; body = `<div class="pl-tabpage">${plannerBody()}</div>`; }
+  else if(v2){ title='Building'; crumb = root + `<span>Building</span>`; body = buildingPage2(); right += `<button class="circ" data-act="bpage" data-v="bset" aria-label="Building settings">${I('dots')}</button>`; }
   else {
     if(!S.room && S.cat==='all'){ title='Building'; crumb = root + `<span>Building</span>`; body = buildingPage(); right += `<button class="circ" data-act="bpage" data-v="bset" aria-label="Building settings">${I('dots')}</button>`; }
     else { const sel = selectionTitle(); title = sel.title; crumb = root + `<span>Building</span>${sep}<span>${sel.title}</span>`; back=true; body = sel.list.length? `<div class="rsec" style="--c:${S.cat!=='all'?CAT[S.cat].color:'var(--a-fg)'}"><span class="dot"></span>${sel.sub}</div><div class="grid">${sel.list.map(tile).join('')}</div>` : `<div class="empty">Nothing here for this selection.</div>`; if(S.room) right += `<button class="circ" data-act="bpage" data-v="roomset" aria-label="Room settings">${I('dots')}</button>`; }
@@ -4049,21 +4322,23 @@ function menuHtml(){
 /* every door carries a word: the glyph reads Menu (Back on sub-pages) like the verbs read theirs, and the selected verb carries the kit's
    chevron, because a tap on it opens its sheet (a word with a chevron opens something: Rooms ⌄, Mood ⌄, the place in the header) */
 function pillBar(){
-  const noPlace = !S.place; const cur = S.tab; const root = isRoot();
-  const glyph = root ? `<button class="glyph" data-act="menu" aria-label="Menu" aria-expanded="${P.target>=2}"><span class="hamb"><i></i><i></i></span><span class="nl">Menu</span></button>` : `<button class="glyph" data-act="back" aria-label="Back">${I('arrow-left')}<span class="nl">Back</span></button>`;
-  /* outline glyphs; the selected verb carries the filled one. Help & about lives in the menu (Loxone), so the rail carries no second entry */
-  const verbs = TABS.map(([id,icon,label,filled])=>{ const on = cur===id && root && !noPlace; return `<button data-act="tab" data-v="${id}" aria-current="${on?'page':'false'}" aria-label="${label}" ${on?`aria-expanded="${P.target>=1}"`:''} ${noPlace?'aria-disabled="true"':''}>${I(on?filled:icon)}<span class="nl">${label}</span>${on?`<i class="pchev" aria-hidden="true">${I('chevdown')}</i>`:''}</button>`; }).join('');
+  const noPlace = !S.place; const cur = S.tab; const root = isRoot(); const v2 = V2(); const menu = v2 && S.menu;
+  const glyph = (root || menu) ? `<button class="glyph" data-act="menu" aria-label="Menu" aria-expanded="${menu || P.target>=2}"><span class="hamb"><i></i><i></i></span><span class="nl">Menu</span></button>` : `<button class="glyph" data-act="back" aria-label="Back">${I('arrow-left')}<span class="nl">Back</span></button>`;
+  /* outline glyphs; the selected verb carries the filled one. Help & about lives in the menu (Loxone), so the rail carries no second entry.
+     1.0: the selected verb carries the chevron because a tap opens its sheet; 2.0 has no sheet, so no chevron */
+  const verbs = TABS.map(([id,icon,label,filled])=>{ const on = cur===id && root && !noPlace && !menu; return `<button data-act="tab" data-v="${id}" aria-current="${on?'page':'false'}" aria-label="${label}" ${on && !v2?`aria-expanded="${P.target>=1}"`:''} ${noPlace?'aria-disabled="true"':''}>${I(on?filled:icon)}<span class="nl">${label}</span>${on && !v2?`<i class="pchev" aria-hidden="true">${I('chevdown')}</i>`:''}</button>`; }).join('');
   return `${glyph}<span class="vb">${verbs}</span>`;
 }
 /* search sits on top of every sheet, the menu included: whoever opens the menu because they are lost meets the search field first */
 /* the content follows where the pill is going (round 11: leaving the menu for a verb showed the menu at the verb's height); a pull follows the finger */
 function sheetFull(){ return P.drag ? P.t>1.5 : P.target>=2; }
 /* the search steps aside while a category of Building is chosen (round 11); clearing the category brings it back */
-function sheetHead(full){ if(!full && S.tab==='building' && isRoot() && S.cat!=='all' && !S.q.trim()) return ''; return `<div class="sbox">${I('search')}<input id="q" type="search" placeholder="${full?'Search everything':S.tab==='building'?'Rooms, functions, settings':S.tab==='planner'?'Schedules, modes, functions':'Search everything'}" value="${S.q.replace(/"/g,'&quot;')}" aria-label="Search"></div>`; }
-function sheetBody(full){ return full && !S.q.trim() ? menuHtml() : quickHtml(); }
+function sheetHead(full){ if(V2()) return ''; if(!full && S.tab==='building' && isRoot() && S.cat!=='all' && !S.q.trim()) return ''; return `<div class="sbox">${I('search')}<input id="q" type="search" placeholder="${full?'Search everything':S.tab==='building'?'Rooms, functions, settings':S.tab==='planner'?'Schedules, modes, functions':'Search everything'}" value="${S.q.replace(/"/g,'&quot;')}" aria-label="Search"></div>`; }
+function sheetBody(full){ if(V2()) return D.target>0.5 ? menuHtml() : ''; return full && !S.q.trim() ? menuHtml() : quickHtml(); }
 function renderPill(){
   const el = pillEl(); if(!el) return;
   const full = sheetFull();
+  el.classList.toggle('v2', V2());
   el.querySelector('.pbar').innerHTML = pillBar();
   const head = sheetHead(full); el.querySelector('.phead').innerHTML = head; el.classList.toggle('nohead', !head);
   el.querySelector('.pbody').innerHTML = sheetBody(full);
@@ -4084,18 +4359,26 @@ function categoriesBack(){ const el = pillEl(), b = el && el.querySelector('.pbo
 function roomsToTop(){ const el = pillEl(), b = el && el.querySelector('.pbody'), r = b && b.querySelector('.frooms'); if(!r) return; roomsRoom(); b.scrollTo({top: roomsTop(b, r), behavior: S.motion==='reduced' ? 'auto' : 'smooth'}); }
 function renderPage(){
   const page = document.getElementById('page'); if(!page) return;
+  const v2 = V2(); const key = [S.device, S.tab, S.screen, S.room, S.control, S.menu, S.place, S.q ? 'q' : ''].join('|');
+  const prev = page.querySelector('.body'); const prevTop = prev ? prev.scrollTop : 0;
   page.innerHTML = S.device==='phone' ? phonePage() : tabletPage();
-  const b = page.querySelector('.body'); if(b){ lastScroll=0; b.addEventListener('scroll', onBodyScroll, {passive:true}); }
+  P.anim = false;
+  const b = page.querySelector('.body');
+  /* 2.0: a filter re-renders the page in place, so the scroll position stays unless the page itself changed */
+  if(b){ if(v2 && key===P.lastKey && prevTop) b.scrollTop = prevTop; lastScroll = b.scrollTop; b.addEventListener('scroll', onBodyScroll, {passive:true}); }
+  P.lastKey = key;
   const n = document.getElementById('nfcwrap'); if(n) n.innerHTML = S.nfc? nfcOverlay() : '';
   const t = document.getElementById('toastwrap'); if(t) t.innerHTML = S.toast? `<div class="toast" role="status">${S.toast}</div>`:'';
   const w = document.getElementById('plwrap'); if(w) w.innerHTML = plOverlays();
   plAfterRender();
+  if(v2){ const q = document.getElementById('q'); if(q && S.qFocus){ q.focus(); q.setSelectionRange(q.value.length,q.value.length); S.qFocus=false; } if(S.scrollTo){ S.scrollTo=null; requestAnimationFrame(scrollToRooms); } }
 }
 /* the frame of the Target: the page, the dim layer, the pill and the overlay layers; rebuilt only when the device or the theme changes */
 function renderAll(){
   const wrap = document.getElementById('frameWrap');
   const ph = S.device==='phone';
-  wrap.innerHTML = `<div class="device ${S.device}" id="device"><div class="screen"><div class="app" data-apptheme="${S.apptheme}">${ph? '<div class="island"></div>':''}<div class="page" id="page"></div><div class="pdim" id="dim" data-act="closeMenu"></div><div id="nfcwrap"></div><div class="tpill" id="pill"><div class="sheetbg"></div><div class="handle"><i></i></div><div class="pwrap"><div class="phead"></div><div class="pbody"></div></div><div class="pbar"></div></div><div id="toastwrap"></div><div id="plwrap"></div><div class="phint" id="hint"></div></div></div></div>`;
+  wrap.innerHTML = `<div class="device ${S.device}" id="device"><div class="screen"><div class="app" data-apptheme="${S.apptheme}"${S.mono?` data-mono="${S.mono}"`:''}>${ph? '<div class="island"></div>':''}<div class="page" id="page"></div><div class="pdim" id="dim" data-act="closeMenu"></div><div id="nfcwrap"></div><div class="tpill ${V2()?'v2':''}" id="pill"><div class="sheetbg"></div><div class="handle"><i></i></div><div class="pwrap"><div class="phead"></div><div class="pbody"></div></div><div class="pbar"></div></div><div id="toastwrap"></div><div id="plwrap"></div><div class="phint" id="hint"></div></div></div></div>`;
+  P.lastKey='';
   renderPage(); renderPill(); applyPill();
   document.getElementById('notes').innerHTML = notesHtml();
   syncToolbar();
@@ -4118,19 +4401,20 @@ function doorsLive(){
   DOOR_ROOTS.forEach(tab=>{
     Object.assign(S, {tab, screen:'home', q:'', room:null, cat:'all', control:null});
     const bar = dom(pillBar()), page = dom(rootBody()), sel = bar.querySelector('.vb [aria-current="page"]');
-    roots[tab] = {menu: words(bar.querySelector('.glyph .nl')), verbs: [...bar.querySelectorAll('.vb .nl')].map(words), cue: !!(sel && sel.querySelector('.pchev')), search: !!dom(sheetHead(false)).querySelector('input[type="search"]'), page: words(page), bset: words(page.querySelector('[data-v="bset"]'))};
+    const hdr = V2() ? dom(phonePage()) : null;
+    roots[tab] = {menu: words(bar.querySelector('.glyph .nl')), verbs: [...bar.querySelectorAll('.vb .nl')].map(words), cue: !!(sel && sel.querySelector('.pchev')), search: V2() ? !!page.querySelector('.sbox[data-act="search"]') : !!dom(sheetHead(false)).querySelector('input[type="search"]'), hdrSearch: !!(hdr && hdr.querySelector('.fh [data-act="search"]')), chips: !!page.querySelector('.chipbar .pl'), cards: !!page.querySelector('.rc'), edit: words(page.querySelector('.editb')), page: words(page), bset: words(page.querySelector('[data-v="bset"]'))};
   });
   S.screen = 'activity'; const back = words(dom(pillBar()).querySelector('.glyph .nl'));
   Object.assign(S, keep);
   const m = dom(menuHtml()), chip = dom(placeChip());
-  return {roots, back, menuSearch: !!dom(sheetHead(true)).querySelector('input[type="search"]'),
+  return {roots, back, menuSearch: V2() ? !!dom(menuPage()).querySelector('.msearch .sbox') : !!dom(sheetHead(true)).querySelector('input[type="search"]'),
     rows: [...m.querySelectorAll('.mrow')].map(r=>({title: words(r.querySelector('b')), sub: words(r.querySelector('small'))})),
     change: words(m.querySelector('.chg')), edit: words(m.querySelector('.medit')), off: words(m.querySelector('.mfoot .off')), place: words(chip.querySelector('.hnm')), placeCue: !!chip.querySelector('svg')};
 }
 /* the markup only changes with the place, the scenario and the device, so the check runs once per combination, not on every tap */
 function validateDoors(){
   const pl = currentPlace(); if(!pl || pl.kind!=='own') return null;   /* a guest's narrow rights hide rows on purpose: the check runs for an owner */
-  const key = [S.scenario, S.place, S.device].join('|');
+  const key = [S.scenario, S.place, S.device, S.pill].join('|');
   if(!validateDoors.c || validateDoors.c.key!==key) validateDoors.c = {key, v: checkDoors()};
   return validateDoors.c.v;
 }
@@ -4153,7 +4437,17 @@ function checkDoors(){
     return null;
   };
   const verdict = (x)=>{ const bad = x.steps.find(s=>!s.ok); return Object.assign(x, {status: bad ? 'hidden' : x.steps.length>2 ? 'deep' : 'worded', why: bad ? bad.why : ''}); };
-  const rows = [{grp:'What the pill holds'}].concat([
+  const rows = [{grp:V2()?'What the pill and the pages hold':'What the pill holds'}].concat((V2() ? [
+    {dest:'Search, from Favorites', go:'search', steps:[verb('Favorites'), {w:'the search field', ok: L.roots.favorites.search, why:'no search field on Favorites'}]},
+    {dest:'Search, from Building and Planner', go:'search2', steps:[{w:'the search icon in the header', ok: L.roots.building.hdrSearch && L.roots.planner.hdrSearch, why:'no search icon in the header'}]},
+    {dest:'Search, from Menu', go:'menusearch', steps:[menu(), field(true)]},
+    {dest:'Building: the category lens', go:'building', steps:[verb('Building'), {w:'Lighting · Shading · Climate …', ok: L.roots.building.chips, why:'no lens row on the Building page'}]},
+    {dest:'Building: a room', go:'building', steps:[verb('Building'), {w:'a room card', ok: L.roots.building.cards, why:'no room cards on the Building page'}]},
+    {dest:'Favorites: Edit', go:'favorites', steps:[verb('Favorites'), {w: L.roots.favorites.edit || 'Edit', ok: !!L.roots.favorites.edit, why:'no Edit on Favorites'}]},
+    {dest:'Planner: today, every schedule; create', go:'planner', steps:[verb('Planner'), {w:'Today, every schedule', ok: has(L.roots.planner.page, 'Today'), why:'no way into the Entries on the Planner page'}]},
+    {dest:'Back, from any sub-page', go:'back', steps:[{w:L.back || '←', ok:!!L.back, why:'the back glyph carries no word'}]},
+    {dest:'Change Miniserver, from the header', go:'place', steps:[{w:`${L.place} ⌄`, ok:!!L.place && L.placeCue, why:'the Miniserver in the header has no cue'}]},
+  ] : [
     {dest:'Search, from the selected verb', go:'search', steps:[{w:'the selected verb ⌃', ok: R.every(r=>r.cue), why:'a second tap on the selected verb with no cue'}, field(false)]},
     {dest:'Search, from Menu', go:'menusearch', steps:[menu(), field(true)]},
     {dest:'Building: categories and rooms', go:'building', steps:[verb('Building'), cue('building')]},
@@ -4161,7 +4455,7 @@ function checkDoors(){
     {dest:'Planner: jumps, operating modes today, create', go:'planner', steps:[verb('Planner'), cue('planner')]},
     {dest:'Back, from any sub-page', go:'back', steps:[{w:L.back || '←', ok:!!L.back, why:'the back glyph carries no word'}]},
     {dest:'Change Miniserver, from the header', go:'place', steps:[{w:`${L.place} ⌄`, ok:!!L.place && L.placeCue, why:'the Miniserver in the header has no cue'}]},
-  ].map(x=>verdict(Object.assign(x, {rest:[]}))));
+  ]).map(x=>verdict(Object.assign(x, {rest:[]}))));
   /* the settings map's homes; the Chrome group describes what replaced the old chrome, removed rows have no door */
   let grp = '';
   SETMAP.forEach(x=>{ if(x[1]===null){ grp = x[0]; if(grp!=='Chrome') rows.push({grp}); return; } if(grp==='Chrome' || /^removed/i.test(x[1])) return; const r = route(x[1]); if(r) rows.push(verdict(Object.assign(r, {dest:x[0], home:x[1]}))); else rows.push({dest:x[0], home:x[1], steps:[], rest:[], status:'hidden', why:'no route'}); });
@@ -4171,6 +4465,7 @@ function checkDoors(){
 /* a row of the doors table, opened in the prototype */
 function doorGo(k){
   ensurePlace(); S.q=''; S.control=null; H=[];
+  if(V2()){ S.menu=false; if(k==='back'){ S.screen='home'; render(); ACT_PILL.page('notifications'); return; } if(k==='place'){ S.screen='home'; render(); ACT_PILL.places(); return; } if(k==='menusearch'){ S.screen='home'; render(); if(S.device==='phone'){ S.menu=true; P.anim=true; renderPage(); renderPill(); onPillSettle(); } else setPill(2, {force:true}); return; } if(k==='search' || k==='search2'){ S.tab = k==='search' ? 'favorites' : 'building'; S.screen='home'; render(); ACT_PILL.search(); return; } S.tab=k; S.screen='home'; render(); setPill(0, {force:true}); return; }
   if(k==='back'){ S.screen='home'; render(); ACT_PILL.page('notifications'); return; }
   if(k==='place'){ S.screen='home'; render(); ACT_PILL.places(); return; }
   if(k==='menusearch'){ S.screen='home'; render(); S.qFocus=true; setPill(2, {force:true}); return; }
@@ -4179,45 +4474,55 @@ function doorGo(k){
 
 /* ---------- the Target's actions: the same names as the First release, with the pill's behaviour (collapse after a choice, the sheet as search and menu) ---------- */
 const ACT_PILL = {
-  /* a verb's tap: switching a verb always lands on the condensed pill; the active verb opens its sheet and a second tap closes it (from mini, a tap brings the bar back first) */
+  /* a verb's tap: switching a verb always lands on the condensed pill; 1.0: the active verb opens its sheet and a second tap closes it; 2.0: the active verb scrolls its page to the top, a verb leaves the menu page */
   tab(v){ if(!S.place){ toast('Connect a Miniserver or explore the Demo Miniserver first'); return true; }
+    if(V2()){
+      const wasMenu = S.menu; S.menu=false;
+      if(S.tab===v && isRoot() && !wasMenu){ const b=document.querySelector('#page .body'); if(b){ P.progScroll=true; b.scrollTo({top:0, behavior:S.motion==='reduced'?'auto':'smooth'}); setTimeout(()=>{ P.progScroll=false; lastScroll=b.scrollTop; }, 700); } setPill(0); return true; }
+      P.anim=true; S.tab=v; S.screen='home'; S.control=null; S.room=null; S.q=''; H=[]; renderPage(); renderPill(); if(P.target!==0) setPill(0); onPillSettle(); return true;
+    }
     /* the active verb opens its sheet from every state, mini and the menu included (round 6), and closes it again */
     if(S.tab===v && isRoot()){ setPill(P.target>=1 && P.target<2 ? 0 : 1); return true; }
     /* from the bar a new verb lands condensed (round 3); from the menu it opens its own sheet, as the active verb does (round 11) */
     const fromMenu = P.target>=2;
     S.tab=v; S.screen='home'; S.control=null; S.q=''; H=[]; G.t=G.target=G.v=0; renderPage(); setPill(fromMenu ? 1 : 0, {force:true}); return true; },
-  back(){ back(); render(); if(P.target>0) collapse(); return true; },
-  menu(){ if(P.target<2){ S.q=''; S.placesOpen=false; } setPill(P.target>=2 ? 0 : 2, {force:true}); return true; },
-  closeMenu(){ collapse(); return true; },
-  togglePlaces(){ S.placesOpen=!S.placesOpen; renderPill(); return true; },
-  places(){ S.placesOpen=true; S.q=''; setPill(2, {force:true}); return true; },
-  place(v){ S.place=v; S.placesOpen=false; S.tab='building'; S.screen='home'; S.room=null; S.control=null; S.cat='all'; H=[]; placeReset(); render(); collapse(); return true; },
-  openDemo(){ S.place='demo'; S.tab='building'; S.screen='home'; S.room=null; S.control=null; S.cat='all'; H=[]; placeReset(); render(); collapse(); return true; },
-  cat(v){ const was=S.cat; S.cat=v; S.control=null; S.pop=null; if(!isRoot()){ S.screen='home'; } renderPage(); renderPill(); if(v!=='all' && was==='all') roomsToTop(); else if(v==='all' && was!=='all') categoriesBack(); return true; },
-  lens(v){ S.tab='building'; S.screen='home'; S.room=null; S.cat=v; S.control=null; S.q=''; renderPage(); collapse(); return true; },
+  back(){ back(); if(V2()) P.anim=true; render(); if(P.target>0) collapse(); return true; },
+  menu(){ if(V2() && S.device==='phone'){ S.menu=!S.menu; S.placesOpen=false; S.q=''; P.anim=true; renderPage(); renderPill(); if(P.target!==0) setPill(0); onPillSettle(); return true; } if(P.target<2){ S.q=''; S.placesOpen=false; } setPill(P.target>=2 ? 0 : 2, {force:true}); return true; },
+  closeMenu(){ if(V2() && S.device==='phone'){ if(S.menu){ S.menu=false; P.anim=true; renderPage(); renderPill(); onPillSettle(); } return true; } collapse(); return true; },
+  togglePlaces(){ S.placesOpen=!S.placesOpen; if(V2() && S.device==='phone' && S.menu) renderPage(); else renderPill(); return true; },
+  places(){ S.placesOpen=true; S.q=''; if(V2() && S.device==='phone'){ if(!S.menu){ S.menu=true; P.anim=true; } renderPage(); renderPill(); onPillSettle(); return true; } setPill(2, {force:true}); return true; },
+  mjump(v){ menuJump(v); return true; },
+  place(v){ S.place=v; S.placesOpen=false; S.menu=false; S.tab='building'; S.screen='home'; S.room=null; S.control=null; S.cat='all'; H=[]; placeReset(); P.anim=true; render(); collapse(); return true; },
+  openDemo(){ S.place='demo'; S.menu=false; S.tab='building'; S.screen='home'; S.room=null; S.control=null; S.cat='all'; H=[]; placeReset(); P.anim=true; render(); collapse(); return true; },
+  cat(v){ const was=S.cat; S.cat=v; S.control=null; S.pop=null;
+    if(V2()){ if(S.screen==='room'){ renderPage(); return true; } if(!isRoot()){ S.screen='home'; } S.scrollTo='rooms'; renderPage(); return true; }
+    if(!isRoot()){ S.screen='home'; } renderPage(); renderPill(); if(v!=='all' && was==='all') roomsToTop(); else if(v==='all' && was!=='all') categoriesBack(); return true; },
+  lens(v){ if(V2()){ S.menu=false; P.anim = !(S.tab==='building' && isRoot()); S.tab='building'; S.screen='home'; S.room=null; S.cat=v; S.control=null; S.q=''; H=[]; S.scrollTo='rooms'; renderPage(); renderPill(); if(P.target!==0) setPill(0); return true; } S.tab='building'; S.screen='home'; S.room=null; S.cat=v; S.control=null; S.q=''; renderPage(); collapse(); return true; },
   clearsel(){ S.room=null; S.cat='all'; S.control=null; renderPage(); renderPill(); return true; },
-  room(v){ S.tab='building'; S.screen='home'; S.room = S.room===v && P.target>=1 ? null : v; S.control=null; S.q=''; if(S.cat!=='all' && S.room && !roomHasCat(v, S.cat)) S.cat='all'; renderPage(); renderPill(); if(S.room) collapse(); hint(S.room? `${ROOM[v].name}${S.cat!=='all'?' · '+CAT[S.cat].name:''}` : 'Selection cleared'); return true; },
-  roomcat(v){ const [r,c]=v.split('|'); S.tab='building'; S.screen='home'; S.room=r; S.cat=c; S.control=null; S.q=''; renderPage(); renderPill(); collapse(); hint(`${ROOM[r].name} · ${CAT[c].name}`); return true; },
-  roomgo(v){ push(); if(ROOM[v].place==='hotel') S.place='hotel'; S.tab='building'; S.screen='home'; S.room=v; S.cat='all'; S.control=null; render(); collapse(); return true; },
-  open(v){ push(); S.control=v; S.room=CTRL[v].room; S.tab='building'; S.screen='control'; S.nfc=false; render(); collapse(); return true; },
-  go(v){ push(); S.screen=v; render(); collapse(); return true; },
-  bpage(v){ push(); S.tab='building'; S.screen=v; S.pop=null; render(); collapse(); return true; },
-  page(v){ push(); S.screen=v; S.nfc=false; S.pop=null; render(); collapse(); return true; },
-  planner(){ S.tab='planner'; S.screen='home'; S.control=null; H=[]; render(); collapse(); return true; },
-  sched(v){ PL.openSched(v); collapse(); return true; },
-  plall(){ PL.openAll(); collapse(); return true; },
-  plnew(v){ collapse(); if(v==='mode') PL.newMode(); else PL.newSched(); return true; },
-  search(){ S.qFocus=true; S.q=''; if(!isRoot()){ S.screen='home'; renderPage(); } setPill(1, {force:true}); return true; },
-  setq(v){ S.q=v; S.qFocus=true; renderPill(); return true; },
-  actf(v){ S.actFilter=v; renderPage(); renderPill(); return true; },
-  prefset(v){ const [k,val]=v.split('|'); S.prefs[k]=val; if(k==='theme' && (val==='Light'||val==='Dark')){ S.apptheme=val.toLowerCase(); renderAll(); return true; } render(); return true; },
-  nfc(){ push(); S.screen='reader'; S.nfc='scan'; render(); collapse(); return true; },
+  room(v){ if(V2()){ push(); S.menu=false; S.tab='building'; S.room=v; S.screen='room'; S.control=null; S.q=''; if(S.cat!=='all' && !roomHasCat(v, S.cat)) S.cat='all'; P.anim=true; render(); if(P.target!==0) setPill(0); return true; }
+    S.tab='building'; S.screen='home'; S.room = S.room===v && P.target>=1 ? null : v; S.control=null; S.q=''; if(S.cat!=='all' && S.room && !roomHasCat(v, S.cat)) S.cat='all'; renderPage(); renderPill(); if(S.room) collapse(); hint(S.room? `${ROOM[v].name}${S.cat!=='all'?' · '+CAT[S.cat].name:''}` : 'Selection cleared'); return true; },
+  roomcat(v){ const [r,c]=v.split('|'); if(V2()){ push(); S.menu=false; S.tab='building'; S.room=r; S.cat=c; S.screen='room'; S.control=null; S.q=''; P.anim=true; render(); if(P.target!==0) setPill(0); return true; }
+    S.tab='building'; S.screen='home'; S.room=r; S.cat=c; S.control=null; S.q=''; renderPage(); renderPill(); collapse(); hint(`${ROOM[r].name} · ${CAT[c].name}`); return true; },
+  roomgo(v){ push(); S.menu=false; if(ROOM[v].place==='hotel') S.place='hotel'; S.tab='building'; S.screen = V2() ? 'room' : 'home'; S.room=v; S.cat='all'; S.control=null; P.anim=true; render(); collapse(); return true; },
+  open(v){ push(); S.menu=false; S.control=v; S.room=CTRL[v].room; S.tab='building'; S.screen='control'; S.nfc=false; P.anim=true; render(); collapse(); return true; },
+  go(v){ push(); S.menu=false; S.screen=v; P.anim=true; render(); collapse(); return true; },
+  bpage(v){ push(); S.menu=false; S.tab='building'; S.screen=v; S.pop=null; P.anim=true; render(); collapse(); return true; },
+  page(v){ push(); S.menu=false; S.screen=v; S.nfc=false; S.pop=null; P.anim=true; render(); collapse(); return true; },
+  planner(){ S.menu=false; S.tab='planner'; S.screen='home'; S.control=null; H=[]; P.anim=true; render(); collapse(); return true; },
+  sched(v){ S.menu=false; PL.openSched(v); collapse(); return true; },
+  plall(){ S.menu=false; PL.openAll(); collapse(); return true; },
+  plnew(v){ S.menu=false; collapse(); if(v==='mode') PL.newMode(); else PL.newSched(); return true; },
+  search(){ if(V2()){ if(S.screen!=='search') push(); S.menu=false; S.q=''; S.qFocus=true; S.screen='search'; P.anim=true; render(); if(P.target!==0) setPill(0); onPillSettle(); return true; } S.qFocus=true; S.q=''; if(!isRoot()){ S.screen='home'; renderPage(); } setPill(1, {force:true}); return true; },
+  setq(v){ S.q=v; S.qFocus=true; if(V2()) renderPage(); else renderPill(); return true; },
+  actf(v){ S.actFilter=v; renderPage(); if(!V2()) renderPill(); return true; },
+  prefset(v){ const [k,val]=v.split('|'); if(k==='mono'){ S.mono=val; renderAll(); return true; } S.prefs[k]=val; if(k==='theme' && (val==='Light'||val==='Dark')){ S.apptheme=val.toLowerCase(); renderAll(); return true; } render(); return true; },
+  nfc(){ push(); S.menu=false; S.screen='reader'; S.nfc='scan'; render(); collapse(); return true; },
   nfcClose(){ back(); render(); return true; },
   nfcDone(){ S.nfc='done'; renderPage(); setTimeout(()=>{ if(S.nfc==='done'){ back(); render(); notes(); } }, 1500); return true; },
   pop(){ return true; }, closePop(){ return true; },
-  setFloor(v){ S.floor=v; const b=pillEl()&&pillEl().querySelector('.pbody'); const y=b?b.scrollTop:0; renderPill(); const b2=pillEl()&&pillEl().querySelector('.pbody'); if(b2) b2.scrollTop=y; return true; },
+  setFloor(v){ S.floor=v; if(V2()){ renderPage(); return true; } const b=pillEl()&&pillEl().querySelector('.pbody'); const y=b?b.scrollTop:0; renderPill(); const b2=pillEl()&&pillEl().querySelector('.pbody'); if(b2) b2.scrollTop=y; return true; },
   closePanel(){ S.control=null; S.screen='home'; render(); return true; },
-  trust(){ setPill(2); return true; }, closeTrust(){ collapse(); return true; },
+  trust(){ if(V2() && S.device==='phone') return ACT_PILL.menu(); setPill(2); return true; }, closeTrust(){ return ACT_PILL.closeMenu(); },
 };
 /* ---------- events and start ---------- */
 function actFor(name){ return (S.release==='target' && ACT_PILL[name]) || ACT[name]; }
@@ -4227,18 +4532,21 @@ document.addEventListener('click', e=>{
   const sg = e.target.closest('[data-setgo]'); if(sg){ gotoHome(sg.dataset.setgo); return; }
   const ap = e.target.closest('[data-appset]'); if(ap){ appSettings(false); return; }
   const scb = e.target.closest('[data-scen]'); if(scb){ S.scenario=scb.dataset.scen; const sel=document.getElementById('scen'); if(sel) sel.value=S.scenario; applyScenario(); H=[]; render(); collapse(); return; }
-  const map = e.target.closest('[data-map]'); if(map){ S.map=!S.map; S.why=false; S.doors=false; notes(); return; }
-  const why = e.target.closest('[data-why]'); if(why){ S.why=!S.why; S.map=false; S.doors=false; notes(); return; }
-  const drs = e.target.closest('[data-doors]'); if(drs){ S.doors=!S.doors; S.map=false; S.why=false; notes(); return; }
+  const map = e.target.closest('[data-map]'); if(map){ S.map=!S.map; S.why=false; S.doors=false; S.ch=false; notes(); return; }
+  const why = e.target.closest('[data-why]'); if(why){ S.why=!S.why; S.map=false; S.doors=false; S.ch=false; notes(); return; }
+  const drs = e.target.closest('[data-doors]'); if(drs){ S.doors=!S.doors; S.map=false; S.why=false; S.ch=false; notes(); return; }
+  const chb = e.target.closest('[data-ch]'); if(chb){ S.ch=!S.ch; S.map=false; S.why=false; S.doors=false; notes(); return; }
   const dgo = e.target.closest('[data-doorgo]'); if(dgo){ toTarget(); doorGo(dgo.dataset.doorgo); notes(); return; }
-  const flow = e.target.closest('[data-flow]'); if(flow){ S.map=false; S.why=false; S.doors=false; const r = window.__flows[Number(flow.dataset.flow)][1](); if(r!==true) render(); notes(); return; }
-  const stb = e.target.closest('[data-state]'); if(stb){ if(S.release!=='target') return; const t = Number(stb.dataset.state); if(D.target>0.5 && t<0) setPill(0); else setPill(t, {force:true}); notes(); return; }
+  const flow = e.target.closest('[data-flow]'); if(flow){ S.map=false; S.why=false; S.doors=false; S.ch=false; const r = window.__flows[Number(flow.dataset.flow)][1](); if(r!==true) render(); notes(); return; }
+  const stb = e.target.closest('[data-state]'); if(stb){ if(S.release!=='target') return; const t = Number(stb.dataset.state);
+    if(V2()){ if(S.device==='phone'){ if(t>=1){ if(!S.menu) ACT_PILL.menu(); } else { if(S.menu){ S.menu=false; P.anim=true; renderPage(); renderPill(); } setPill(t, {force:true}); } } else setPill(t<=0 ? 0 : 2, {force:true}); onPillSettle(); notes(); return; }
+    if(D.target>0.5 && t<0) setPill(0); else setPill(t, {force:true}); notes(); return; }
   const set = e.target.closest('[data-set]'); if(set){
     const k=set.dataset.set, v=set.dataset.v;
     if(k==='device'){ S.pop=null; try{ localStorage.setItem('lox-proto-device', v); }catch(_){} if(S.release==='target'){ document.querySelectorAll('#segDevice button').forEach(b=>b.setAttribute('aria-pressed', b.dataset.v===v)); setDevice(v); notes(); return; } S.device=v; render(); return; }
+    if(k==='rel'){ setRelease(v); return; }
     S[k]=v;
-    if(k==='release'){ S.trust=false; S.menu=false; S.map=false; S.why=false; S.doors=false; if(S.release==='first' && S.tab==='planner'){ S.tab='favorites'; S.screen='home'; } if(S.release==='target'){ if(S.screen==='categories'||S.screen==='room'||S.screen==='search'){ S.screen='home'; } setDevice(S.device, true); P.t=0; P.target=0; P.v=0; } }
-    if(k==='apptheme' && S.release==='target'){ renderAll(); return; }
+    if((k==='apptheme' || k==='mono') && S.release==='target'){ renderAll(); return; }
     if(k==='motion'){ syncToolbar(); return; }
     render(); return;
   }
@@ -4248,14 +4556,24 @@ document.addEventListener('click', e=>{
   const handled = fn(el.dataset.v); if(!handled) render();
   if(S.release==='target') notes();
 });
+/* the release switch of the toolbar and the app-mode settings: First (today's nav bar), Pill 1.0, Pill 2.0 */
+function setRelease(v){
+  const rel = v==='first' ? 'first' : 'target', pill = v==='pill2' ? '2' : v==='pill1' ? '1' : S.pill;
+  if(S.release===rel && S.pill===pill){ syncToolbar(); return; }
+  S.release=rel; S.pill=pill; S.trust=false; S.menu=false; S.map=false; S.why=false; S.doors=false; S.ch=false; S.scrollTo=null;
+  if(rel==='first' && S.tab==='planner'){ S.tab='favorites'; S.screen='home'; }
+  if(rel==='target'){ if(S.screen==='categories' || (S.screen==='room' && (pill==='1' || !S.room)) || (S.screen==='search' && pill==='1')) S.screen='home'; if(pill==='2' && S.screen==='home' && S.tab==='building' && S.room) S.screen='room'; setDevice(S.device, true); P.t=0; P.target=0; P.v=0; FIT.state=null; }
+  render();
+}
 document.getElementById('scen').addEventListener('change', e=>{ S.scenario=e.target.value; applyScenario(); H=[]; render(); collapse(); });
-document.addEventListener('input', e=>{ if(e.target.id!=='q') return; S.q=e.target.value; S.qFocus=true; if(S.release==='target'){ setGrow(true); const el=pillEl(); if(el) el.querySelector('.pbody').innerHTML = sheetBody(sheetFull()); } else render(); });
+document.getElementById('mono').addEventListener('change', e=>{ S.mono=e.target.value; if(S.release==='target') renderAll(); else render(); });
+document.addEventListener('input', e=>{ if(e.target.id!=='q') return; S.q=e.target.value; S.qFocus=true; if(S.release==='target'){ if(V2()){ renderPage(); return; } setGrow(true); const el=pillEl(); if(el) el.querySelector('.pbody').innerHTML = sheetBody(sheetFull()); } else render(); });
 /* Favorites' short sheet grows while its search field is in use and shrinks back when the field is left empty */
-document.addEventListener('focusin', e=>{ if(e.target.id==='q' && S.release==='target') setGrow(true); });
-document.addEventListener('focusout', e=>{ if(e.target.id==='q' && S.release==='target') setTimeout(()=>{ const q=document.getElementById('q'); if(!(q && document.activeElement===q)) setGrow(!!S.q.trim()); }, 0); });
+document.addEventListener('focusin', e=>{ if(e.target.id==='q' && S.release==='target' && !V2()) setGrow(true); });
+document.addEventListener('focusout', e=>{ if(e.target.id==='q' && S.release==='target' && !V2()) setTimeout(()=>{ const q=document.getElementById('q'); if(!(q && document.activeElement===q)) setGrow(!!S.q.trim()); }, 0); });
 /* the menu's index follows the scroll of its list (scroll does not bubble, so listen while capturing) */
 document.addEventListener('scroll', e=>{ const t=e.target; if(t && t.nodeType===1 && t.querySelector('.mindex')) menuSpy(t); }, true);
-document.addEventListener('keydown', e=>{ if(S.release!=='target') return; if(e.key==='Escape'){ collapse(); } if(e.key==='/' && !/input|textarea/i.test(e.target.tagName)){ e.preventDefault(); ACT_PILL.search(); } });
+document.addEventListener('keydown', e=>{ if(S.release!=='target') return; if(e.key==='Escape'){ if(V2() && S.device==='phone' && S.menu) ACT_PILL.closeMenu(); else collapse(); } if(e.key==='/' && !/input|textarea/i.test(e.target.tagName)){ e.preventDefault(); ACT_PILL.search(); } });
 
 /* pointer: the pill's drag, and hold-to-open */
 let holdT=null, holdEl=null;
@@ -4272,7 +4590,7 @@ document.addEventListener('keyup', e=>{ if(e.target.matches('[data-hold]')) hold
 if(APP){
   /* the device follows the screen; the Target is the default; ?release=first, ?scenario=…, ?theme=… override */
   S.release='target'; S.device=appDevice();
-  try{ const q=new URLSearchParams(location.search); if(q.get('release')==='first') S.release='first'; if(q.get('scenario')) S.scenario=q.get('scenario'); if(q.get('theme')==='dark'||q.get('theme')==='light') S.apptheme=q.get('theme'); }catch(_){}
+  try{ const q=new URLSearchParams(location.search); if(q.get('release')==='first') S.release='first'; if(q.get('release')==='pill1' || q.get('pill')==='1') S.pill='1'; if(q.get('scenario')) S.scenario=q.get('scenario'); if(q.get('theme')==='dark'||q.get('theme')==='light') S.apptheme=q.get('theme'); if(q.get('mono')) S.mono=q.get('mono'); }catch(_){}
   const sel=document.getElementById('scen'); if(sel) sel.value=S.scenario;
   document.body.insertAdjacentHTML('beforeend', appSettingsHtml());
   let t2=null; const cancel=()=>{ clearTimeout(t2); t2=null; };
@@ -4285,6 +4603,9 @@ if(APP){
 } else {
   window.addEventListener('resize', fit);
   try{ const saved = localStorage.getItem('lox-proto-device'); if(saved==='tablet'||saved==='phone') S.device=saved; }catch(_){}
+  /* the page opens in Pill 2.0 (22.10.); ?release=first or ?release=pill1 open the others */
+  S.release='target';
+  try{ const q=new URLSearchParams(location.search); if(q.get('release')==='first') S.release='first'; if(q.get('release')==='pill1' || q.get('pill')==='1') S.pill='1'; if(q.get('mono')) S.mono=q.get('mono'); }catch(_){}
 }
 applyScenario();
 if(S.release==='target') setDevice(S.device, true);
